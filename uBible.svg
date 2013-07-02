@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   width="26"
+   height="29"
+   sodipodi:docname="uBibleIcon.svg">
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1535"
+     inkscape:window-height="876"
+     id="namedview4"
+     showgrid="false"
+     inkscape:zoom="16"
+     inkscape:cx="40.029811"
+     inkscape:cy="13.610418"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <path
+     style="fill:#dc4815;fill-opacity:1"
+     d="M 10.199713,28.623977 C 9.0475341,28.472838 7.8703582,28.098863 6.799063,27.702297 5.4766422,27.231315 4.5620442,26.291108 3.5203193,25.07227 c 0,0 -0.6346501,-0.79171 -0.9607569,-1.621011 C 1.8881283,21.743779 1.9970042,11.597705 1.9970042,11.597705 l 0,-11.49999943 3.471611,0 4.5341108,0 0.01563,2.17187503 0.03125,1.796875 -2.2665785,0.03125 -1.7822036,0 c 0.00778,1.2637089 0.013224,2.6898922 0.00608,3.8948034 L 8.1672717,8.003061 10.00202,7.998481 c 0.0084,4.335135 0.01631,10.810898 0.01631,15.146043 l 2.393486,-0.04687 1.518486,0.01563 c 0.02994,-4.300149 0.256513,-10.929515 0.09202,-15.1036381 l 2.791817,-0.011211 1.180574,0.00915 0.01563,-0.8161791 -0.01563,-3.09375 -0.954079,0 -3.032204,-0.015625 0.01563,-1.453125 -0.03125,-2.53125003 4.976502,0 3.117127,0 0.0625,11.56574043 c 0,0 0.0182,7.026446 -0.434695,11.051879 -0.07815,0.694612 -0.443958,1.651483 -0.707893,1.973885 -0.902514,1.102446 -1.189174,1.505319 -2.208045,2.194855 -1.536005,1.039514 -2.862982,1.422335 -4.367162,1.715713 -1.394793,0.272042 -2.828116,0.208282 -4.231456,0.0242 z"
+     id="path2991"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cccsccccccccccccccccccccccccccsssaac" />
+</svg>
