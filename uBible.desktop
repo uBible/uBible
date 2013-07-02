@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=uBible
+Comment=Bible application for Ubuntu Touch
+Exec=/usr/bin/qmlscene $@ /usr/share/bible-app/uBible.qml
+Icon=qmlscene
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
