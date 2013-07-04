@@ -20,6 +20,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components.ListItems 0.1
 
 Page {
     id: root
@@ -30,22 +31,106 @@ Page {
         color: "white"
     }
 
+    ListModel {
+        id: chapterModel
+        ListElement {
+            verse: "In the beginning God created the heaven and the earth."
+        }
+
+        ListElement {
+            verse: "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."
+        }
+
+        ListElement {
+            verse: "And God said, Let there be light: and there was light."
+        }
+    }
+
+    Component {
+        id: versePopover
+
+        ActionSelectionPopover {
+            id: popover
+
+            actions: ActionList {
+                Action {
+                    text: "Bookmark"
+                }
+
+                Action {
+                    text: "Highlight"
+                }
+
+                Action {
+                    text: "Add Note"
+                }
+
+                Action {
+                    text: "Share"
+                }
+            }
+        }
+    }
+
     Flickable {
         id: flickable
         anchors.fill: parent
-        anchors.margins: units.gu(1)
-        contentWidth: width; contentHeight: label.height
+        contentWidth: width; contentHeight: contents.height
 
-        //flickableDirection:
-        Label {
-            id: label
-            text: "<b>1</b> In the beginning God created the heaven and the earth.<p>" +
-                  "<b>2</b> And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.<p>" +
-                  "<b>3</b> And God said, Let there be light: and there was light.<p>" +
-                  "<b>4</b> And God saw the light, that it was good: and God divided the light from the darkness.<p>" +
-                  "<b>5</b> And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.<p>"
-            width: parent.width
-            wrapMode: Text.Wrap
+        Column {
+            id: contents
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
+
+            Repeater {
+                model: chapterModel
+                delegate: Empty {
+                    id: verseDelegate
+
+                    width: contents.width
+                    height: units.gu(0.5) + verse.height
+
+                    onClicked: {
+                        PopupUtils.open(versePopover, verseDelegate,
+                                        {
+                                            verse: model
+                                        })
+                    }
+
+                    Label {
+                        id: number
+                        text: (index + 1)
+                        font.bold: true
+
+                        anchors {
+                            left: parent.left
+                            leftMargin: units.gu(1)
+                            top: verse.top
+                            //topMargin: units.gu(0.5)
+                        }
+                    }
+
+                    Label {
+                        id: verse
+
+                        anchors {
+                            left: parent.left
+                            leftMargin: units.gu(4)
+                            right: parent.right
+                            rightMargin: units.gu(1)
+                            top: parent.top
+                            topMargin: units.gu(0.25)
+                        }
+
+                        wrapMode: Text.Wrap
+
+                        text: model.verse
+                    }
+                    showDivider: false
+                }
+            }
         }
     }
 
