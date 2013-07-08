@@ -37,6 +37,17 @@ Subtitled {
         biblePage.goTo(root.verse)
     }
 
+    Rectangle {
+        anchors {
+            fill: parent
+            leftMargin: units.gu(-2)
+            rightMargin: units.gu(-2)
+        }
+
+        color: "white"
+        z: -1
+    }
+
     backgroundIndicator: Rectangle {
         anchors.fill: parent
         color: "darkgray"

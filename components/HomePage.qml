@@ -27,7 +27,10 @@ Page {
 
     Flickable {
         id: flickable
-        anchors.fill: parent
+        anchors {
+            fill: parent
+        }
+
         contentWidth: content.width
         contentHeight: content.height
 

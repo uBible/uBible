@@ -37,7 +37,6 @@ Page {
 
     function goTo(verse) {
         root.verse = verse
-        pageStack.clear()
         tabs.selectedTabIndex = 1
     }
 

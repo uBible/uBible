@@ -49,43 +49,32 @@ MainView {
     property variant tabsPage: tabsPage
     property variant homePage: homePage
     property variant biblePage: biblePage
-    property variant searchPage: SearchPage {
-        id: searchPage
-        objectName: "searchPage"
-    }
+    property variant searchPage: searchPage
 
-    property variant pageStack: pageStack
+    Tabs {
+        id: tabs
 
-    PageStack {
-        id: pageStack
-
-        function clear() {
-            while (pageStack.depth > 1)
-                pageStack.pop()
+        Tab {
+            title: page.title
+            page: HomePage {
+                id: homePage
+                objectName: "homePage"
+            }
         }
 
-        Component.onCompleted: pageStack.push(tabs)
+        Tab {
+            title: page.title
+            page: BiblePage {
+                id: biblePage
+                objectName: "biblePage"
+            }
+        }
 
-        Page {
-            id: tabsPage
-            Tabs {
-                id: tabs
-
-                Tab {
-                    title: page.title
-                    page: HomePage {
-                        id: homePage
-                        objectName: "homePage"
-                    }
-                }
-
-                Tab {
-                    title: page.title
-                    page: BiblePage {
-                        id: biblePage
-                        objectName: "biblePage"
-                    }
-                }
+        Tab {
+            title: page.title
+            page: SearchPage {
+                id: searchPage
+                objectName: "searchPage"
             }
         }
     }
@@ -93,7 +82,7 @@ MainView {
     function search(text) {
         searchPage.searchText = (text || "")
         // TODO: Better way to do this???
-        pageStack.push(searchPage)
+        tabs.selectedTabIndex = 2
         searchPage.search()
     }
 }
