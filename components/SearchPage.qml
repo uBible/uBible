@@ -29,14 +29,7 @@ Page {
 
     property alias searchText: searchField.text
 
-    function search(text) {
-        root.searchText = (text || "")
-        // TODO: Better way to do this???
-        tabs.selectedTabIndex = 2
-        doSearch()
-    }
-
-    function doSearch() {
+    function search() {
 
     }
 
@@ -89,12 +82,32 @@ Page {
 
                     text: "Search"
 
-                    onClicked: root.doSearch()
+                    onClicked: root.search()
                 }
             }
 
             Header {
                 text: "Search Results"
+            }
+
+            BibleVerse {
+                verse: "Proverbs 3:5-6"
+                contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
+            }
+
+            BibleVerse {
+                verse: "Matthew 6"
+                contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
+            }
+
+            BibleVerse {
+                verse: "John 1"
+                contents: "In the beginning was the Word, and the Word was with God, and the Word was God."
+            }
+
+            BibleVerse {
+                verse: "Genesis 1"
+                contents: "In the beginning God created the heaven and the earth."
             }
         }
     }

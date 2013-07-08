@@ -46,35 +46,54 @@ MainView {
     }
 
     property variant tabs: tabs
+    property variant tabsPage: tabsPage
     property variant homePage: homePage
     property variant biblePage: biblePage
-    property variant searchPage: searchPage
+    property variant searchPage: SearchPage {
+        id: searchPage
+        objectName: "searchPage"
+    }
 
-    Tabs {
-        id: tabs
+    property variant pageStack: pageStack
 
-        Tab {
-            title: page.title
-            page: HomePage {
-                id: homePage
-                objectName: "homePage"
-            }
+    PageStack {
+        id: pageStack
+
+        function clear() {
+            while (pageStack.depth > 1)
+                pageStack.pop()
         }
 
-        Tab {
-            title: page.title
-            page: BiblePage {
-                id: biblePage
-                objectName: "biblePage"
-            }
-        }
+        Component.onCompleted: pageStack.push(tabs)
 
-        Tab {
-            title: page.title
-            page: SearchPage {
-                id: searchPage
-                objectName: "searchPage"
+        Page {
+            id: tabsPage
+            Tabs {
+                id: tabs
+
+                Tab {
+                    title: page.title
+                    page: HomePage {
+                        id: homePage
+                        objectName: "homePage"
+                    }
+                }
+
+                Tab {
+                    title: page.title
+                    page: BiblePage {
+                        id: biblePage
+                        objectName: "biblePage"
+                    }
+                }
             }
         }
+    }
+
+    function search(text) {
+        searchPage.searchText = (text || "")
+        // TODO: Better way to do this???
+        pageStack.push(searchPage)
+        searchPage.search()
     }
 }

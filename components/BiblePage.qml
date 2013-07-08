@@ -24,7 +24,18 @@ import Ubuntu.Components.ListItems 0.1
 
 Page {
     id: root
-    title: "Genesis 1"
+    title: chapter
+
+    property string verse: "Genesis 1:1"
+    property string chapter: {
+        return verse
+    }
+
+    function goTo(verse) {
+        root.verse = verse
+        pageStack.clear()
+        tabs.selectedTabIndex = 1
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -153,9 +164,17 @@ Page {
     }
 
     tools: ToolbarItems {
+        back: ToolbarButton {
+            iconSource: icon("favorite-selected")
+            text: i18n.tr("Home")
+            onTriggered: {
+                tabs.selectedTabIndex = 0
+            }
+        }
+
         ToolbarButton {
             iconSource: icon("location")
-            text: "Go To"
+            text: i18n.tr("Go To")
             onTriggered: {
                 PopupUtils.open(Qt.resolvedUrl("GoToPopover.qml"), caller)
             }
@@ -164,7 +183,7 @@ Page {
         ToolbarButton {
             iconSource: icon("search")
             text: "Search"
-            onTriggered: searchPage.search()
+            onTriggered: search()
         }
 
         ToolbarButton {

@@ -20,8 +20,38 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components.ListItems 0.1
 
-Dialog {
-    title: "Go To Verse"
-    text: "Enter verse"
+Subtitled {
+    id: root
+
+    property string verse
+    property string contents
+
+    text: "<b>" + verse + "</b>"
+    subText: contents
+
+    height: implicitHeight + units.gu(1)
+
+    onClicked: {
+        biblePage.goTo(root.verse)
+    }
+
+    backgroundIndicator: Rectangle {
+        anchors.fill: parent
+        color: "darkgray"
+        clip: true
+
+        Image {
+            source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
+            anchors {
+                top: parent.top
+                horizontalCenter: parent.horizontalCenter
+                bottom: parent.bottom
+                margins: units.gu(1.5)
+            }
+
+            width: height
+        }
+    }
 }

@@ -74,7 +74,7 @@ Page {
 
                     text: "Search"
 
-                    onClicked: searchPage.search(searchField.text)
+                    onClicked: search(searchField.text)
                 }
             }
 
@@ -82,74 +82,34 @@ Page {
                 text: "<b>Verse of the Day<b>"
             }
 
-            Subtitled {
-                text: "<b>Proverbs 3:5-6</b>"
-                subText: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
-                height: implicitHeight + units.gu(1)
+            BibleVerse {
+                verse: "Proverbs 3:5-6"
+                contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
             }
 
             Header {
                 text: "<b>Reading Plan<b>"
             }
 
-            Subtitled {
-                text: "<b>Matthew 6</b>"
-                subText: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
-                height: implicitHeight + units.gu(1)
+            BibleVerse {
+                verse: "Matthew 6"
+                contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
             }
 
             Header {
                 text: "<b>Recent</b>"
             }
 
-            Subtitled {
-                text: "<b>John 1</b>"
-                subText: "In the beginning was the Word, and the Word was with God, and the Word was God."
-                height: implicitHeight + units.gu(1)
+            BibleVerse {
+                verse: "John 1"
+                contents: "In the beginning was the Word, and the Word was with God, and the Word was God."
                 removable: true
-
-                backgroundIndicator: Rectangle {
-                    anchors.fill: parent
-                    color: "darkgray"
-                    clip: true
-
-                    Image {
-                        source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
-                        anchors {
-                            top: parent.top
-                            horizontalCenter: parent.horizontalCenter
-                            bottom: parent.bottom
-                            margins: units.gu(1.5)
-                        }
-
-                        width: height
-                    }
-                }
             }
 
-            Subtitled {
-                text: "<b>Genesis 1</b>"
-                subText: "In the beginning God created the heaven and the earth."
-                height: implicitHeight + units.gu(1)
+            BibleVerse {
+                verse: "Genesis 1"
+                contents: "In the beginning God created the heaven and the earth."
                 removable: true
-
-                backgroundIndicator: Rectangle {
-                    anchors.fill: parent
-                    color: "darkgray"
-                    clip: true
-
-                    Image {
-                        source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
-                        anchors {
-                            top: parent.top
-                            horizontalCenter: parent.horizontalCenter
-                            bottom: parent.bottom
-                            margins: units.gu(1.5)
-                        }
-
-                        width: height
-                    }
-                }
             }
         }
     }
