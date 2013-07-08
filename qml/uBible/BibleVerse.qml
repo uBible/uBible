@@ -1,6 +1,6 @@
 /*
  * uBible - Bible application for Ubuntu Touch
- * Copyright (C) 2013 The uBible Project Developers. See the
+ * Copyright (C) 2013 The uBible Developers. See the
  * COPYRIGHT file at the top-level directory of this distribution.
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,47 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
 
-ComposerSheet {
-    id: sheet
+Subtitled {
+    id: root
 
-    property alias notes: textArea.text
+    property string verse
+    property string contents
 
-    TextArea {
-        id: textArea
-        placeholderText: "Notes"
-        anchors {
-            fill: parent
-        }
+    text: "<b>" + verse + "</b>"
+    subText: contents
+
+    height: implicitHeight + units.gu(1)
+
+    onClicked: {
+        biblePage.goTo(root.verse)
     }
 
-    onCancelClicked: PopupUtils.close(sheet)
-    onConfirmClicked: PopupUtils.close(sheet)
+    Rectangle {
+        anchors {
+            fill: parent
+            leftMargin: units.gu(-2)
+            rightMargin: units.gu(-2)
+        }
+
+        color: "white"
+        z: -1
+    }
+
+    backgroundIndicator: Rectangle {
+        anchors.fill: parent
+        color: "darkgray"
+        clip: true
+
+        Image {
+            source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
+            anchors {
+                top: parent.top
+                horizontalCenter: parent.horizontalCenter
+                bottom: parent.bottom
+                margins: units.gu(1.5)
+            }
+
+            width: height
+        }
+    }
 }

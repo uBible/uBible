@@ -1,6 +1,6 @@
 /*
  * uBible - Bible application for Ubuntu Touch
- * Copyright (C) 2013 The uBible Project Developers. See the
+ * Copyright (C) 2013 The uBible Developers. See the
  * COPYRIGHT file at the top-level directory of this distribution.
  *
  * This program is free software; you can redistribute it and/or
@@ -20,8 +20,21 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components.ListItems 0.1
 
-Dialog {
-    title: "Go To Verse"
-    text: "Enter verse"
+ComposerSheet {
+    id: sheet
+
+    property alias notes: textArea.text
+
+    TextArea {
+        id: textArea
+        placeholderText: "Notes"
+        anchors {
+            fill: parent
+        }
+    }
+
+    onCancelClicked: PopupUtils.close(sheet)
+    onConfirmClicked: PopupUtils.close(sheet)
 }

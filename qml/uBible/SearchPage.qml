@@ -1,6 +1,6 @@
 /*
  * uBible - Bible application for Ubuntu Touch
- * Copyright (C) 2013 The uBible Project Developers. See the
+ * Copyright (C) 2013 The uBible Developers. See the
  * COPYRIGHT file at the top-level directory of this distribution.
  *
  * This program is free software; you can redistribute it and/or
