@@ -25,111 +25,136 @@ Page {
     id: root
     title: "uBible"
 
-    Column {
+    Flickable {
+        id: flickable
         anchors.fill: parent
+        contentWidth: content.width
+        contentHeight: content.height
 
-        Empty {
-            TextField {
-                id: searchField
+        Column {
+            id: content
+            width: root.width
 
-                placeholderText: "Search..."
 
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    right: searchButton.left
-                    margins: units.gu(1)
-                }
-            }
+            Empty {
+                TextField {
+                    id: searchField
 
-            Button {
-                id: searchButton
+                    placeholderText: "Search..."
 
-                anchors {
-                    top: searchField.top
-                    bottom: searchField.bottom
-                    right: parent.right
-                    rightMargin: units.gu(1)
-                }
-
-                gradient: Gradient {
-                    GradientStop {
-                        position: 0
-                        color: "green"
-                    }
-
-                    GradientStop {
-                        position: 1
-                        color: Qt.rgba(0.3,0.7,0.3,1)
-                    }
-                }
-
-                text: "Search"
-            }
-        }
-
-        Header {
-            text: "Verse of the Day"
-        }
-
-        Subtitled {
-            text: "<b>Proverbs 3:5-6</b>"
-            subText: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
-            height: implicitHeight + units.gu(1)
-        }
-
-        Header {
-            text: "Previous Reading"
-        }
-
-        Subtitled {
-            text: "<b>John 1</b>"
-            subText: "In the beginning was the Word, and the Word was with God, and the Word was God. The same was in the beginning with God. All things were made by him; and without him was not any thing made that was made."
-            height: implicitHeight + units.gu(1)
-            removable: true
-
-            backgroundIndicator: Rectangle {
-                anchors.fill: parent
-                color: "darkgray"
-                clip: true
-
-                Image {
-                    source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
                     anchors {
-                        top: parent.top
-                        horizontalCenter: parent.horizontalCenter
-                        bottom: parent.bottom
-                        margins: units.gu(1.5)
+                        verticalCenter: parent.verticalCenter
+                        left: parent.left
+                        right: searchButton.left
+                        margins: units.gu(1)
                     }
-
-                    width: height
                 }
-            }
-        }
 
-        Subtitled {
-            text: "<b>Genesis 1</b>"
-            subText: "In the beginning God created the heaven and the earth. And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters. And God said, Let there be light: and there was light."
-            height: implicitHeight + units.gu(1)
-            removable: true
+                Button {
+                    id: searchButton
 
-            backgroundIndicator: Rectangle {
-                anchors.fill: parent
-                color: "darkgray"
-                clip: true
-
-                Image {
-                    source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
                     anchors {
-                        top: parent.top
-                        horizontalCenter: parent.horizontalCenter
-                        bottom: parent.bottom
-                        margins: units.gu(1.5)
+                        top: searchField.top
+                        bottom: searchField.bottom
+                        right: parent.right
+                        rightMargin: units.gu(1)
                     }
 
-                    width: height
+                    gradient: Gradient {
+                        GradientStop {
+                            position: 0
+                            color: "green"
+                        }
+
+                        GradientStop {
+                            position: 1
+                            color: Qt.rgba(0.3,0.7,0.3,1)
+                        }
+                    }
+
+                    text: "Search"
+
+                    onClicked: searchPage.search(searchField.text)
+                }
+            }
+
+            Header {
+                text: "<b>Verse of the Day<b>"
+            }
+
+            Subtitled {
+                text: "<b>Proverbs 3:5-6</b>"
+                subText: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
+                height: implicitHeight + units.gu(1)
+            }
+
+            Header {
+                text: "<b>Reading Plan<b>"
+            }
+
+            Subtitled {
+                text: "<b>Matthew 6</b>"
+                subText: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
+                height: implicitHeight + units.gu(1)
+            }
+
+            Header {
+                text: "<b>Recent</b>"
+            }
+
+            Subtitled {
+                text: "<b>John 1</b>"
+                subText: "In the beginning was the Word, and the Word was with God, and the Word was God."
+                height: implicitHeight + units.gu(1)
+                removable: true
+
+                backgroundIndicator: Rectangle {
+                    anchors.fill: parent
+                    color: "darkgray"
+                    clip: true
+
+                    Image {
+                        source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
+                        anchors {
+                            top: parent.top
+                            horizontalCenter: parent.horizontalCenter
+                            bottom: parent.bottom
+                            margins: units.gu(1.5)
+                        }
+
+                        width: height
+                    }
+                }
+            }
+
+            Subtitled {
+                text: "<b>Genesis 1</b>"
+                subText: "In the beginning God created the heaven and the earth."
+                height: implicitHeight + units.gu(1)
+                removable: true
+
+                backgroundIndicator: Rectangle {
+                    anchors.fill: parent
+                    color: "darkgray"
+                    clip: true
+
+                    Image {
+                        source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
+                        anchors {
+                            top: parent.top
+                            horizontalCenter: parent.horizontalCenter
+                            bottom: parent.bottom
+                            margins: units.gu(1.5)
+                        }
+
+                        width: height
+                    }
                 }
             }
         }
+    }
+
+    Scrollbar {
+        flickableItem: flickable
     }
 }

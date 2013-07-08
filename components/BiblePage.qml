@@ -35,14 +35,17 @@ Page {
         id: chapterModel
         ListElement {
             verse: "In the beginning God created the heaven and the earth."
+            highlighted: true
         }
 
         ListElement {
             verse: "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."
+            highlighted: false
         }
 
         ListElement {
             verse: "And God said, Let there be light: and there was light."
+            highlighted: false
         }
     }
 
@@ -52,13 +55,20 @@ Page {
         ActionSelectionPopover {
             id: popover
 
+            property variant verse
+
             actions: ActionList {
                 Action {
                     text: "Bookmark"
                 }
 
                 Action {
-                    text: "Highlight"
+                    text: verse.highlighted
+                          ? "Remove Highlight"
+                          : "Highlight"
+                    onTriggered: {
+                        verse.highlighted = !verse.highlighted
+                    }
                 }
 
                 Action {
@@ -91,6 +101,7 @@ Page {
 
                     width: contents.width
                     height: units.gu(0.5) + verse.height
+                    selected: model.highlighted
 
                     onClicked: {
                         PopupUtils.open(versePopover, verseDelegate,
@@ -127,6 +138,9 @@ Page {
                         wrapMode: Text.Wrap
 
                         text: model.verse
+                        font.family: "Liberation Serif"
+                        fontSize: "large"
+                        color: model.highlighted ? "orange" : "black"
                     }
                     showDivider: false
                 }
@@ -150,6 +164,7 @@ Page {
         ToolbarButton {
             iconSource: icon("search")
             text: "Search"
+            onTriggered: searchPage.search()
         }
 
         ToolbarButton {

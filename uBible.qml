@@ -45,11 +45,19 @@ MainView {
         return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
     }
 
+    property variant tabs: tabs
+    property variant homePage: homePage
+    property variant biblePage: biblePage
+    property variant searchPage: searchPage
+
     Tabs {
+        id: tabs
+
         Tab {
             title: page.title
             page: HomePage {
-
+                id: homePage
+                objectName: "homePage"
             }
         }
 
@@ -58,6 +66,14 @@ MainView {
             page: BiblePage {
                 id: biblePage
                 objectName: "biblePage"
+            }
+        }
+
+        Tab {
+            title: page.title
+            page: SearchPage {
+                id: searchPage
+                objectName: "searchPage"
             }
         }
     }
