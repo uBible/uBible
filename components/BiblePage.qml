@@ -28,7 +28,11 @@ Page {
 
     property string verse: "Genesis 1:1"
     property string chapter: {
-        return verse
+        if (verse.lastIndexOf(':') !== -1) {
+            return verse.substring(0, verse.lastIndexOf(':'))
+        } else {
+            return verse
+        }
     }
 
     function goTo(verse) {
@@ -46,6 +50,7 @@ Page {
         id: chapterModel
         ListElement {
             verse: "In the beginning God created the heaven and the earth."
+            notes: "The creation of the world."
             highlighted: true
         }
 
@@ -67,27 +72,32 @@ Page {
             id: popover
 
             property variant verse
+            property variant index
 
             actions: ActionList {
                 Action {
-                    text: "Bookmark"
+                    text: i18n.tr("Bookmark")
                 }
 
                 Action {
                     text: verse.highlighted
-                          ? "Remove Highlight"
-                          : "Highlight"
+                          ? i18n.tr("Remove Highlight")
+                          : i18n.tr("Highlight")
                     onTriggered: {
                         verse.highlighted = !verse.highlighted
                     }
                 }
 
                 Action {
-                    text: "Add Note"
+                    text: i18n.tr("Notes")
+                    onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
+                                                     title: root.chapter + ":" + (index + 1),
+                                                     notes: verse.notes
+                                                 })
                 }
 
                 Action {
-                    text: "Share"
+                    text: i18n.tr("Share")
                 }
             }
         }
@@ -117,7 +127,8 @@ Page {
                     onClicked: {
                         PopupUtils.open(versePopover, verseDelegate,
                                         {
-                                            verse: model
+                                            verse: model,
+                                            index: index
                                         })
                     }
 
@@ -182,13 +193,18 @@ Page {
 
         ToolbarButton {
             iconSource: icon("search")
-            text: "Search"
+            text: i18n.tr("Search")
             onTriggered: search()
         }
 
         ToolbarButton {
+            iconSource: icon("speaker")
+            text: i18n.tr("Listen")
+        }
+
+        ToolbarButton {
             iconSource: icon("settings")
-            text: "Settings"
+            text: i18n.tr("Settings")
         }
     }
 }
