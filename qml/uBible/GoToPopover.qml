@@ -20,8 +20,58 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components.ListItems 0.1
+import uBible 1.0
 
-Dialog {
-    title: "Go To Verse"
-    text: "Enter verse"
+Popover {
+    Bible {
+        id: bible
+    }
+
+    Column {
+        id: contents
+        //height: 500
+
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+        }
+
+        Flickable {
+            clip: true
+            width: parent.width
+            height: Math.min(contentHeight, 300)
+            contentWidth: width
+            contentHeight: selector.height
+
+            ValueSelector {
+                id: selector
+                text: "Book"
+                values: bible.books
+            }
+        }
+
+        Standard {
+            text: "Chapter"
+            control: Slider {
+                id: chapterSlider
+                width: 200
+                value: 1
+
+                minimumValue: 1
+                maximumValue: bible.chapterCount(selector.values[selector.selectedIndex])
+            }
+        }
+
+        Standard {
+            text: "Verse"
+            control: Slider {
+                width: 200
+                value: 1
+                minimumValue: 1
+                maximumValue: bible.verseCount(selector.values[selector.selectedIndex], chapterSlider.value.toFixed(0))
+            }
+        }
+    }
 }

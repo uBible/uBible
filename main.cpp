@@ -18,13 +18,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include <QtGui/QGuiApplication>
+#include <QtQml/QQmlContext>
+#include <QtQml>
 #include "qtquick2applicationviewer.h"
+
+#include <QDebug>
+
+#include "bibleapp.h"
+#include "bible.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    qmlRegisterType<Bible>("uBible", 1, 0, "Bible");
+
     QtQuick2ApplicationViewer viewer;
+    viewer.rootContext()->setContextProperty("App", new BibleApp());
     viewer.setMainQmlFile(QStringLiteral("qml/uBible/main.qml"));
     viewer.showExpanded();
 

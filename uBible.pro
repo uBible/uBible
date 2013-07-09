@@ -12,7 +12,14 @@ QML_IMPORT_PATH =
 # MOBILITY +=
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    bibleapp.cpp \
+    biblechapter.cpp \
+    bible.cpp \
+    module.cpp
+
+INCLUDEPATH += /usr/include/sword/
+LIBS        += -lsword
 
 # Installation path
 # target.path =
@@ -20,3 +27,9 @@ SOURCES += main.cpp
 # Please do not modify the following two lines. Required for deployment.
 include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
 qtcAddDeployment()
+
+HEADERS += \
+    bibleapp.h \
+    biblechapter.h \
+    bible.h \
+    module.h

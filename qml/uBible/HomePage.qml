@@ -20,10 +20,15 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
+import uBible 1.0
 
 Page {
     id: root
     title: "uBible"
+
+    Bible {
+        id: bible
+    }
 
     Flickable {
         id: flickable
@@ -81,13 +86,20 @@ Page {
                 }
             }
 
+            Subtitled {
+                text: "Bible testing"
+                subText: "The Bible has " + bible.books.length + " books. " +
+                         "Genesis is book " + bible.bookNumber("Genesis") + ", but Revelation is book " + bible.bookNumber("Revelation") + "\n" +
+                         "Genesis has " + bible.chapterCount("Genesis") + " chapters."
+            }
+
             Header {
                 text: "<b>Verse of the Day<b>"
             }
 
             BibleVerse {
                 verse: "Proverbs 3:5-6"
-                contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
+                //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
             }
 
             Header {
@@ -96,7 +108,7 @@ Page {
 
             BibleVerse {
                 verse: "Matthew 6"
-                contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
+                //contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
             }
 
             Header {
@@ -105,13 +117,13 @@ Page {
 
             BibleVerse {
                 verse: "John 1"
-                contents: "In the beginning was the Word, and the Word was with God, and the Word was God."
+                //contents: "In the beginning was the Word, and the Word was with God, and the Word was God."
                 removable: true
             }
 
             BibleVerse {
                 verse: "Genesis 1"
-                contents: "In the beginning God created the heaven and the earth."
+                //contents: "In the beginning God created the heaven and the earth."
                 removable: true
             }
         }

@@ -26,7 +26,7 @@ Subtitled {
     id: root
 
     property string verse
-    property string contents
+    property string contents: App.verse(verse)
 
     text: "<b>" + verse + "</b>"
     subText: contents
