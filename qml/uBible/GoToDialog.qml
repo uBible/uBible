@@ -19,18 +19,45 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+import QtQuick 2.0
+import Ubuntu.Components 0.1
+import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components.ListItems 0.1
+import uBible 1.0
 
-#include "biblechapter.h"
+Dialog {
+    id: root
+    title: "Go To Chapter"
+    text: "Enter Chapter:"
 
-#include <QDebug>
+    TextField {
+        id: chapterField
+        placeholderText: "Chapter"
+    }
 
-BibleChapter::BibleChapter(Bible *bible, const QString &book, int chapter, QObject *parent) :
-    QAbstractListModel(parent),
-    m_bible(bible), m_book(book), m_chapter(chapter)
-{
-    qDebug() << "BIBLE:" << m_bible;
+    Button {
+        text: "Ok"
+        onClicked: {
+            PopupUtils.close(root)
+            goTo(chapterField.text)
+        }
+    }
 
-    if (m_bible == 0) {
-        m_bible = new Bible("KJV", this);
+    Button {
+        text: "Cancel"
+
+        gradient: Gradient {
+            GradientStop {
+                position: 0
+                color: "gray"
+            }
+
+            GradientStop {
+                position: 1
+                color: "lightgray"
+            }
+        }
+
+        onClicked: PopupUtils.close(root)
     }
 }

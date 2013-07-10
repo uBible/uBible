@@ -44,8 +44,7 @@ class BibleChapter : public QAbstractListModel
     };
 
 public:
-    explicit BibleChapter(Bible *bible, const QString &book, int chapter, QObject *parent = 0);
-    explicit BibleChapter(QObject *parent = 0): BibleChapter(new Bible("KJV"), "Genesis", 1, parent) {}
+    explicit BibleChapter(Bible *bible = 0, const QString &book = "Genesis", int chapter = 1, QObject *parent = 0);
 
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const {
         //qDebug() << "LENGTH!";
