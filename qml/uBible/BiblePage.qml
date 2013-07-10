@@ -29,36 +29,92 @@ Page {
     id: root
     title: bookChapter
 
-    property string verse: "Genesis 1:1"
-    property string book: {
-        if (verse.lastIndexOf(' ') !== -1) {
-            return verse.substring(0, verse.lastIndexOf(' '))
+    property string location: "Genesis 1:1"
+
+    property string verse: {
+        print ("Updating verse")
+        if (location.lastIndexOf(':') !== -1) {
+            return location.substring(location.lastIndexOf(':') + 1)
+        } else {
+            return 1
+        }
+    }
+
+    property int startVerse: {
+        if (verse.lastIndexOf('-') !== -1) {
+            print(verse.substring(0, verse.lastIndexOf('-')))
+            return verse.substring(0, verse.lastIndexOf('-'))
         } else {
             return verse
         }
     }
-    property string chapter: {
-        if (verse.lastIndexOf(' ') !== -1) {
-            return verse.substring(verse.lastIndexOf(' ') + 1)
+
+    property int endVerse: {
+        if (verse.lastIndexOf('-') !== -1) {
+            print(verse.substring(verse.lastIndexOf('-') + 1))
+            return verse.substring(verse.lastIndexOf('-') + 1)
         } else {
             return verse
+        }
+    }
+
+    property string book: {
+        print ("Updating book")
+        if (location.lastIndexOf(' ') !== -1) {
+            return location.substring(0, location.lastIndexOf(' '))
+        } else {
+            return location
+        }
+    }
+    property int chapter: {
+        print ("Updating chapter")
+        if (bookChapter.lastIndexOf(' ') !== -1) {
+            return bookChapter.substring(location.lastIndexOf(' ') + 1)
+        } else {
+            return bookChapter
         }
     }
 
     property string bookChapter: {
-        if (verse.lastIndexOf(':') !== -1) {
-            return verse.substring(0, verse.lastIndexOf(':'))
+        print ("Updating bookChapter")
+        if (location.lastIndexOf(':') !== -1) {
+            return location.substring(0, location.lastIndexOf(':'))
         } else {
-            return verse
+            return location
         }
     }
 
     function goTo(verse) {
-        root.verse = verse
-        // A hack because the header covers the content
-        flickable.contentY = -units.gu(10)
         tabs.selectedTabIndex = 1
+        root.location = verse
+        print("Book:", root.book)
+        print("Chapter:", root.chapter)
+        print("Verse:", root.startVerse)
+        selectionAnimation.start()
+        list.positionViewAtIndex(root.startVerse - 1, ListView.Beginning)
+        // A hack because the header covers the content
+        //flickable.contentY += -units.gu(9.5)
     }
+
+    property color selectionColor: "orange"
+
+    SequentialAnimation {
+        id: selectionAnimation
+        PropertyAnimation {
+            target: root
+            property: "selectionColor"
+            to: "orange"
+        }
+
+        PauseAnimation { duration: 5000 }
+
+        ColorAnimation {
+            target: root
+            property: "selectionColor"
+            from: "orange"; to: "black"; duration: 2000
+        }
+    }
+
 
     Rectangle {
         anchors.fill: parent
@@ -103,79 +159,68 @@ Page {
         }
     }
 
-    Flickable {
-        id: flickable
+    ListView {
+        id: list
         anchors.fill: parent
-        contentWidth: width; contentHeight: contents.height
 
-        Column {
-            id: contents
-            anchors {
-                left: parent.left
-                right: parent.right
+        model: BibleChapter {
+            book: root.book
+            chapter: root.chapter
+        }
+
+        delegate: Empty {
+            id: verseDelegate
+
+            width: list.width
+            height: units.gu(0.5) + verse.height
+            //selected: model.highlighted
+
+            onClicked: {
+                PopupUtils.open(versePopover, verseDelegate,
+                                {
+                                    verse: model,
+                                    index: index
+                                })
             }
 
-            Repeater {
-                model: BibleChapter {
-                    book: root.book
-                    chapter: root.chapter
-                }
+            Label {
+                id: number
+                text: (index + 1)
+                font.bold: true
 
-                delegate: Empty {
-                    id: verseDelegate
-
-                    width: contents.width
-                    height: units.gu(0.5) + verse.height
-                    selected: model.highlighted
-
-                    onClicked: {
-                        PopupUtils.open(versePopover, verseDelegate,
-                                        {
-                                            verse: model,
-                                            index: index
-                                        })
-                    }
-
-                    Label {
-                        id: number
-                        text: (index + 1)
-                        font.bold: true
-
-                        anchors {
-                            left: parent.left
-                            leftMargin: units.gu(1)
-                            top: verse.top
-                            //topMargin: units.gu(0.5)
-                        }
-                    }
-
-                    Label {
-                        id: verse
-
-                        anchors {
-                            left: parent.left
-                            leftMargin: units.gu(4)
-                            right: parent.right
-                            rightMargin: units.gu(1)
-                            top: parent.top
-                            topMargin: units.gu(0.25)
-                        }
-
-                        wrapMode: Text.Wrap
-
-                        text: model.verse
-                        font.family: "Liberation Serif"
-                        fontSize: "large"
-                        color: model.highlighted ? "orange" : "black"
-                    }
-                    showDivider: false
+                anchors {
+                    left: parent.left
+                    leftMargin: units.gu(1)
+                    top: verse.top
+                    //topMargin: units.gu(0.5)
                 }
             }
+
+            Label {
+                id: verse
+
+                anchors {
+                    left: parent.left
+                    leftMargin: units.gu(4)
+                    right: parent.right
+                    rightMargin: units.gu(1)
+                    top: parent.top
+                    topMargin: units.gu(0.25)
+                }
+
+                wrapMode: Text.Wrap
+
+                text: model.verse
+                font.family: "Liberation Serif"
+                fontSize: "large"
+                color: index + 1 >= startVerse && index + 1 <= endVerse ? selectionColor : "black"
+            }
+            showDivider: false
         }
     }
 
     Scrollbar {
-        flickableItem: flickable
+        flickableItem: list
     }
 
     tools: ToolbarItems {
