@@ -20,7 +20,6 @@ SOURCES += main.cpp \
 
 INCLUDEPATH += /usr/include/sword/
 LIBS        += -lsword
-QMAKE_CXXFLAGS += -std=c++11
 
 
 # Installation path
@@ -35,3 +34,7 @@ HEADERS += \
     biblechapter.h \
     bible.h \
     module.h
+
+OTHER_FILES += \
+    README.md \
+    LICENSE.txt
