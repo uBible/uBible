@@ -3,10 +3,13 @@
 #include <QDebug>
 #include <QSharedPointer>
 
+#include <sword/gbfplain.h>
+
 Bible::Bible(const QString& name, QObject *parent) :
     Module(name, parent),
     m_bookList(0), m_hasOT(false), m_hasNT(false), m_boundsInitialized(false)
 {
+    module()->AddRenderFilter(new sword::GBFPlain());
 }
 
 QStringList Bible::books() {
@@ -78,7 +81,7 @@ unsigned int Bible::bookNumber(const QString &book) const {
 
     bookNumber = ((key->getTestament() > 1) ? key->BMAX[0] : 0) + key->getBook();
 
-    qDebug() << book << "is number" << bookNumber;
+    //qDebug() << book << "is number" << bookNumber;
     return bookNumber;
 }
 
@@ -94,7 +97,7 @@ unsigned int Bible::chapterCount(int bookNumber) const {
     key->setPosition(sword::MAXCHAPTER);
     result = key->getChapter();
 
-    qDebug() << bookNumber << "has" << result << "chapters";
+    //qDebug() << bookNumber << "has" << result << "chapters";
     return result;
 }
 
@@ -113,4 +116,16 @@ unsigned int Bible::verseCount(int book, int chapter) const {
 
     qDebug() << book << chapter << "has" << result << "verses";
     return result;
+}
+
+QString Bible::verse(int book, int chapter, int verse) {
+    sword::VerseKey key;
+    key.setPosition(sword::TOP);
+    key.setBook(book);
+    key.setChapter(chapter);
+    key.setVerse(verse);
+
+    module()->setKey(key);
+
+    return module()->RenderText();
 }

@@ -20,6 +20,8 @@ SOURCES += main.cpp \
 
 INCLUDEPATH += /usr/include/sword/
 LIBS        += -lsword
+QMAKE_CXXFLAGS += -std=c++11
+
 
 # Installation path
 # target.path =

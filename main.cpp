@@ -26,12 +26,14 @@
 
 #include "bibleapp.h"
 #include "bible.h"
+#include "biblechapter.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<Bible>("uBible", 1, 0, "Bible");
+    qmlRegisterType<BibleChapter>("uBible", 1, 0, "BibleChapter");
 
     QtQuick2ApplicationViewer viewer;
     viewer.rootContext()->setContextProperty("App", new BibleApp());

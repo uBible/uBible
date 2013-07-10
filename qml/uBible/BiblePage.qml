@@ -21,13 +21,29 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
+import uBible 1.0
 
 Page {
     id: root
-    title: chapter
+    title: bookChapter
 
     property string verse: "Genesis 1:1"
+    property string book: {
+        if (verse.lastIndexOf(' ') !== -1) {
+            return verse.substring(0, verse.lastIndexOf(' '))
+        } else {
+            return verse
+        }
+    }
     property string chapter: {
+        if (verse.lastIndexOf(' ') !== -1) {
+            return verse.substring(verse.lastIndexOf(' ') + 1)
+        } else {
+            return verse
+        }
+    }
+
+    property string bookChapter: {
         if (verse.lastIndexOf(':') !== -1) {
             return verse.substring(0, verse.lastIndexOf(':'))
         } else {
@@ -37,31 +53,14 @@ Page {
 
     function goTo(verse) {
         root.verse = verse
+        // A hack because the header covers the content
+        flickable.contentY = -units.gu(10)
         tabs.selectedTabIndex = 1
     }
 
     Rectangle {
         anchors.fill: parent
         color: "white"
-    }
-
-    ListModel {
-        id: chapterModel
-        ListElement {
-            verse: "In the beginning God created the heaven and the earth."
-            notes: "The creation of the world."
-            highlighted: true
-        }
-
-        ListElement {
-            verse: "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters."
-            highlighted: false
-        }
-
-        ListElement {
-            verse: "And God said, Let there be light: and there was light."
-            highlighted: false
-        }
     }
 
     Component {
@@ -115,7 +114,11 @@ Page {
             }
 
             Repeater {
-                model: chapterModel
+                model: BibleChapter {
+                    book: root.book
+                    chapter: root.chapter
+                }
+
                 delegate: Empty {
                     id: verseDelegate
 

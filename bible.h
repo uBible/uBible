@@ -34,6 +34,12 @@ public:
 
     Q_INVOKABLE QStringList books();
 
+    Q_INVOKABLE QString verse(const QString &book, int chapter, int verse) {
+        return this->verse(bookNumber(book), chapter, verse);
+    }
+
+    Q_INVOKABLE QString verse(int book, int chapter, int verse);
+
 signals:
     
 public slots:
