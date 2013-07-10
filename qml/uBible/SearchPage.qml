@@ -1,12 +1,14 @@
 /*
+ * Whatsoever ye do in word or deed, do all in the name of the
+ * Lord Jesus, giving thanks to God and the Father by him.
+ * - Colossians 3:17
+ *
  * uBible - Bible application for Ubuntu Touch
- * Copyright (C) 2013 The uBible Developers. See the
- * COPYRIGHT file at the top-level directory of this distribution.
+ * Copyright (C) 2013 The uBible Developers.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * version 2 as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
