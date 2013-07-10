@@ -26,10 +26,6 @@ Page {
     id: root
     title: "uBible"
 
-    Bible {
-        id: bible
-    }
-
     Flickable {
         id: flickable
         anchors {
@@ -84,13 +80,6 @@ Page {
 
                     onClicked: search(searchField.text)
                 }
-            }
-
-            Subtitled {
-                text: "Bible testing"
-                subText: "The Bible has " + bible.books.length + " books. " +
-                         "Genesis is book " + bible.bookNumber("Genesis") + ", but Revelation is book " + bible.bookNumber("Revelation") + "\n" +
-                         "Genesis has " + bible.chapterCount("Genesis") + " chapters."
             }
 
             Header {
