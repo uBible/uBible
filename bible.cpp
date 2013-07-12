@@ -26,12 +26,18 @@
 #include <QSharedPointer>
 
 #include <sword/gbfplain.h>
+#include <sword/gbfredletterwords.h>
+
+using namespace sword;
 
 Bible::Bible(const QString& name, QObject *parent) :
     Module(name, parent),
     m_bookList(0), m_hasOT(false), m_hasNT(false), m_boundsInitialized(false)
 {
-    module()->AddRenderFilter(new sword::GBFPlain());
+    //module()->AddRenderFilter(new sword::GBFPlain());
+    sword::GBFRedLetterWords *option = new sword::GBFRedLetterWords();
+    option->setOptionValue("On");
+    module()->AddRenderFilter(option);
 }
 
 QStringList Bible::books() {
@@ -150,4 +156,24 @@ QString Bible::verse(int book, int chapter, int verse) {
     module()->setKey(key);
 
     return module()->RenderText();
+}
+
+QStringList Bible::search(const QString &phrase) {
+    qDebug() << "Doing search...";
+    sword::ListKey searchResults = module()->search(qPrintable(phrase), 2);
+
+    qDebug() << "Making persistent...";
+    searchResults.Persist(true);
+    qDebug() << "Setting key...";
+    module()->setKey(searchResults);
+
+    qDebug() << "Results:";
+    QStringList results;
+    for (searchResults = TOP; !searchResults.Error(); searchResults++) {
+        //qDebug() << (const char *) searchResults << ":\n";
+        //qDebug() << (const char *) *module() << "\n";
+        results.append((const char *) searchResults);
+    }
+
+    return results;
 }

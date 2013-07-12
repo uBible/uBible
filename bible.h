@@ -62,6 +62,8 @@ public:
 
     Q_INVOKABLE QString verse(int book, int chapter, int verse);
 
+    Q_INVOKABLE QStringList search(const QString &phrase);
+
 signals:
     
 public slots:

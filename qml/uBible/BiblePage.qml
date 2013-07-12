@@ -90,7 +90,7 @@ Page {
         print("Book:", root.book)
         print("Chapter:", root.chapter)
         print("Verse:", root.startVerse)
-        selectionAnimation.start()
+        selectionAnimation.restart()
         list.positionViewAtIndex(root.startVerse - 1, ListView.Beginning)
         // A hack because the header covers the content
         //flickable.contentY += -units.gu(9.5)
@@ -111,7 +111,7 @@ Page {
         ColorAnimation {
             target: root
             property: "selectionColor"
-            from: "orange"; to: "black"; duration: 2000
+            from: UbuntuColors.orange; to: UbuntuColors.coolGrey; duration: 2000
         }
     }
 
@@ -126,6 +126,8 @@ Page {
 
         ActionSelectionPopover {
             id: popover
+
+            grabDismissAreaEvents: true
 
             property variant verse
             property variant index
@@ -147,7 +149,7 @@ Page {
                 Action {
                     text: i18n.tr("Notes")
                     onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
-                                                     title: root.chapter + ":" + (index + 1),
+                                                     title: root.bookChapter + ":" + (index + 1),
                                                      notes: verse.notes
                                                  })
                 }
@@ -186,6 +188,7 @@ Page {
             Label {
                 id: number
                 text: (index + 1)
+                color: UbuntuColors.coolGrey
                 font.bold: true
 
                 anchors {
@@ -211,9 +214,10 @@ Page {
                 wrapMode: Text.Wrap
 
                 text: model.verse
+                textFormat: Text.RichText
                 font.family: "Liberation Serif"
                 fontSize: "large"
-                color: index + 1 >= startVerse && index + 1 <= endVerse ? selectionColor : "black"
+                color: index + 1 >= startVerse && index + 1 <= endVerse ? selectionColor : UbuntuColors.coolGrey
             }
             showDivider: false
         }
