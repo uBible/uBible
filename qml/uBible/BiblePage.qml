@@ -23,6 +23,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
+import Ubuntu.Layouts 0.1
 import uBible 1.0
 
 Page {
@@ -98,134 +99,78 @@ Page {
 
     property color selectionColor: "orange"
 
-    SequentialAnimation {
-        id: selectionAnimation
-        PropertyAnimation {
-            target: root
-            property: "selectionColor"
-            to: "orange"
-        }
+    flickable: layouts.currentLayout == "phone" ? bibleView.flickable : null
 
-        PauseAnimation { duration: 5000 }
-
-        ColorAnimation {
-            target: root
-            property: "selectionColor"
-            from: UbuntuColors.orange; to: UbuntuColors.coolGrey; duration: 2000
-        }
-    }
-
-
-    Rectangle {
+    Layouts {
+        id: layouts
         anchors.fill: parent
-        color: "white"
-    }
 
-    Component {
-        id: versePopover
+        layouts: [
+            ConditionalLayout {
+                name: "phone"
+                when: !wideAspect
 
-        ActionSelectionPopover {
-            id: popover
-
-            grabDismissAreaEvents: true
-
-            property variant verse
-            property variant index
-
-            actions: ActionList {
-                Action {
-                    text: i18n.tr("Bookmark")
+                ItemLayout {
+                    item: "bibleView"
+                    anchors.fill: parent
                 }
+            },
 
-                Action {
-                    text: verse.highlighted
-                          ? i18n.tr("Remove Highlight")
-                          : i18n.tr("Highlight")
-                    onTriggered: {
-                        verse.highlighted = !verse.highlighted
+            ConditionalLayout {
+                name: "wide"
+                when: wideAspect
+
+                Item {
+                    anchors.fill: parent
+
+                    Sidebar {
+                        id: sidebarItem
+
+                        anchors {
+                            top: parent.top
+                            //topMargin: root.flickable.topMargin
+                            left: parent.left
+                            bottom: parent.bottom
+                            bottomMargin: units.gu(-2)
+                        }
+                    }
+
+                    ItemLayout {
+                        item: "bibleView"
+
+                        anchors {
+                            top: parent.top
+                            bottom: parent.bottom
+                            bottomMargin: units.gu(-2)
+                            left: sidebarItem.right
+                            right: parent.right
+                        }
                     }
                 }
-
-                Action {
-                    text: i18n.tr("Notes")
-                    onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
-                                                     title: root.bookChapter + ":" + (index + 1),
-                                                     notes: verse.notes
-                                                 })
-                }
-
-                Action {
-                    text: i18n.tr("Share")
-                }
             }
+
+        ]
+
+        BibleView {
+            id: bibleView
+            objectName: "bibleView"
+
+            Layouts.item: "bibleView"
+            clip: true
         }
     }
 
-    ListView {
-        id: list
-        anchors.fill: parent
-
-        model: BibleChapter {
-            book: root.book
-            chapter: root.chapter
+    states: [
+        State {
+            name: "wide"
+            when: wideAspect
+            PropertyChanges {
+                target: tools
+                locked: true
+                opened: true
+            }
         }
-
-        delegate: Empty {
-            id: verseDelegate
-
-            width: list.width
-            height: units.gu(0.5) + verse.height
-            //selected: model.highlighted
-
-            onClicked: {
-                PopupUtils.open(versePopover, verseDelegate,
-                                {
-                                    verse: model,
-                                    index: index
-                                })
-            }
-
-            Label {
-                id: number
-                text: (index + 1)
-                color: UbuntuColors.coolGrey
-                font.bold: true
-
-                anchors {
-                    left: parent.left
-                    leftMargin: units.gu(1)
-                    top: verse.top
-                    //topMargin: units.gu(0.5)
-                }
-            }
-
-            Label {
-                id: verse
-
-                anchors {
-                    left: parent.left
-                    leftMargin: units.gu(4)
-                    right: parent.right
-                    rightMargin: units.gu(1)
-                    top: parent.top
-                    topMargin: units.gu(0.25)
-                }
-
-                wrapMode: Text.Wrap
-
-                text: model.verse
-                textFormat: Text.RichText
-                font.family: "Liberation Serif"
-                fontSize: "large"
-                color: index + 1 >= startVerse && index + 1 <= endVerse ? selectionColor : UbuntuColors.coolGrey
-            }
-            showDivider: false
-        }
-    }
-
-    Scrollbar {
-        flickableItem: list
-    }
+    ]
 
     tools: ToolbarItems {
         back: ToolbarButton {
@@ -245,6 +190,7 @@ Page {
         }
 
         ToolbarButton {
+            visible: !wideAspect
             iconSource: icon("search")
             text: i18n.tr("Search")
             onTriggered: search()
@@ -258,6 +204,9 @@ Page {
         ToolbarButton {
             iconSource: icon("settings")
             text: i18n.tr("Settings")
+            onTriggered: {
+                showSettings()
+            }
         }
     }
 }

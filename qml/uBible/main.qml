@@ -21,6 +21,7 @@
  */
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import Ubuntu.Components.Popups 0.1
 
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
@@ -35,12 +36,22 @@ MainView {
     */
     automaticOrientation: true
 
+    property bool wideAspect: width >= units.gu(80)
+
     width: units.gu(50)
     height: units.gu(75)
 
-    function icon(name) {
-        return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
+    property var settings: {
+        "version": version,
+        "showVerse": showVerse ? "true" : "false",
+        "showReadingPlan": showReadingPlan ? "true" : "false",
+        "recentReadings": JSON.stringify(recentReadings)
     }
+
+    property string version: "KJV"
+    property bool showVerse: true
+    property bool showReadingPlan: false
+    property var recentReadings: []//["John 1", "Matthew 28"]
 
     property variant tabs: tabs
     property variant tabsPage: tabsPage
@@ -76,10 +87,61 @@ MainView {
         }
     }
 
+    Component {
+        id: settingsSheet
+
+        SetttingsSheet {
+            objectName: "settingsSheet"
+        }
+    }
+
+    function icon(name) {
+        return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
+    }
+
     function search(text) {
         searchPage.searchText = (text || "")
         // TODO: Better way to do this???
         tabs.selectedTabIndex = 2
         searchPage.search()
+    }
+
+    function goTo(verse) {
+        biblePage.goTo(verse)
+    }
+
+    function showSettings() {
+        PopupUtils.open(settingsSheet)
+    }
+
+    function saveSetting(name, value) {
+        //TODO: Save settings!!
+        settings[name] = value
+        print(name, "=>", value)
+        reloadSettings()
+    }
+
+    function reloadSettings() {
+        showVerse = settings["showVerse"] === "true" ? true : false
+        print("showVerse <=", showVerse)
+
+        version = settings["version"]
+        print("version <=", version)
+
+        showReadingPlan = settings["showReadingPlan"] === "true" ? true : false
+        print("showReadingPlan <=", showReadingPlan)
+
+        recentReadings = JSON.parse(settings["recentReadings"])
+        print("recentReadings <=", recentReadings)
+    }
+
+    function saveRecentReadings() {
+        recentReadings = [biblePage.location]
+
+        saveSetting("recentReadings", JSON.stringify(recentReadings))
+    }
+
+    Component.onDestruction: {
+        saveRecentReadings()
     }
 }

@@ -30,8 +30,14 @@ Page {
 
     Flickable {
         id: flickable
+        clip: true
+
         anchors {
-            fill: parent
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            bottom: actions.top
+            bottomMargin: units.gu(3)
         }
 
         contentWidth: content.width
@@ -86,41 +92,110 @@ Page {
 
             Header {
                 text: "<b>Verse of the Day<b>"
+                visible: showVerse
             }
 
             BibleVerse {
+                visible: showVerse
                 verse: "Proverbs 3:5-6"
                 //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
             }
 
             Header {
                 text: "<b>Reading Plan<b>"
+                visible: showReadingPlan
             }
 
             BibleVerse {
+                visible: showReadingPlan
                 verse: "Matthew 6"
                 //contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
             }
 
             Header {
                 text: "<b>Recent</b>"
+                visible: recentReadings.length > 0
             }
 
-            BibleVerse {
-                verse: "John 1"
-                //contents: "In the beginning was the Word, and the Word was with God, and the Word was God."
-                removable: true
-            }
+            Repeater {
+                model: recentReadings
 
-            BibleVerse {
-                verse: "Genesis 1"
-                //contents: "In the beginning God created the heaven and the earth."
-                removable: true
+                delegate: BibleVerse {
+                    verse: modelData
+                    removable: true
+                }
             }
         }
+
     }
 
     Scrollbar {
         flickableItem: flickable
+    }
+
+    Item {
+        id: actions
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+            margins: units.gu(3)
+        }
+
+        height: actionsRow.height
+
+        Row {
+            id: actionsRow
+            anchors.centerIn: parent
+            spacing: units.gu(3)
+
+            UbuntuShape {
+                radius: "medium"
+                width: units.gu(8)
+                height: units.gu(8)
+                image: Image {
+                    width: 64
+                    height: 64
+                    source: "/home/mspencer/Programs/uBible/uBible.png"
+                }
+            }
+
+            UbuntuShape {
+                radius: "medium"
+                width: units.gu(8)
+                height: units.gu(8)
+                image: Image {
+                    width: 64
+                    height: 64
+                    source: "/home/mspencer/Programs/uBible/listen.png"
+                }
+            }
+
+            UbuntuShape {
+                radius: "medium"
+                width: units.gu(8)
+                height: units.gu(8)
+                color: "#36B423"
+
+                Label {
+                    color: "white"
+                    anchors.centerIn: parent
+                    text: "Search"
+                }
+            }
+
+            UbuntuShape {
+                radius: "medium"
+                width: units.gu(8)
+                height: units.gu(8)
+                color: "orange"
+
+                Label {
+                    color: "white"
+                    anchors.centerIn: parent
+                    text: "Share"
+                }
+            }
+        }
     }
 }

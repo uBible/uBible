@@ -36,7 +36,7 @@ Subtitled {
     height: implicitHeight + units.gu(1)
 
     onClicked: {
-        biblePage.goTo(root.verse)
+        goTo(root.verse)
     }
 
     Rectangle {

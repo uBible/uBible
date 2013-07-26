@@ -21,27 +21,43 @@
  */
 import QtQuick 2.0
 import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
+import Ubuntu.Components.Popups 0.1
 
 ComposerSheet {
-    id: sheet
+    title: i18n.tr("Settings")
 
-    Component.onCompleted: {
-        __leftButton.text = i18n.tr("Close")
-        __rightButton.text = i18n.tr("Save")
-    }
+    contentsHeight: parent.height
 
-    property alias notes: textArea.text
+    Column {
+        anchors.fill: parent
 
-    TextArea {
-        id: textArea
-        placeholderText: "Notes"
-        anchors {
-            fill: parent
+        ValueSelector {
+            text: i18n.tr("Bible Version")
+            values: ["KJV", "ESV"]
+        }
+
+        Standard {
+            text: i18n.tr("Verse of the Day")
+
+            control: Switch {
+                id: showVerseSwitch
+                checked: showVerse
+            }
+        }
+
+        Standard {
+            text: i18n.tr("Reading Plan")
+
+            control: Switch {
+                id: showReadingPlanSwitch
+                checked: showReadingPlan
+            }
         }
     }
 
-    onCancelClicked: PopupUtils.close(sheet)
-    onConfirmClicked: PopupUtils.close(sheet)
+    onConfirmClicked: {
+        saveSetting("showVerse", showVerseSwitch.checked ? "true" : "false")
+        saveSetting("showReadingPlan", showReadingPlanSwitch.checked ? "true" : "false")
+    }
 }
