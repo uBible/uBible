@@ -30,69 +30,9 @@ Item {
 
     property variant flickable: list
 
-    property string location: "Genesis 1:1"
-
-    property string verse: {
-        print ("Updating verse")
-        if (location.lastIndexOf(':') !== -1) {
-            return location.substring(location.lastIndexOf(':') + 1)
-        } else {
-            return 1
-        }
-    }
-
-    property int startVerse: {
-        if (verse.lastIndexOf('-') !== -1) {
-            print(verse.substring(0, verse.lastIndexOf('-')))
-            return verse.substring(0, verse.lastIndexOf('-'))
-        } else {
-            return verse
-        }
-    }
-
-    property int endVerse: {
-        if (verse.lastIndexOf('-') !== -1) {
-            print(verse.substring(verse.lastIndexOf('-') + 1))
-            return verse.substring(verse.lastIndexOf('-') + 1)
-        } else {
-            return verse
-        }
-    }
-
-    property string book: {
-        print ("Updating book")
-        if (location.lastIndexOf(' ') !== -1) {
-            return location.substring(0, location.lastIndexOf(' '))
-        } else {
-            return location
-        }
-    }
-    property int chapter: {
-        print ("Updating chapter")
-        if (bookChapter.lastIndexOf(' ') !== -1) {
-            return bookChapter.substring(location.lastIndexOf(' ') + 1)
-        } else {
-            return bookChapter
-        }
-    }
-
-    property string bookChapter: {
-        print ("Updating bookChapter")
-        if (location.lastIndexOf(':') !== -1) {
-            return location.substring(0, location.lastIndexOf(':'))
-        } else {
-            return location
-        }
-    }
-
-    function goTo(verse) {
-        tabs.selectedTabIndex = 1
-        root.location = verse
-        print("Book:", root.book)
-        print("Chapter:", root.chapter)
-        print("Verse:", root.startVerse)
+    function goTo() {
         selectionAnimation.restart()
-        list.positionViewAtIndex(root.startVerse - 1, ListView.Beginning)
+        list.positionViewAtIndex(startVerse - 1, ListView.Beginning)
         // A hack because the header covers the content
         //flickable.contentY += -units.gu(9.5)
     }
@@ -165,10 +105,7 @@ Item {
         id: list
         anchors.fill: parent
 
-        model: BibleChapter {
-            book: root.book
-            chapter: root.chapter
-        }
+        model: bibleChapter
 
         delegate: Empty {
             id: verseDelegate

@@ -91,10 +91,14 @@ Page {
         print("Book:", root.book)
         print("Chapter:", root.chapter)
         print("Verse:", root.startVerse)
-        selectionAnimation.restart()
-        list.positionViewAtIndex(root.startVerse - 1, ListView.Beginning)
-        // A hack because the header covers the content
-        //flickable.contentY += -units.gu(9.5)
+        bibleView.goTo()
+    }
+
+    BibleChapter {
+        id: bibleChapter
+
+        book: root.book
+        chapter: root.chapter
     }
 
     property color selectionColor: "orange"
