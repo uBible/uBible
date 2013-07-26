@@ -101,8 +101,6 @@ Page {
         chapter: root.chapter
     }
 
-    property color selectionColor: "orange"
-
     flickable: layouts.currentLayout == "phone" ? bibleView.flickable : null
 
     Layouts {
@@ -133,9 +131,17 @@ Page {
                         anchors {
                             top: parent.top
                             //topMargin: root.flickable.topMargin
-                            left: parent.left
+                            //left: parent.left
                             bottom: parent.bottom
                             bottomMargin: units.gu(-2)
+                        }
+
+                        x: showSidebar ? 0 : -width
+
+                        Behavior on x {
+                            PropertyAnimation {
+                                duration: 250
+                            }
                         }
                     }
 
@@ -173,11 +179,17 @@ Page {
                 locked: true
                 opened: true
             }
+
+            PropertyChanges {
+                target: bibleView.flickable
+                anchors.topMargin: units.gu(-9)
+            }
         }
     ]
 
     tools: ToolbarItems {
         back: ToolbarButton {
+            visible: !wideAspect
             iconSource: icon("favorite-selected")
             text: i18n.tr("Home")
             onTriggered: {

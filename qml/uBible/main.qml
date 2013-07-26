@@ -45,7 +45,8 @@ MainView {
     property string version: "KJV"
     property bool showVerse: true
     property bool showReadingPlan: false
-    property var recentReadings: []//["John 1", "Matthew 28"]
+    property var recentReadings: []
+    property bool showSidebar: true
 
     property variant tabs: tabs
     property variant tabsPage: tabsPage
@@ -132,6 +133,9 @@ MainView {
 
         recentReadings = JSON.parse(getSetting("recentReadings"))
         print("recentReadings <=", recentReadings)
+
+        showSidebar = getSetting("showSidebar") === "true" ? true : false
+        print("showSidebar <=", showSidebar)
     }
 
     function saveRecentReadings() {
@@ -160,7 +164,8 @@ MainView {
             "showVerse": "true",
             "version": "KJV",
             "showReadingPlan": "true",
-            "recentReadings": JSON.stringify([])
+            "recentReadings": JSON.stringify([]),
+            "showSidebar": "true"
         }
     }
 

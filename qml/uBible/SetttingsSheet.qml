@@ -59,10 +59,19 @@ ComposerSheet {
                 checked: showReadingPlan
             }
         }
+
+        Standard {
+            text: i18n.tr("Sidebar in Desktop layout")
+            control: Switch {
+                id: showSidebarSwitch
+                checked: showSidebar
+            }
+        }
     }
 
     onConfirmClicked: {
         saveSetting("showVerse", showVerseSwitch.checked ? "true" : "false")
         saveSetting("showReadingPlan", showReadingPlanSwitch.checked ? "true" : "false")
+        saveSetting("showSidebar", showSidebarSwitch.checked ? "true" : "false")
     }
 }
