@@ -89,7 +89,7 @@ Item {
                 Action {
                     text: i18n.tr("Notes")
                     onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
-                                                     title: root.bookChapter + ":" + (index + 1),
+                                                     title: bookChapter + ":" + (index + 1),
                                                      notes: verse.notes
                                                  })
                 }

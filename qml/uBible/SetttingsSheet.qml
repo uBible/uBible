@@ -25,9 +25,14 @@ import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
 
 ComposerSheet {
+    id: root
     title: i18n.tr("Settings")
 
-    contentsHeight: parent.height
+    Binding {
+        target: root.__foreground
+        property: "minHeight"
+        value: Math.max(units.gu(75), root.contentsHeight)
+    }
 
     Column {
         anchors.fill: parent

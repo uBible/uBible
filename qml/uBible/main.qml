@@ -22,6 +22,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
+import U1db 1.0 as U1db
 
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
@@ -40,13 +41,6 @@ MainView {
 
     width: units.gu(50)
     height: units.gu(75)
-
-    property var settings: {
-        "version": version,
-        "showVerse": showVerse ? "true" : "false",
-        "showReadingPlan": showReadingPlan ? "true" : "false",
-        "recentReadings": JSON.stringify(recentReadings)
-    }
 
     property string version: "KJV"
     property bool showVerse: true
@@ -115,33 +109,68 @@ MainView {
     }
 
     function saveSetting(name, value) {
-        //TODO: Save settings!!
-        settings[name] = value
-        print(name, "=>", value)
-        reloadSettings()
+        if (getSetting(name) !== value) {
+            print(name, "=>", value)
+            var tempContents = {}
+            tempContents = settings.contents
+            tempContents[name] = value
+            settings.contents = tempContents
+
+            reloadSettings()
+        }
     }
 
     function reloadSettings() {
-        showVerse = settings["showVerse"] === "true" ? true : false
+        showVerse = getSetting("showVerse") === "true" ? true : false
         print("showVerse <=", showVerse)
 
-        version = settings["version"]
+        version = getSetting("version")
         print("version <=", version)
 
-        showReadingPlan = settings["showReadingPlan"] === "true" ? true : false
+        showReadingPlan = getSetting("showReadingPlan") === "true" ? true : false
         print("showReadingPlan <=", showReadingPlan)
 
-        recentReadings = JSON.parse(settings["recentReadings"])
+        recentReadings = JSON.parse(getSetting("recentReadings"))
         print("recentReadings <=", recentReadings)
     }
 
     function saveRecentReadings() {
-        recentReadings = [biblePage.location]
+        recentReadings = [biblePage.bookChapter]
 
         saveSetting("recentReadings", JSON.stringify(recentReadings))
     }
 
     Component.onDestruction: {
         saveRecentReadings()
+    }
+
+    U1db.Database {
+        id: storage
+        path: "ubible"
+    }
+
+    U1db.Document {
+        id: settings
+
+        database: storage
+        docId: 'settings'
+        create: true
+
+        defaults: {
+            "showVerse": "true",
+            "version": "KJV",
+            "showReadingPlan": "true",
+            "recentReadings": JSON.stringify([])
+        }
+    }
+
+    function getSetting(name) {
+        var tempContents = {};
+        tempContents = settings.contents
+        return tempContents.hasOwnProperty(name) ? tempContents[name] : settings.defaults[name]
+    }
+
+    Component.onCompleted: {
+        reloadSettings()
     }
 }
