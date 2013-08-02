@@ -39,7 +39,7 @@ MainView {
 
     property bool wideAspect: width >= units.gu(80)
 
-    width: units.gu(50)
+    width: units.gu(100)
     height: units.gu(75)
 
     property string version: "KJV"
@@ -53,6 +53,8 @@ MainView {
     property variant homePage: homePage
     property variant biblePage: biblePage
     property variant searchPage: searchPage
+
+    property bool fullscreen: false
 
     Tabs {
         id: tabs
@@ -134,7 +136,8 @@ MainView {
         recentReadings = JSON.parse(getSetting("recentReadings"))
         print("recentReadings <=", recentReadings)
 
-        showSidebar = getSetting("showSidebar") === "true" ? true : false
+        //TODO: Remove setting or uncomment???
+        showSidebar = true//getSetting("showSidebar") === "true" ? true : false
         print("showSidebar <=", showSidebar)
     }
 
@@ -176,6 +179,11 @@ MainView {
     }
 
     Component.onCompleted: {
+        if (wideAspect) {
+            tabs.selectedTabIndex = 1
+        }
+
+
         reloadSettings()
     }
 }

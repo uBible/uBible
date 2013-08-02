@@ -60,13 +60,13 @@ ComposerSheet {
             }
         }
 
-        Standard {
-            text: i18n.tr("Sidebar in Desktop layout")
-            control: Switch {
-                id: showSidebarSwitch
-                checked: showSidebar
-            }
-        }
+//        Standard {
+//            text: i18n.tr("Sidebar in Desktop layout")
+//            control: Switch {
+//                id: showSidebarSwitch
+//                checked: showSidebar
+//            }
+//        }
     }
 
     onConfirmClicked: {

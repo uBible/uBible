@@ -17,7 +17,7 @@ Item {
         width: 1
     }
 
-    width: units.gu(40)
+    width: units.gu(35)
 
     Column {
         anchors.fill: parent

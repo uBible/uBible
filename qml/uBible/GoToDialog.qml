@@ -27,8 +27,8 @@ import uBible 1.0
 
 Dialog {
     id: root
-    title: "Go To Chapter"
-    text: "Enter Chapter:"
+    title: i18n.tr("Go to Chapter/Verse")
+    text: i18n.tr("Enter Chapter/Verse:")
 
     TextField {
         id: chapterField

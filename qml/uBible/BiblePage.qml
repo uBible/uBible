@@ -101,79 +101,46 @@ Page {
         chapter: root.chapter
     }
 
-    flickable: layouts.currentLayout == "phone" ? bibleView.flickable : null
+    flickable: !wideAspect ? bibleView.flickable : null
 
-    Layouts {
-        id: layouts
-        anchors.fill: parent
+    Sidebar {
+        id: sidebar
+        objectName: "sidebar"
 
-        layouts: [
-            ConditionalLayout {
-                name: "phone"
-                when: !wideAspect
-
-                ItemLayout {
-                    item: "bibleView"
-                    anchors.fill: parent
-                }
-            },
-
-            ConditionalLayout {
-                name: "wide"
-                when: wideAspect
-
-                Item {
-                    anchors.fill: parent
-
-                    Sidebar {
-                        id: sidebarItem
-
-                        anchors {
-                            top: parent.top
-                            //topMargin: root.flickable.topMargin
-                            //left: parent.left
-                            bottom: parent.bottom
-                            bottomMargin: units.gu(-2)
-                        }
-
-                        x: showSidebar ? 0 : -width
-
-                        Behavior on x {
-                            PropertyAnimation {
-                                duration: 250
-                            }
-                        }
-                    }
-
-                    ItemLayout {
-                        item: "bibleView"
-
-                        anchors {
-                            top: parent.top
-                            bottom: parent.bottom
-                            bottomMargin: units.gu(-2)
-                            left: sidebarItem.right
-                            right: parent.right
-                        }
-                    }
-                }
-            }
-
-        ]
-
-        BibleView {
-            id: bibleView
-            objectName: "bibleView"
-
-            Layouts.item: "bibleView"
-            clip: true
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            bottomMargin: root.state == "wide" ? units.gu(-2) : 0
         }
+
+        x: (wideAspect && showSidebar && !fullscreen) ? 0 : -width
+
+        Behavior on x {
+            PropertyAnimation {
+                duration: 250
+            }
+        }
+    }
+
+    BibleView {
+        id: bibleView
+        objectName: "bibleView"
+
+        anchors {
+            top: parent.top
+            bottom: parent.bottom
+            bottomMargin: root.state == "wide" ? units.gu(-2) : 0
+            left: sidebar.right
+            right: parent.right
+        }
+
+        clip: true
     }
 
     states: [
         State {
             name: "wide"
-            when: wideAspect
+            when: wideAspect && !fullscreen
             PropertyChanges {
                 target: tools
                 locked: true
@@ -182,7 +149,7 @@ Page {
 
             PropertyChanges {
                 target: bibleView.flickable
-                anchors.topMargin: units.gu(-9)
+                anchors.topMargin: 0//units.gu(-9)
             }
         }
     ]
@@ -215,6 +182,14 @@ Page {
         ToolbarButton {
             iconSource: icon("speaker")
             text: i18n.tr("Listen")
+        }
+
+        ToolbarButton {
+            visible: wideAspect
+            text: fullscreen ? i18n.tr("Restore") : i18n.tr("Fullscreen")
+            iconSource: fullscreen ? icon("view-restore") : icon("view-fullscreen")
+
+            onTriggered: fullscreen = !fullscreen
         }
 
         ToolbarButton {
