@@ -11,6 +11,8 @@ uBible
 
 ### Building from Source
 
-You will need the [Ubuntu SDK](http://developer.ubuntu.com/get-started/). In addition, you will also need the SWORD library and its headers from the `libsword-dev` package.
+You will need the [Ubuntu SDK](http://developer.ubuntu.com/get-started/). In addition, you will also need the SWORD library from the `libsword-dev` package, and the U1db library from the `libu1db-qt5-dev` package.
+
+Currently, there is no module manager, so you will need the KJV Bible SWORD module, which can be installed using another SWORD program's module manager or using the `sword-text-kjv` package.
 
 To run/build, just open the `.pro` file in Qt Creator.
