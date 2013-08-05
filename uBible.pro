@@ -39,3 +39,6 @@ OTHER_FILES += \
     README.md \
     COPYING \
     COPYRIGHT
+
+RESOURCES += \
+    resources.qrc

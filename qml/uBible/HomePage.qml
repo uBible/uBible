@@ -156,7 +156,7 @@ Page {
                 image: Image {
                     width: 64
                     height: 64
-                    source: "/home/mspencer/Programs/uBible/uBible.png"
+                    source: "qrc:/icons/uBible.png"
                 }
             }
 
@@ -167,7 +167,7 @@ Page {
                 image: Image {
                     width: 64
                     height: 64
-                    source: "/home/mspencer/Programs/uBible/listen.png"
+                    source: "qrc:/icons/listen.png"
                 }
             }
 
