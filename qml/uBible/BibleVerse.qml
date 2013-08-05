@@ -56,7 +56,7 @@ Subtitled {
         clip: true
 
         Image {
-            source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear.svg"
+            source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear-search.svg"
             anchors {
                 top: parent.top
                 horizontalCenter: parent.horizontalCenter

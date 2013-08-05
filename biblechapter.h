@@ -39,6 +39,7 @@ class BibleChapter : public QAbstractListModel
     Q_PROPERTY(int chapter READ chapter WRITE setChapter NOTIFY chapterChanged)
     Q_PROPERTY(QString book READ book WRITE setBook NOTIFY bookChanged)
     Q_PROPERTY(Bible *bible READ bible NOTIFY bibleChanged)
+    Q_PROPERTY(QString version READ version WRITE setVersion NOTIFY versionChanged)
 
     enum BibleVerseRoles {
         VerseRole = Qt::UserRole + 1
@@ -69,11 +70,13 @@ public:
     int chapter() const { return m_chapter; }
     QString book() const { return m_book; }
     Bible *bible() const { return m_bible; }
+    QString version() const { return m_version; }
 
 signals:
     void chapterChanged(int chapter);
     void bookChanged(const QString& book);
     void bibleChanged(Bible *bible);
+    void versionChanged(const QString& version);
     
 public slots:
     void setChapter(int chapter) {
@@ -92,10 +95,22 @@ public slots:
         emit bookChanged(book);
     }
 
+    void setVersion(const QString& version) {
+        beginResetModel();
+        m_version = version;
+        bible()->setName(version);
+        endResetModel();
+
+        emit versionChanged(version);
+    }
+
+private slots:
+
 private:
     int m_chapter;
     QString m_book;
     Bible *m_bible;
+    QString m_version;
 };
 
 #endif // BIBLECHAPTER_H

@@ -106,7 +106,7 @@ Item {
 
         fontSize: "large"
 
-        text: i18n.tr("The SWORD module containing the %1 Bible is not installed!").arg(bibleChapter.bible.name)
+        text: i18n.tr("The SWORD module containing the %1 Bible is not installed!").arg(bibleChapter.version)
         width: Math.min(implicitWidth, parent.width - units.gu(2))
         wrapMode: Text.Wrap
         horizontalAlignment: Text.AlignHCenter

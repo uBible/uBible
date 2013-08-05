@@ -99,12 +99,7 @@ Page {
 
         book: root.book
         chapter: root.chapter
-    }
-
-    Binding {
-        target: bibleChapter.bible
-        property: "name"
-        value: bibleVersion
+        version: bibleVersion
     }
 
     flickable: !wideAspect ? bibleView.flickable : null
