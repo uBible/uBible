@@ -11,8 +11,13 @@ uBible
 
 ### Building from Source
 
-You will need the [Ubuntu SDK](http://developer.ubuntu.com/get-started/). In addition, you will also need the SWORD library from the `libsword-dev` package, and the U1db library from the `qtdeclarative5-u1db-plugin` package.
+**You will need the following dependencies:**
 
-Currently, there is no module manager, so you will need the KJV Bible SWORD module, which can be installed using another SWORD program's module manager or using the `sword-text-kjv` package.
+* [Ubuntu SDK](http://developer.ubuntu.com/get-started/)
+* SWORD library from the `libsword-dev` package
+* U1db library from the `qtdeclarative5-u1db-plugin` package
+* Ubuntu Mobile icon theme from the `ubuntu-mobile-icons` package
+
+Currently, there is no module manager, so you will need the KJV Bible SWORD module, which can be installed using another SWORD program's module manager or using the `sword-text-kjv` package. If you want, you can also install the ESV SWORD module from another SWORD program's module manager (this is not available from the Ubuntu repositories).
 
 To run/build, just open the `.pro` file in Qt Creator.
