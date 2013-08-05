@@ -17,7 +17,7 @@ Item {
         width: 1
     }
 
-    width: units.gu(35)
+    width: units.gu(30)
 
     Column {
         anchors.fill: parent
@@ -27,42 +27,27 @@ Item {
             TextField {
                 id: searchField
 
+                primaryItem: Image {
+                    source: icon("search")
+                    height: parent.height - units.gu(1.5)
+                    width: height
+                    anchors.centerIn: parent
+                }
+
                 placeholderText: "Search..."
+
 
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    right: searchButton.left
+                    right: parent.right
                     margins: units.gu(1)
                 }
+
+                onAccepted: search(searchField.text)
             }
 
-            Button {
-                id: searchButton
-
-                anchors {
-                    top: searchField.top
-                    bottom: searchField.bottom
-                    right: parent.right
-                    rightMargin: units.gu(1)
-                }
-
-                gradient: Gradient {
-                    GradientStop {
-                        position: 0
-                        color: "green"
-                    }
-
-                    GradientStop {
-                        position: 1
-                        color: Qt.rgba(0.3,0.7,0.3,1)
-                    }
-                }
-
-                text: "Search"
-
-                onClicked: search(searchField.text)
-            }
+            onClicked: search(searchField.text)
         }
 
         Header {

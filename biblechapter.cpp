@@ -33,4 +33,6 @@ BibleChapter::BibleChapter(Bible *bible, const QString &book, int chapter, QObje
     if (m_bible == 0) {
         m_bible = new Bible("KJV", this);
     }
+
+    bibleChanged(m_bible);
 }

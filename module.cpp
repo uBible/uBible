@@ -29,9 +29,21 @@
 Module::Module(const QString &name, QObject *parent) :
     QObject(parent)
 {
+    m_name = name;
+    nameChanged(m_name);
+
     qDebug() << "Creating a new module:" << name;
     sword::SWMgr *library = new sword::SWMgr();
+
     m_module = library->getModule(qPrintable(name));
-    Q_ASSERT(m_module != 0);
-    qDebug() << "Module" << name << m_module->Name();
+    if (m_module == 0) {
+        m_exists = false;
+        qDebug() << "Module does not exist:" << name;
+    } else {
+        m_exists = true;
+
+        qDebug() << "Module" << name << m_module->Name();
+    }
+
+    existsChanged(m_exists);
 }

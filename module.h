@@ -30,17 +30,28 @@
 class Module : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(bool exists READ exists NOTIFY existsChanged)
+    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+
 public:
     explicit Module(const QString &name, QObject *parent = 0);
     
     sword::SWModule *module() const { return m_module; }
 
+    bool exists() { return m_exists; }
+    QString name() { return m_name; }
+
 signals:
+    void existsChanged(bool exists);
+    void nameChanged(const QString& name);
     
 public slots:
     
 private:
     sword::SWModule *m_module;
+    bool m_exists;
+    QString m_name;
 };
 
 #endif // MODULE_H

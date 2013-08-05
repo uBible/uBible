@@ -34,10 +34,12 @@ Bible::Bible(const QString& name, QObject *parent) :
     Module(name, parent),
     m_bookList(0), m_hasOT(false), m_hasNT(false), m_boundsInitialized(false)
 {
-    //module()->AddRenderFilter(new sword::GBFPlain());
-    sword::GBFRedLetterWords *option = new sword::GBFRedLetterWords();
-    option->setOptionValue("On");
-    module()->AddRenderFilter(option);
+    if (exists()) {
+        //module()->AddRenderFilter(new sword::GBFPlain());
+        sword::GBFRedLetterWords *option = new sword::GBFRedLetterWords();
+        option->setOptionValue("On");
+        module()->AddRenderFilter(option);
+    }
 }
 
 QStringList Bible::books() {

@@ -101,11 +101,23 @@ Item {
         }
     }
 
+    Label {
+        anchors.centerIn: parent
+
+        fontSize: "large"
+
+        text: i18n.tr("The SWORD module containing the %1 Bible is not installed!").arg(bibleChapter.bible.name)
+        width: Math.min(implicitWidth, parent.width - units.gu(2))
+        wrapMode: Text.Wrap
+        horizontalAlignment: Text.AlignHCenter
+        visible: !bibleChapter.bible.exists
+    }
+
     ListView {
         id: list
         anchors.fill: parent
 
-        model: bibleChapter
+        model: bibleChapter.bible.exists ? bibleChapter : null
 
         delegate: Empty {
             id: verseDelegate
