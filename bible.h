@@ -68,6 +68,9 @@ signals:
     
 public slots:
 
+private slots:
+    void onNameChanged(const QString &name);
+
 private:
     void initBounds();
 

@@ -38,8 +38,10 @@ ComposerSheet {
         anchors.fill: parent
 
         ValueSelector {
+            id: bibleVersionSelector
             text: i18n.tr("Bible Version")
             values: ["KJV", "ESV"]
+            selectedIndex: values.indexOf(bibleVersion)
         }
 
         Standard {
@@ -72,6 +74,7 @@ ComposerSheet {
     onConfirmClicked: {
         saveSetting("showVerse", showVerseSwitch.checked ? "true" : "false")
         saveSetting("showReadingPlan", showReadingPlanSwitch.checked ? "true" : "false")
-        saveSetting("showSidebar", showSidebarSwitch.checked ? "true" : "false")
+        //saveSetting("showSidebar", showSidebarSwitch.checked ? "true" : "false")
+        saveSetting("bibleVersion", bibleVersionSelector.values[bibleVersionSelector.selectedIndex])
     }
 }

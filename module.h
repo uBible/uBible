@@ -32,7 +32,7 @@ class Module : public QObject
     Q_OBJECT
 
     Q_PROPERTY(bool exists READ exists NOTIFY existsChanged)
-    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 
 public:
     explicit Module(const QString &name, QObject *parent = 0);
@@ -47,6 +47,8 @@ signals:
     void nameChanged(const QString& name);
     
 public slots:
+
+    void setName(const QString &name);
     
 private:
     sword::SWModule *m_module;

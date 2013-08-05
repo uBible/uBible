@@ -29,6 +29,10 @@
 Module::Module(const QString &name, QObject *parent) :
     QObject(parent)
 {
+    setName(name);
+}
+
+void Module::setName(const QString &name) {
     m_name = name;
     nameChanged(m_name);
 

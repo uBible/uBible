@@ -101,6 +101,12 @@ Page {
         chapter: root.chapter
     }
 
+    Binding {
+        target: bibleChapter.bible
+        property: "name"
+        value: bibleVersion
+    }
+
     flickable: !wideAspect ? bibleView.flickable : null
 
     Sidebar {

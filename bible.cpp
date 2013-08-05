@@ -34,6 +34,11 @@ Bible::Bible(const QString& name, QObject *parent) :
     Module(name, parent),
     m_bookList(0), m_hasOT(false), m_hasNT(false), m_boundsInitialized(false)
 {
+    QObject::connect(this, SIGNAL(nameChanged(QString)), this, SLOT(onNameChanged(QString)));
+    onNameChanged(name);
+}
+
+void Bible::onNameChanged(const QString &name) {
     if (exists()) {
         //module()->AddRenderFilter(new sword::GBFPlain());
         sword::GBFRedLetterWords *option = new sword::GBFRedLetterWords();

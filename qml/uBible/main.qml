@@ -42,7 +42,7 @@ MainView {
     width: units.gu(100)
     height: units.gu(75)
 
-    property string version: "KJV"
+    property string bibleVersion: "ESV"
     property bool showVerse: true
     property bool showReadingPlan: false
     property var recentReadings: []
@@ -127,8 +127,8 @@ MainView {
         showVerse = getSetting("showVerse") === "true" ? true : false
         print("showVerse <=", showVerse)
 
-        version = getSetting("version")
-        print("version <=", version)
+        bibleVersion = getSetting("bibleVersion")
+        print("bibleVersion <=", bibleVersion)
 
         showReadingPlan = getSetting("showReadingPlan") === "true" ? true : false
         print("showReadingPlan <=", showReadingPlan)
@@ -165,7 +165,7 @@ MainView {
 
         defaults: {
             "showVerse": "true",
-            "version": "KJV",
+            "bibleVersion": "KJV",
             "showReadingPlan": "true",
             "recentReadings": JSON.stringify([]),
             "showSidebar": "true"
