@@ -27,24 +27,52 @@ import uBible 1.0
 
 Dialog {
     id: root
-    title: i18n.tr("Go to Chapter/Verse")
-    text: i18n.tr("Enter Chapter/Verse:")
+
+    title: i18n.tr("Go To Location")
+
+    text: i18n.tr("Enter a chapter/verse to go to:")
 
     TextField {
-        id: chapterField
-        placeholderText: "Chapter"
+        id: locationField
+
+        inputMethodHints: Qt.ImhNoAutoUppercase
+
+        text: fileView.path
+
+        placeholderText: i18n.tr("Location...")
+
+        onAccepted: goButton.clicked()
     }
 
     Button {
-        text: "Ok"
+        id: goButton
+        objectName: "goButton"
+
+        gradient: Gradient {
+            GradientStop {
+                position: 0
+                color: "green"//Qt.rgba(0,0.7,0,1)
+            }
+
+            GradientStop {
+                position: 1
+                color: Qt.rgba(0.3,0.7,0.3,1)
+            }
+        }
+
+        text: i18n.tr("Go")
+        enabled: locationField.acceptableInput && locationField.valid
+
         onClicked: {
+            print("User switched to:", locationField.text)
+            goTo(locationField.text)
             PopupUtils.close(root)
-            goTo(chapterField.text)
         }
     }
 
     Button {
-        text: "Cancel"
+        objectName: "cancelButton"
+        text: i18n.tr("Cancel")
 
         gradient: Gradient {
             GradientStop {
@@ -58,6 +86,8 @@ Dialog {
             }
         }
 
-        onClicked: PopupUtils.close(root)
+        onClicked: {
+            PopupUtils.close(root)
+        }
     }
 }
