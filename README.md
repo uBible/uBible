@@ -18,6 +18,6 @@ uBible
 * U1db library from the `qtdeclarative5-u1db-plugin` package
 * Ubuntu Mobile icon theme from the `ubuntu-mobile-icons` package
 
-Currently, there is no module manager, so you will need the KJV Bible SWORD module, which can be installed using another SWORD program's module manager or using the `sword-text-kjv` package. If you want, you can also install the ESV SWORD module from another SWORD program's module manager (this is not available from the Ubuntu repositories).
+Currently, there is no module manager, so you will need to install Bibles using another SWORD program or from the Ubuntu repositories. For example, the KJV Bible is available from the `sword-text-kjv` package.
 
 To run/build, just open the `.pro` file in Qt Creator.
