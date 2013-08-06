@@ -128,6 +128,12 @@ MainView {
         print("showVerse <=", showVerse)
 
         bibleVersion = getSetting("bibleVersion")
+        if (App.availableBibles().indexOf(bibleVersion) === -1) {
+            if (App.availableBibles().length > 0)
+                bibleVersion = App.availableBibles()[0]
+            else
+                bibleVersion = ""
+        }
         print("bibleVersion <=", bibleVersion)
 
         showReadingPlan = getSetting("showReadingPlan") === "true" ? true : false

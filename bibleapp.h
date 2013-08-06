@@ -24,6 +24,7 @@
 #define BIBLEAPP_H
 
 #include <QObject>
+#include <QStringList>
 
 class BibleApp : public QObject
 {
@@ -33,6 +34,7 @@ public:
     explicit BibleApp(QObject *parent = 0);
 
     Q_INVOKABLE QString verse(const QString &verse);
+    Q_INVOKABLE QStringList availableBibles();
     
 signals:
     

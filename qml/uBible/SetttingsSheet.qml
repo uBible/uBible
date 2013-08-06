@@ -40,7 +40,7 @@ ComposerSheet {
         ValueSelector {
             id: bibleVersionSelector
             text: i18n.tr("Bible Version")
-            values: ["KJV", "ESV"]
+            values: App.availableBibles()//["KJV", "ESV"]
             selectedIndex: values.indexOf(bibleVersion)
         }
 

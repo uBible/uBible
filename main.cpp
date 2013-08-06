@@ -38,9 +38,6 @@ int main(int argc, char *argv[])
     qmlRegisterType<Bible>("uBible", 1, 0, "Bible");
     qmlRegisterType<BibleChapter>("uBible", 1, 0, "BibleChapter");
 
-    Bible bible;
-    //qDebug() << bible.search("For God So Loved the World");
-
     QtQuick2ApplicationViewer viewer;
     viewer.rootContext()->setContextProperty("App", new BibleApp());
     viewer.setMainQmlFile(QStringLiteral("qml/uBible/main.qml"));

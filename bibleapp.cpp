@@ -40,7 +40,36 @@ BibleApp::BibleApp(QObject *parent) :
 QString BibleApp::verse(const QString &verse) {
     SWMgr library;
     SWModule *kjv = library.getModule("KJV");
+    if (kjv == 0 && availableBibles().length() > 0) {
+        kjv = library.getModule(qPrintable(availableBibles()[0]));
+    }
+    if (kjv == 0) {
+        return "No Bibles installed.";
+    }
+
     kjv->AddRenderFilter(new GBFPlain());
     kjv->setKey(qPrintable(verse));
     return kjv->RenderText();
+}
+
+QStringList BibleApp::availableBibles() {
+    QStringList list;
+
+    SWMgr library;
+    ModMap modules = library.Modules;
+    ModMap::iterator it;
+    SWModule *curMod = 0;
+
+    for (it = modules.begin(); it != modules.end(); it++) {
+        curMod = (*it).second;
+        if (!strcmp(curMod->Type(), "Biblical Texts")) {
+            list.append(curMod->Name());
+        } else if (!strcmp(curMod->Type(), "Commentaries")) {
+            // do something with curMod
+        } else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries")) {
+            // do something with curMod
+        }
+    }
+
+    return list;
 }
