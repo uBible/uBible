@@ -97,6 +97,12 @@ Item {
                 Action {
                     text: i18n.tr("Share")
                 }
+                Action {
+                    text: fullscreen ? i18n.tr("Restore") : i18n.tr("Fullscreen")
+                    iconSource: fullscreen ? icon("view-restore") : icon("view-fullscreen")
+
+                    onTriggered: fullscreen = !fullscreen
+                }
             }
         }
     }
