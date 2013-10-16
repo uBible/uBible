@@ -24,15 +24,12 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
 
-ComposerSheet {
+// TODO: Update the switches and value selectors to use
+// the action property with the actual option instead of
+// having to manually sync the values
+Page {
     id: root
     title: i18n.tr("Settings")
-
-    Binding {
-        target: root.__foreground
-        property: "minHeight"
-        value: Math.max(units.gu(75), root.contentsHeight)
-    }
 
     Column {
         anchors.fill: parent
@@ -41,7 +38,10 @@ ComposerSheet {
             id: bibleVersionSelector
             text: i18n.tr("Bible Version")
             values: App.availableBibles()//["KJV", "ESV"]
-            selectedIndex: values.indexOf(bibleVersion)
+            selectedIndex: values.indexOf(bibleVersionOption.value)
+            onSelectedIndexChanged: {
+                bibleVersionOption.value = values[selectedIndex]
+            }
         }
 
         Standard {
@@ -49,7 +49,10 @@ ComposerSheet {
 
             control: Switch {
                 id: showVerseSwitch
-                checked: showVerse
+                checked: showVerseOption.value
+                onCheckedChanged: {
+                    showVerseOption.value = showVerseSwitch.checked
+                }
             }
         }
 
@@ -58,7 +61,10 @@ ComposerSheet {
 
             control: Switch {
                 id: showReadingPlanSwitch
-                checked: showReadingPlan
+                checked: showReadingPlanOption.value
+                onCheckedChanged: {
+                    showReadingPlanOption.value = showReadingPlanSwitch.checked
+                }
             }
         }
 
@@ -69,12 +75,5 @@ ComposerSheet {
 //                checked: showSidebar
 //            }
 //        }
-    }
-
-    onConfirmClicked: {
-        saveSetting("showVerse", showVerseSwitch.checked ? "true" : "false")
-        saveSetting("showReadingPlan", showReadingPlanSwitch.checked ? "true" : "false")
-        //saveSetting("showSidebar", showSidebarSwitch.checked ? "true" : "false")
-        saveSetting("bibleVersion", bibleVersionSelector.values[bibleVersionSelector.selectedIndex])
     }
 }

@@ -23,6 +23,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
+import "ubuntu-ui-extras" as Extra
 
 Subtitled {
     id: root
@@ -39,32 +40,20 @@ Subtitled {
         goTo(root.verse)
     }
 
-    Rectangle {
-        anchors {
-            fill: parent
-            leftMargin: units.gu(-2)
-            rightMargin: units.gu(-2)
-        }
+//    Rectangle {
+//        anchors {
+//            fill: parent
+//            leftMargin: units.gu(-2)
+//            rightMargin: units.gu(-2)
+//        }
 
-        color: "white"
-        z: -1
-    }
+//        color: "white"
+//        z: -1
+//    }
 
-    backgroundIndicator: Rectangle {
-        anchors.fill: parent
-        color: "darkgray"
-        clip: true
-
-        Image {
-            source: "/usr/share/icons/ubuntu-mobile/actions/scalable/clear-search.svg"
-            anchors {
-                top: parent.top
-                horizontalCenter: parent.horizontalCenter
-                bottom: parent.bottom
-                margins: units.gu(1.5)
-            }
-
-            width: height
-        }
-    }
+//    backgroundIndicator: Extra.ListItemBackground {
+//        iconSource: getIcon("clear")
+//        text: i18n.tr("Remove")
+//        state: swipingState
+//    }
 }

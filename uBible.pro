@@ -1,7 +1,9 @@
 # Add more folders to ship with the application, here
 folder_01.source = qml/uBible
 folder_01.target = qml
-DEPLOYMENTFOLDERS = folder_01
+#folder_02.source = qml/uBible/ubuntu-ui-extras
+#folder_02.target = qml/ubuntu-ui-extras
+DEPLOYMENTFOLDERS = folder_01 #folder_02
 
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
@@ -38,7 +40,8 @@ HEADERS += \
 OTHER_FILES += \
     README.md \
     COPYING \
-    COPYRIGHT
+    COPYRIGHT \
+    qml/uBible/SetttingsPage.qml
 
 RESOURCES += \
     resources.qrc

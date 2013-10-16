@@ -23,76 +23,59 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import U1db 1.0 as U1db
+import "ubuntu-ui-extras" as Extra
 
 MainView {
+    id: mainView
+
+    //////////// PROPERTY ASIGNMENTS ////////////
+
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
 
-    // Note! applicationName needs to match the .desktop filename
-    applicationName: "uBible"
+    /*
+     * Note: applicationName needs to match the "name" field of
+     * the click manifest
+     *
+     * TODO: What will be the actual name here?
+     */
+    applicationName: "com.ubuntu.developer.ubible.ubible"
 
     /*
-     This property enables the application to change orientation
-     when the device is rotated. The default is false.
-    */
+     * This property enables the application to change orientation
+     * when the device is rotated. The default is false.
+     */
     automaticOrientation: true
-
-    property bool wideAspect: width >= units.gu(80)
 
     width: units.gu(100)
     height: units.gu(75)
 
-    property string bibleVersion: "ESV"
-    property bool showVerse: true
-    property bool showReadingPlan: false
-    property var recentReadings: []
-    property bool showSidebar: true
+    //////////// PROPERTY DEFINITIONS ////////////
 
-    property variant tabs: tabs
-    property variant tabsPage: tabsPage
-    property variant homePage: homePage
-    property variant biblePage: biblePage
-    property variant searchPage: searchPage
+    /*
+     * True if the app is wide enough and should display its
+     * tablet/desktop interface
+     */
+    property bool wideAspect: width >= units.gu(80)
 
-    property bool fullscreen: false
+    //////////// SIGNAL DEFINITIONS ////////////
 
-    Tabs {
-        id: tabs
+    //////////// SIGNAL HANDLERS ////////////
 
-        Tab {
-            title: page.title
-            page: HomePage {
-                id: homePage
-                objectName: "homePage"
-            }
-        }
-
-        Tab {
-            title: page.title
-            page: BiblePage {
-                id: biblePage
-                objectName: "biblePage"
-            }
-        }
-
-        Tab {
-            title: page.title
-            page: SearchPage {
-                id: searchPage
-                objectName: "searchPage"
-            }
-        }
+    Component.onDestruction: {
+        saveRecentReadings()
     }
 
-    Component {
-        id: settingsSheet
-
-        SetttingsSheet {
-            objectName: "settingsSheet"
-        }
+    Component.onCompleted: {
+//        if (wideAspect) {
+//            tabs.selectedTabIndex = 1
+//        }
     }
 
-    function icon(name) {
+    //////////// FUNCTION DEFINITIONS ////////////
+
+    // TODO: Package local copies of the icons?
+    function getIcon(name) {
         return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
     }
 
@@ -107,89 +90,98 @@ MainView {
         biblePage.goTo(verse)
     }
 
-    function showSettings() {
-        PopupUtils.open(settingsSheet)
-    }
-
-    function saveSetting(name, value) {
-        if (getSetting(name) !== value) {
-            print(name, "=>", value)
-            var tempContents = {}
-            tempContents = settings.contents
-            tempContents[name] = value
-            settings.contents = tempContents
-
-            reloadSettings()
-        }
-    }
-
-    function reloadSettings() {
-        showVerse = getSetting("showVerse") === "true" ? true : false
-        print("showVerse <=", showVerse)
-
-        bibleVersion = getSetting("bibleVersion")
-        if (App.availableBibles().indexOf(bibleVersion) === -1) {
-            if (App.availableBibles().length > 0)
-                bibleVersion = App.availableBibles()[0]
-            else
-                bibleVersion = ""
-        }
-        print("bibleVersion <=", bibleVersion)
-
-        showReadingPlan = getSetting("showReadingPlan") === "true" ? true : false
-        print("showReadingPlan <=", showReadingPlan)
-
-        recentReadings = JSON.parse(getSetting("recentReadings"))
-        print("recentReadings <=", recentReadings)
-
-        //TODO: Remove setting or uncomment???
-        showSidebar = true//getSetting("showSidebar") === "true" ? true : false
-        print("showSidebar <=", showSidebar)
-    }
-
     function saveRecentReadings() {
-        recentReadings = [biblePage.bookChapter]
-
-        saveSetting("recentReadings", JSON.stringify(recentReadings))
+        recentReadingsOption.value = [biblePage.bookChapter]
     }
 
-    Component.onDestruction: {
-        saveRecentReadings()
-    }
+    //////////// CHILD OBJECTS ////////////
 
-    U1db.Database {
-        id: storage
-        path: "ubible"
-    }
+    property bool fullscreen: false
 
-    U1db.Document {
-        id: settings
+    Tabs {
+        id: tabs
 
-        database: storage
-        docId: 'settings'
-        create: true
+        Extra.HideableTab {
+            title: page.title
+            page: HomePage {
+                id: homePage
+                objectName: "homePage"
+            }
+            show: !wideAspect
+        }
 
-        defaults: {
-            "showVerse": "true",
-            "bibleVersion": "KJV",
-            "showReadingPlan": "true",
-            "recentReadings": JSON.stringify([]),
-            "showSidebar": "true"
+        Tab {
+            title: page.title
+            page: BiblePage {
+                id: biblePage
+                objectName: "biblePage"
+            }
+        }
+
+        Extra.HideableTab {
+            title: page.title
+            page: SearchPage {
+                id: searchPage
+                objectName: "searchPage"
+            }
+            show: !wideAspect
+        }
+
+        Tab {
+            title: page.title
+            page: SetttingsPage {
+                objectName: "settingsPage"
+            }
         }
     }
 
-    function getSetting(name) {
-        var tempContents = {};
-        tempContents = settings.contents
-        return tempContents.hasOwnProperty(name) ? tempContents[name] : settings.defaults[name]
-    }
-
-    Component.onCompleted: {
-        if (wideAspect) {
-            tabs.selectedTabIndex = 1
+    // TODO: When this actually gets merged into the Ubuntu UI Toolkit,
+    // Remove the 'Extra.' prefix from this all all the Option objects
+    Extra.Settings {
+        Extra.Option {
+            id: showVerseOption
+            name: "showVerse"
+            defaultValue: true
         }
 
+        Extra.Option {
+            id: bibleVersionOption
+            name: "bibleVersion"
+            defaultValue: "KJV"
 
-        reloadSettings()
+            onValueChanged: {
+                if (value === "")
+                    return
+
+                if (App.availableBibles().indexOf(value) === -1) {
+                    if (App.availableBibles().length > 0)
+                        value = App.availableBibles()[0]
+                    else
+                        value = ""
+                }
+            }
+        }
+
+        Extra.Option {
+            id: showReadingPlanOption
+            name: "showReadingPlan"
+            defaultValue: true
+        }
+
+        Extra.Option {
+            id: recentReadingsOption
+            name: "recentReadings"
+            defaultValue: []
+        }
+
+        Extra.Option {
+            id: showSidebarOption
+            name: "showSidebar"
+            defaultValue: true
+        }
+    }
+
+    Extra.SettingsStorage {
+        id: settingsStorage
     }
 }

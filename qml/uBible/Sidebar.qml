@@ -1,34 +1,20 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
+import "ubuntu-ui-extras" as Extra
 
-Item {
+Extra.Sidebar {
     //color: "lightgray"
-
-    Rectangle {
-        color: "lightgray"
-
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            right: parent.right
-        }
-
-        width: 1
-    }
-
-    width: units.gu(30)
 
     Column {
         anchors.fill: parent
-        anchors.rightMargin: 1
 
         Empty {
             TextField {
                 id: searchField
 
                 primaryItem: Image {
-                    source: icon("search")
+                    source: getIcon("search")
                     height: parent.height - units.gu(1.5)
                     width: height
                     anchors.centerIn: parent
@@ -52,33 +38,33 @@ Item {
 
         Header {
             text: "<b>Verse of the Day<b>"
-            visible: showVerse
+            visible: showVerseOption.value
         }
 
         BibleVerse {
-            visible: showVerse
+            visible: showVerseOption.value
             verse: "Proverbs 3:5-6"
             //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
         }
 
         Header {
             text: "<b>Reading Plan<b>"
-            visible: showReadingPlan
+            visible: showReadingPlanOption.value
         }
 
         BibleVerse {
-            visible: showReadingPlan
+            visible: showReadingPlanOption.value
             verse: "Matthew 6"
             //contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
         }
 
         Header {
             text: "<b>Recent</b>"
-            visible: recentReadings.length > 0
+            visible: recentReadingsOption.value.length > 0
         }
 
         Repeater {
-            model: recentReadings
+            model: recentReadingsOption.value
 
             delegate: BibleVerse {
                 verse: modelData

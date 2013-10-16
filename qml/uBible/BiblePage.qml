@@ -99,28 +99,16 @@ Page {
 
         book: root.book
         chapter: root.chapter
-        version: bibleVersion
+        version: bibleVersionOption.value
     }
 
-    flickable: !wideAspect ? bibleView.flickable : null
+    flickable: wideAspect ? null : bibleView.flickable
 
     Sidebar {
         id: sidebar
         objectName: "sidebar"
 
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            bottomMargin: root.state == "wide" ? units.gu(-2) : 0
-        }
-
-        x: (wideAspect && showSidebar && !fullscreen) ? 0 : -width
-
-        Behavior on x {
-            PropertyAnimation {
-                duration: 250
-            }
-        }
+        expanded: wideAspect
     }
 
     BibleView {
@@ -130,7 +118,6 @@ Page {
         anchors {
             top: parent.top
             bottom: parent.bottom
-            bottomMargin: root.state == "wide" ? units.gu(-2) : 0
             left: sidebar.right
             right: parent.right
         }
@@ -138,67 +125,39 @@ Page {
         clip: true
     }
 
-    states: [
-        State {
-            name: "wide"
-            when: wideAspect && !fullscreen
-            PropertyChanges {
-                target: tools
-                locked: true
-                opened: true
-            }
-
-            PropertyChanges {
-                target: bibleView.flickable
-                anchors.topMargin: 0//units.gu(-9)
-            }
-        }
-    ]
+    onActiveChanged: tools.opened = wideAspect
 
     tools: ToolbarItems {
-        back: ToolbarButton {
-            visible: !wideAspect
-            iconSource: icon("favorite-selected")
-            text: i18n.tr("Home")
-            onTriggered: {
-                tabs.selectedTabIndex = 0
-            }
-        }
+        locked: wideAspect
+        opened: wideAspect
 
         ToolbarButton {
-            iconSource: icon("location")
+            id: goToButton
+            iconSource: getIcon("location")
             text: i18n.tr("Go To")
             onTriggered: {
-                PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), caller)
+                PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton)
             }
         }
 
         ToolbarButton {
             visible: !wideAspect
-            iconSource: icon("search")
+            iconSource: getIcon("search")
             text: i18n.tr("Search")
             onTriggered: search()
         }
 
         ToolbarButton {
-            iconSource: icon("speaker")
+            iconSource: getIcon("speaker")
             text: i18n.tr("Listen")
         }
 
         ToolbarButton {
             visible: wideAspect
             text: fullscreen ? i18n.tr("Restore") : i18n.tr("Fullscreen")
-            iconSource: fullscreen ? icon("view-restore") : icon("view-fullscreen")
+            iconSource: fullscreen ? getIcon("view-restore") : getIcon("view-fullscreen")
 
             onTriggered: fullscreen = !fullscreen
-        }
-
-        ToolbarButton {
-            iconSource: icon("settings")
-            text: i18n.tr("Settings")
-            onTriggered: {
-                showSettings()
-            }
         }
     }
 }

@@ -35,10 +35,6 @@ Dialog {
     TextField {
         id: locationField
 
-        inputMethodHints: Qt.ImhNoAutoUppercase
-
-        text: fileView.path
-
         placeholderText: i18n.tr("Location...")
 
         onAccepted: goButton.clicked()
@@ -48,17 +44,17 @@ Dialog {
         id: goButton
         objectName: "goButton"
 
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: "green"//Qt.rgba(0,0.7,0,1)
-            }
+//        gradient: Gradient {
+//            GradientStop {
+//                position: 0
+//                color: "green"//Qt.rgba(0,0.7,0,1)
+//            }
 
-            GradientStop {
-                position: 1
-                color: Qt.rgba(0.3,0.7,0.3,1)
-            }
-        }
+//            GradientStop {
+//                position: 1
+//                color: Qt.rgba(0.3,0.7,0.3,1)
+//            }
+//        }
 
         text: i18n.tr("Go")
         enabled: locationField.acceptableInput && locationField.valid
@@ -74,17 +70,7 @@ Dialog {
         objectName: "cancelButton"
         text: i18n.tr("Cancel")
 
-        gradient: Gradient {
-            GradientStop {
-                position: 0
-                color: "gray"
-            }
-
-            GradientStop {
-                position: 1
-                color: "lightgray"
-            }
-        }
+        gradient: UbuntuColors.greyGradient
 
         onClicked: {
             PopupUtils.close(root)
