@@ -26,7 +26,7 @@ import U1db 1.0 as U1db
 import "ubuntu-ui-extras" as Extra
 
 MainView {
-    id: mainView
+    id: root
 
     //////////// PROPERTY ASIGNMENTS ////////////
 
@@ -50,7 +50,29 @@ MainView {
     width: units.gu(100)
     height: units.gu(75)
 
+    headerColor: (themeOption.value === "" || themeOption.value === "Suru") ? "#57365E" : backgroundColor
+    backgroundColor: (themeOption.value === "" || themeOption.value === "Suru")
+                     ? "#A55263"
+                     : themeOption.value === "Dark" ? Qt.rgba(0.3,0.3,0.3,1) : "#EDEDED"
+    footerColor: (themeOption.value === "" || themeOption.value === "Suru") ? "#D75669" : backgroundColor
+
+    states: [
+        State {
+            when: toolbar.tools.opened && toolbar.tools.locked
+
+            PropertyChanges {
+                target: tabs
+                anchors.bottomMargin: -root.toolbar.triggerSize
+            }
+        }
+    ]
+
     //////////// PROPERTY DEFINITIONS ////////////
+
+    // TODO: Use color from theme!
+    property color textColor: themeOption.value === "Light" ? UbuntuColors.coolGrey : "white"
+
+    property color selectionColor: UbuntuColors.orange
 
     /*
      * True if the app is wide enough and should display its
@@ -178,6 +200,12 @@ MainView {
             id: showSidebarOption
             name: "showSidebar"
             defaultValue: true
+        }
+
+        Extra.Option {
+            id: themeOption
+            name: "theme"
+            defaultValue: "Suru"
         }
     }
 

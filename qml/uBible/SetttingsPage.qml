@@ -75,5 +75,15 @@ Page {
 //                checked: showSidebar
 //            }
 //        }
+
+        ValueSelector {
+            id: themeSelector
+            text: i18n.tr("Theme")
+            values: ["Suru", "Dark", "Light"]
+            selectedIndex: values.indexOf(themeOption.value)
+            onSelectedIndexChanged: {
+                themeOption.value = values[selectedIndex]
+            }
+        }
     }
 }

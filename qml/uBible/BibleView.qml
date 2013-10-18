@@ -37,11 +37,10 @@ Item {
         //flickable.contentY += -units.gu(9.5)
     }
 
-    property color selectionColor: "orange"
-
     Rectangle {
+        anchors.leftMargin: units.gu(1/8)
         anchors.fill: parent
-        color: "white"
+        color: themeOption.value === "Light" ? "white" : "transparent"
     }
 
     SequentialAnimation {
@@ -49,7 +48,7 @@ Item {
         PropertyAnimation {
             target: root
             property: "selectionColor"
-            to: "orange"
+            to: selectionColor
         }
 
         PauseAnimation { duration: 5000 }
@@ -57,7 +56,7 @@ Item {
         ColorAnimation {
             target: root
             property: "selectionColor"
-            from: UbuntuColors.orange; to: UbuntuColors.coolGrey; duration: 2000
+            from: selectionColor; to: textColor; duration: 2000
         }
     }
 
@@ -145,7 +144,7 @@ Item {
             Label {
                 id: number
                 text: (index + 1)
-                color: UbuntuColors.coolGrey
+                color: textColor
                 font.bold: true
 
                 anchors {
@@ -174,7 +173,7 @@ Item {
                 textFormat: Text.RichText
                 font.family: "Liberation Serif"
                 fontSize: "large"
-                color: index + 1 >= startVerse && index + 1 <= endVerse ? selectionColor : UbuntuColors.coolGrey
+                color: index + 1 >= startVerse && index + 1 <= endVerse ? selectionColor : textColor
             }
             showDivider: false
         }

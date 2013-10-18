@@ -6,6 +6,10 @@ import "ubuntu-ui-extras" as Extra
 Extra.Sidebar {
     //color: "lightgray"
 
+    color: themeOption.value === "Light"
+           ? "transparent"
+           : Qt.rgba(0.2,0.2,0.2,0.5)
+
     Column {
         anchors.fill: parent
 
