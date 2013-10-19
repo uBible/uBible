@@ -102,34 +102,73 @@ Page {
         version: bibleVersionOption.value
     }
 
-    flickable: wideAspect ? null : bibleView.flickable
+    flickable: sidebar.expanded ? null : bibleView.flickable
+
+    onFlickableChanged: {
+        var margin
+        if (sidebar.expanded) {
+            margin = 0
+        } else {
+            margin = units.gu(9.5)
+        }
+
+        bibleView.flickable.topMargin = Qt.binding(function() { return audioPanel.height + audioPanel.y + margin})
+    }
 
     Sidebar {
         id: sidebar
         objectName: "sidebar"
 
-        expanded: wideAspect
+        expanded: wideAspect && !fullscreen
+        onExpandedChanged: tools.opened = sidebar.expanded
     }
 
-    BibleView {
-        id: bibleView
-        objectName: "bibleView"
-
+    Item {
         anchors {
             top: parent.top
             bottom: parent.bottom
             left: sidebar.right
             right: parent.right
+            leftMargin: units.gu(1/8)
         }
 
         clip: true
+
+        BibleView {
+            id: bibleView
+            objectName: "bibleView"
+
+//            anchors {
+//                top: audioPanel.bottom
+//                bottom: parent.bottom
+//                left: parent.left
+//                right: parent.right
+//            }
+
+            anchors.fill: parent
+            topMargin: audioPanel.height + audioPanel.y
+
+            clip: true
+
+            currentVerse: audioPanel.playing ? audioPanel.currentVerse : -1
+        }
+
+        AudioPanel {
+            id: audioPanel
+
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+            }
+        }
     }
 
-    onActiveChanged: tools.opened = wideAspect
+    onActiveChanged: tools.opened = sidebar.expanded
 
     tools: ToolbarItems {
-        locked: wideAspect
-        opened: wideAspect
+        locked: sidebar.expanded
+        opened: sidebar.expanded
 
         ToolbarButton {
             id: goToButton
@@ -138,6 +177,12 @@ Page {
             onTriggered: {
                 PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton)
             }
+        }
+
+        ToolbarButton {
+            id: bookmarksButton
+            iconSource: getIcon("favorite-selected")
+            text: i18n.tr("Bookmarks")
         }
 
         ToolbarButton {
@@ -150,6 +195,8 @@ Page {
         ToolbarButton {
             iconSource: getIcon("speaker")
             text: i18n.tr("Listen")
+            onTriggered: audioPanel.play()
+            enabled: !audioPanel.playing
         }
 
         ToolbarButton {

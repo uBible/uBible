@@ -29,35 +29,20 @@ Item {
     id: root
 
     property variant flickable: list
+    property int currentVerse: -1
+    property alias topMargin: list.topMargin
 
     function goTo() {
-        selectionAnimation.restart()
         list.positionViewAtIndex(startVerse - 1, ListView.Beginning)
-        // A hack because the header covers the content
-        //flickable.contentY += -units.gu(9.5)
+    }
+
+    onCurrentVerseChanged: {
+        list.positionViewAtIndex(currentVerse, ListView.Center)
     }
 
     Rectangle {
-        anchors.leftMargin: units.gu(1/8)
         anchors.fill: parent
         color: themeOption.value === "Light" ? "white" : "transparent"
-    }
-
-    SequentialAnimation {
-        id: selectionAnimation
-        PropertyAnimation {
-            target: root
-            property: "selectionColor"
-            to: selectionColor
-        }
-
-        PauseAnimation { duration: 5000 }
-
-        ColorAnimation {
-            target: root
-            property: "selectionColor"
-            from: selectionColor; to: textColor; duration: 2000
-        }
     }
 
     Component {
@@ -97,8 +82,7 @@ Item {
                     text: i18n.tr("Share")
                 }
                 Action {
-                    text: fullscreen ? i18n.tr("Restore") : i18n.tr("Fullscreen")
-                    iconSource: fullscreen ? icon("view-restore") : icon("view-fullscreen")
+                    text: fullscreen ? i18n.tr("Exit Fullscreen") : i18n.tr("Fullscreen")
 
                     onTriggered: fullscreen = !fullscreen
                 }
@@ -111,6 +95,11 @@ Item {
 
         fontSize: "large"
 
+        /*
+         * TODO: Once a module manager is created, remove
+         * the references to SWORD and modules (extra unneeded
+         * details) and add a button/link to the module manager
+         */
         text: bibleChapter.version == ""
               ? i18n.tr("No SWORD Bible modules are installed!")
               : i18n.tr("The SWORD module containing the %1 Bible is not installed!").arg(bibleChapter.version)
@@ -126,10 +115,19 @@ Item {
 
         model: bibleChapter.bible.exists ? bibleChapter : null
 
+        /*
+         * Used for extra padding to make a 1 gu margin around
+         * all the edges of the view. (The left and right already
+         * have 1 gu, and the top and bottom of each verse have
+         * 0.25 gu, so the extra 0.75 gu at the very top and bottom
+         * make a total of 1 gu.)
+         */
+        header: Item { width: parent.width; height: units.gu(0.75) }
+        footer: Item { width: parent.width; height: units.gu(0.75) }
+
         delegate: Empty {
             id: verseDelegate
 
-            width: list.width
             height: units.gu(0.5) + verse.height
             //selected: model.highlighted
 
@@ -141,6 +139,10 @@ Item {
                                 })
             }
 
+            /*
+             * TODO: When playing the current verse, replace
+             * the number with an audio symbol
+             */
             Label {
                 id: number
                 text: (index + 1)
@@ -167,13 +169,31 @@ Item {
                     topMargin: units.gu(0.25)
                 }
 
-                wrapMode: Text.Wrap
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+
+                /*
+                 * FIXME: When using textFormat: Text.RichText,
+                 * the label doesn't redraw itself when the width
+                 * increases, so this is needed to trick it into
+                 * redrawing.
+                 *
+                 * This is probably a bug in Qt's QtQuick.Text
+                 * component.
+                 */
+                onWidthChanged: {
+                    text = ""
+                    text = Qt.binding(function() { return model.verse })
+                }
 
                 text: model.verse
                 textFormat: Text.RichText
                 font.family: "Liberation Serif"
                 fontSize: "large"
-                color: index + 1 >= startVerse && index + 1 <= endVerse ? selectionColor : textColor
+                color: (index === currentVerse || (currentVerse === -1 && index + 1 >= startVerse && index + 1 <= endVerse)) ? selectionColor : textColor
+
+                Behavior on color {
+                    ColorAnimation { duration: 500 }
+                }
             }
             showDivider: false
         }

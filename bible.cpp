@@ -149,7 +149,7 @@ unsigned int Bible::verseCount(int book, int chapter) const {
     key->setPosition(sword::MAXVERSE);
     result = key->getVerse();
 
-    qDebug() << book << chapter << "has" << result << "verses";
+    //qDebug() << book << chapter << "has" << result << "verses";
     return result;
 }
 

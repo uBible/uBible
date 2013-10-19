@@ -40,8 +40,7 @@ HEADERS += \
 OTHER_FILES += \
     README.md \
     COPYING \
-    COPYRIGHT \
-    qml/uBible/SetttingsPage.qml
+    COPYRIGHT
 
 RESOURCES += \
     resources.qrc
