@@ -207,6 +207,12 @@ MainView {
             name: "theme"
             defaultValue: "Suru"
         }
+
+        Extra.Option {
+            id: bookmarksOption
+            name: "bookmarks"
+            defaultValue: []
+        }
     }
 
     Extra.SettingsStorage {

@@ -86,7 +86,7 @@ Page {
     }
 
     function goTo(verse) {
-        tabs.selectedTabIndex = 1
+        tabs.selectedTabIndex = wideAspect ? 0 : 1
         root.location = verse
         print("Book:", root.book)
         print("Chapter:", root.chapter)
@@ -100,6 +100,10 @@ Page {
         book: root.book
         chapter: root.chapter
         version: bibleVersionOption.value
+    }
+
+    function verseToString(index) {
+        return book + " " + chapter + ":" + (index + 1)
     }
 
     flickable: sidebar.expanded ? null : bibleView.flickable
@@ -183,6 +187,8 @@ Page {
             id: bookmarksButton
             iconSource: getIcon("favorite-selected")
             text: i18n.tr("Bookmarks")
+            //enabled: bookmarksOption.value.length > 0
+            onTriggered: PopupUtils.open(bookmarksPopover, bookmarksButton)
         }
 
         ToolbarButton {
@@ -206,5 +212,11 @@ Page {
 
             onTriggered: fullscreen = !fullscreen
         }
+    }
+
+    Component {
+        id: bookmarksPopover
+
+        BookmarksPopover {}
     }
 }

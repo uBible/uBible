@@ -58,29 +58,41 @@ Item {
 
             actions: ActionList {
                 Action {
-                    text: i18n.tr("Bookmark")
-                }
-
-                Action {
-                    text: verse.highlighted
-                          ? i18n.tr("Remove Highlight")
-                          : i18n.tr("Highlight")
+                    text: bookmarkIndex === -1 ? i18n.tr("Bookmark") : i18n.tr("Remove bookmark")
+                    property int bookmarkIndex: bookmarksOption.value.indexOf(verseToString(index))
                     onTriggered: {
-                        verse.highlighted = !verse.highlighted
+                        var list = bookmarksOption.value
+
+                        if (bookmarkIndex === -1) {
+                            list.push(verseToString(index))
+                        } else {
+                            list.splice(bookmarkIndex, 1)
+                        }
+                        list.sort()
+                        bookmarksOption.value = list
                     }
                 }
 
-                Action {
-                    text: i18n.tr("Notes")
-                    onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
-                                                     title: bookChapter + ":" + (index + 1),
-                                                     notes: verse.notes
-                                                 })
-                }
+//                Action {
+//                    text: verse.highlighted
+//                          ? i18n.tr("Remove Highlight")
+//                          : i18n.tr("Highlight")
+//                    onTriggered: {
+//                        verse.highlighted = !verse.highlighted
+//                    }
+//                }
 
-                Action {
-                    text: i18n.tr("Share")
-                }
+//                Action {
+//                    text: i18n.tr("Notes")
+//                    onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
+//                                                     title: bookChapter + ":" + (index + 1),
+//                                                     notes: verse.notes
+//                                                 })
+//                }
+
+//                Action {
+//                    text: i18n.tr("Share")
+//                }
                 Action {
                     text: fullscreen ? i18n.tr("Exit Fullscreen") : i18n.tr("Fullscreen")
 
@@ -122,8 +134,8 @@ Item {
          * 0.25 gu, so the extra 0.75 gu at the very top and bottom
          * make a total of 1 gu.)
          */
-        header: Item { width: parent.width; height: units.gu(0.75) }
-        footer: Item { width: parent.width; height: units.gu(0.75) }
+        header: Item { width: list.width; height: units.gu(0.75) }
+        footer: Item { width: list.width; height: units.gu(0.75) }
 
         delegate: Empty {
             id: verseDelegate

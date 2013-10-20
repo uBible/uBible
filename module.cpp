@@ -33,6 +33,8 @@ Module::Module(const QString &name, QObject *parent) :
 }
 
 void Module::setName(const QString &name) {
+    if (m_name == name) return;
+
     m_name = name;
     nameChanged(m_name);
 
