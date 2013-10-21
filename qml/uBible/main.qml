@@ -96,8 +96,24 @@ MainView {
 
     //////////// FUNCTION DEFINITIONS ////////////
 
+    function removeBookmark(name) {
+        var list = bookmarksOption.value
+        list.splice(list.indexOf(name), 1)
+        bookmarksOption.value = list
+    }
+
+    function addBookmark(name) {
+        var list = bookmarksOption.value
+        list.push(name)
+        list.sort()
+        bookmarksOption.value = list
+    }
+
     // TODO: Package local copies of the icons?
-    function getIcon(name) {
+    function getIcon(name, color) {
+        if (color !== undefined)
+            name = name + "-" + color
+
         return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
     }
 

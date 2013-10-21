@@ -2,6 +2,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
+import "ubuntu-ui-extras" as Extra
 
 Popover {
     id: root
@@ -53,6 +54,18 @@ Popover {
                 }
 
                 showDivider: index < (list.count - 1)
+
+                removable: true
+                backgroundIndicator: Extra.ListItemBackground {
+                    state: swipingState
+                    text: i18n.tr("Remove")
+                    fontColor: Theme.palette.normal.overlayText
+                    iconSource: getIcon("clear")
+                }
+
+                onItemRemoved: {
+                    removeBookmark(modelData)
+                }
             }
         }
     }
