@@ -125,7 +125,7 @@ MainView {
     }
 
     function goTo(verse) {
-        biblePage.goTo(verse)
+        biblePage.location = verse
     }
 
     function saveRecentReadings() {
