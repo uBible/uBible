@@ -30,6 +30,8 @@ Page {
     id: root
     title: bookChapter
 
+    property bool isPlaying: false
+
     property string location: "Genesis 1:1"
 
     property string verse: {
@@ -201,8 +203,18 @@ Page {
         ToolbarButton {
             iconSource: getIcon("speaker")
             text: i18n.tr("Listen")
-            onTriggered: audioPanel.play()
-            enabled: !audioPanel.playing
+            onTriggered: {
+                isPlaying = !isPlaying
+                if(isPlaying){
+                    print("isPLaying")
+                    audioPanel.play()
+                }
+                else{
+                print("!isPlaying")
+                    audioPanel.stop()
+                }
+            }
+            //enabled: !audioPanel.playing //How do you make this toggle?
         }
 
         ToolbarButton {
