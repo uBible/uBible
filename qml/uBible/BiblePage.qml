@@ -201,8 +201,19 @@ Page {
         ToolbarButton {
             iconSource: getIcon("speaker")
             text: i18n.tr("Listen")
-            onTriggered: audioPanel.play()
-            enabled: !audioPanel.playing
+            onTriggered: {
+                            isPlaying = !isPlaying
+                            if(isPlaying){
+                                print("isPLaying")
+                                audioPanel.play()
+                            }
+                            else{
+                            print("!isPlaying")
+                                audioPanel.stop()
+                            }
+                        }
+                        //enabled: !audioPanel.playing //How do you make this toggle?
+                    }
         }
 
         ToolbarButton {

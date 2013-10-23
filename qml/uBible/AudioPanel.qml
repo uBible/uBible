@@ -84,7 +84,10 @@ Rectangle {
         playing = true
         counter.start()
     }
-
+    function stop(){
+            playing = false
+            counter.stop()
+        }
     Timer {
         id: counter
         repeat: true
