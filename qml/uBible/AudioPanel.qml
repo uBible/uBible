@@ -85,6 +85,15 @@ Rectangle {
         counter.start()
     }
 
+    function stop(){
+        playing = false
+        counter.stop()
+    }
+
+    /*
+     * This is a temporary test to highlight the currently
+     * playing verse
+     */
     Timer {
         id: counter
         repeat: true

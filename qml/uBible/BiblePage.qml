@@ -65,7 +65,7 @@ Page {
             margin = units.gu(9.5)
         }
 
-        bibleView.flickable.topMargin = Qt.binding(function() { return margin })
+        bibleView.flickable.topMargin = Qt.binding(function() { return margin + audioPanel.y + audioPanel.height })
     }
 
     Sidebar {
@@ -76,10 +76,7 @@ Page {
         onExpandedChanged: tools.opened = sidebar.expanded
     }
 
-    BibleView {
-        id: bibleView
-        objectName: "bibleView"
-
+    Item {
         anchors {
             top: parent.top
             bottom: parent.bottom
@@ -89,6 +86,25 @@ Page {
         }
 
         clip: true
+
+        BibleView {
+            id: bibleView
+            objectName: "bibleView"
+
+            anchors.fill: parent
+
+            clip: true
+        }
+
+        AudioPanel {
+            id: audioPanel
+
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+            }
+        }
     }
 
     onActiveChanged: tools.opened = sidebar.expanded
@@ -104,6 +120,23 @@ Page {
             onTriggered: {
                 PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton)
             }
+        }
+
+        ToolbarButton {
+            iconSource: getIcon("speaker")
+            text: i18n.tr("Listen")
+            onTriggered: {
+                audioPanel.playing = !audioPanel.playing
+                if(audioPanel.playing) {
+                    print("isPlaying")
+                    audioPanel.play()
+                } else {
+                    print("!isPlaying")
+                    audioPanel.stop()
+                }
+            }
+
+            //enabled: !audioPanel.playing //How do you make this toggle?
         }
 
         ToolbarButton {
@@ -126,13 +159,6 @@ Page {
             text: i18n.tr("Share")
             onTriggered: PopupUtils.open(Qt.resolvedUrl("SharePopover.qml"), {message: "Blah blah blah"})
         }
-
-//        ToolbarButton {
-//            iconSource: getIcon("speaker")
-//            text: i18n.tr("Listen")
-//            onTriggered: audioPanel.play()
-//            enabled: !audioPanel.playing
-//        }
 
         ToolbarButton {
             visible: wideAspect
