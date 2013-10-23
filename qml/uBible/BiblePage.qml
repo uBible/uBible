@@ -155,9 +155,10 @@ Page {
         }
 
         ToolbarButton {
+            id: shareButton
             iconSource: getIcon("share")
             text: i18n.tr("Share")
-            onTriggered: PopupUtils.open(Qt.resolvedUrl("SharePopover.qml"), {message: "Blah blah blah"})
+            onTriggered: PopupUtils.open(Qt.resolvedUrl("SharePopover.qml"), shareButton, {message: "Blah blah blah"})
         }
 
         ToolbarButton {

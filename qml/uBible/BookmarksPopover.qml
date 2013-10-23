@@ -48,7 +48,7 @@ Popover {
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 horizontalAlignment: Text.AlignHCenter
 
-                text: i18n.tr("<b>No verses have been bookmarked.</b><p>To bookmark a verse, click on it and choose \"Bookmark\".")
+                text: i18n.tr("<b>No verses have been bookmarked</b><p>To bookmark a verse, click on it and choose \"Bookmark\".")
                 color: Theme.palette.normal.overlayText
             }
         }

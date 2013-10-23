@@ -19,6 +19,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1 as ListItem
+import Ubuntu.OnlineAccounts 0.1
 import Friends 0.1
 import "ubuntu-ui-extras" as Extra
 
@@ -34,6 +35,26 @@ Popover {
             top: parent.top
             right: parent.right
         }
+
+        Item {
+            width: parent.width
+            height: noneLabel.height + units.gu(4)
+
+            visible: accounts.count === 0
+
+            Label {
+                id: noneLabel
+                anchors.centerIn: parent
+
+                width: parent.width - units.gu(4)
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                horizontalAlignment: Text.AlignHCenter
+
+                text: i18n.tr("<b>No accounts set up for sharing</b><p>To configure accounts, go to System Settings and choose \"Online Accounts\".")
+                color: Theme.palette.normal.overlayText
+            }
+        }
+
 //        ListItem.Header { text: i18n.tr("Export") }
 //        ListItem.Standard {
 //            text: i18n.tr("As pdf")

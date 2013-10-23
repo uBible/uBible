@@ -158,6 +158,14 @@ MainView {
             }
         }
 
+        Tab {
+            title: page.title
+            page: ResourcesPage {
+                id: resourcesPage
+                objectName: "resourcesPage"
+            }
+        }
+
         Extra.HideableTab {
             title: page.title
             page: SearchPage {
