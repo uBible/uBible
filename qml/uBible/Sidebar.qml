@@ -41,7 +41,7 @@ Extra.Sidebar {
         }
 
         Header {
-            text: "<b>Verse of the Day<b>"
+            text: "Verse of the Day"
             visible: showVerseOption.value
         }
 
@@ -52,7 +52,7 @@ Extra.Sidebar {
         }
 
         Header {
-            text: "<b>Reading Plan<b>"
+            text: "Reading Plan"
             visible: showReadingPlanOption.value
         }
 
@@ -63,7 +63,7 @@ Extra.Sidebar {
         }
 
         Header {
-            text: "<b>Recent</b>"
+            text: "Recent"
             visible: recentReadingsOption.value.length > 0
         }
 

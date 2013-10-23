@@ -31,7 +31,7 @@ Subtitled {
     property string verse
     property string contents: App.verse(verse)
 
-    text: "<b>" + verse + "</b>"
+    text: verse//"<b>" + verse + "</b>"
     subText: contents
 
     height: implicitHeight + units.gu(1)
@@ -51,9 +51,15 @@ Subtitled {
 //        z: -1
 //    }
 
-//    backgroundIndicator: Extra.ListItemBackground {
-//        iconSource: getIcon("clear")
-//        text: i18n.tr("Remove")
-//        state: swipingState
-//    }
+    onItemRemoved: {
+        var list = recentReadingsOption.value
+        list.splice(index, 1)
+        recentReadingsOption.value = list
+    }
+
+    backgroundIndicator: Extra.ListItemBackground {
+        iconSource: getIcon("clear")
+        text: i18n.tr("Remove")
+        state: swipingState
+    }
 }

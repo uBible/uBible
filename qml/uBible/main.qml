@@ -86,6 +86,7 @@ MainView {
 
     Component.onDestruction: {
         saveRecentReadings()
+        recentReadingsOption.saveValue()
     }
 
     Component.onCompleted: {
@@ -110,11 +111,11 @@ MainView {
     }
 
     // TODO: Package local copies of the icons?
-    function getIcon(name, color) {
-        if (color !== undefined)
-            name = name + "-" + color
+    function getIcon(name, type) {
+        if (type === undefined)
+            type = "actions"
 
-        return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
+        return "/usr/share/icons/ubuntu-mobile/" + type + "/scalable/" + name + ".svg"
     }
 
     function search(text) {
@@ -129,7 +130,8 @@ MainView {
     }
 
     function saveRecentReadings() {
-        recentReadingsOption.value = [biblePage.bookChapter]
+        recentReadingsOption.value = [biblePage.currentRegion.title]
+        print("Recent readings:", recentReadingsOption.value)
     }
 
     //////////// CHILD OBJECTS ////////////

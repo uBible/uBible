@@ -35,13 +35,13 @@ Empty {
     selected: selectedRegion.inRange(index + 1)
     property bool current: currentRegion.inRange(index + 1)
 
-//    onClicked: {
-//        PopupUtils.open(versePopover, verseDelegate,
-//                        {
-//                            verse: model,
-//                            index: index
-//                        })
-//    }
+    onClicked: {
+        PopupUtils.open(versePopover, verseDelegate,
+                        {
+                            text: verseDelegate.text,
+                            verse: verseDelegate.verse
+                        })
+    }
 
     /*
      * TODO: When playing the current verse, replace

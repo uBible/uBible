@@ -34,11 +34,11 @@ Page {
 
     onLocationChanged: bibleView.goTo()
 
-    Location {
+    property Location currentRegion: Location {
         id: currentRegion
     }
 
-    Location {
+    property Location selectedRegion: Location {
         id: selectedRegion
     }
 
@@ -121,6 +121,12 @@ Page {
             onTriggered: search()
         }
 
+        ToolbarButton {
+            iconSource: getIcon("share")
+            text: i18n.tr("Share")
+            onTriggered: PopupUtils.open(Qt.resolvedUrl("SharePopover.qml"), {message: "Blah blah blah"})
+        }
+
 //        ToolbarButton {
 //            iconSource: getIcon("speaker")
 //            text: i18n.tr("Listen")
@@ -151,18 +157,18 @@ Page {
 
             grabDismissAreaEvents: true
 
-            property variant verse
-            property variant index
+            property int verse
+            property string text
 
             actions: ActionList {
                 Action {
                     text: bookmarkIndex === -1 ? i18n.tr("Bookmark") : i18n.tr("Remove bookmark")
-                    property int bookmarkIndex: bookmarksOption.value.indexOf(verseToString(index))
+                    property int bookmarkIndex: bookmarksOption.value.indexOf(verseToString(verse))
                     onTriggered: {
                         var list = bookmarksOption.value
 
                         if (bookmarkIndex === -1) {
-                            list.push(verseToString(index))
+                            list.push(verseToString(verse))
                         } else {
                             list.splice(bookmarkIndex, 1)
                         }

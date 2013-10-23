@@ -93,7 +93,7 @@ Page {
             }
 
             Header {
-                text: "<b>Verse of the Day<b>"
+                text: "Verse of the Day"
                 visible: showVerseOption.value
             }
 
@@ -104,7 +104,7 @@ Page {
             }
 
             Header {
-                text: "<b>Reading Plan<b>"
+                text: "Reading Plan"
                 visible: showReadingPlanOption.value
             }
 
@@ -116,7 +116,7 @@ Page {
             }
 
             Header {
-                text: "<b>Recent</b>"
+                text: "Recent"
                 visible: recentReadingsOption.value.length > 0
             }
 
