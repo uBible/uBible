@@ -1,5 +1,5 @@
 /**
- * This file was originall a part of SaucyBacon.
+ * This file was originally a part of SaucyBacon.
  *
  * Copyright 2013 (C) Giulio Collura <random.cpp@gmail.com>
  *
