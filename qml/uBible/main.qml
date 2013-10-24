@@ -127,6 +127,9 @@ MainView {
 
     function goTo(verse) {
         biblePage.location = verse
+        tabs.selectedTabIndex = wideAspect ? 0 : 1
+        while (pageStack.depth > 1)
+            pageStack.pop()
     }
 
     function saveRecentReadings() {
@@ -138,49 +141,59 @@ MainView {
 
     property bool fullscreen: false
 
-    Tabs {
-        id: tabs
+    property var pageStack: pageStack
 
-        Extra.HideableTab {
-            title: page.title
-            page: HomePage {
-                id: homePage
-                objectName: "homePage"
+    PageStack {
+        id: pageStack
+
+        Tabs {
+            id: tabs
+
+            Extra.HideableTab {
+                title: page.title
+                page: HomePage {
+                    id: homePage
+                    objectName: "homePage"
+                }
+                show: !wideAspect
             }
-            show: !wideAspect
+
+            Tab {
+                title: page.title
+                page: BiblePage {
+                    id: biblePage
+                    objectName: "biblePage"
+                }
+            }
+
+            Tab {
+                title: page.title
+                page: ResourcesPage {
+                    id: resourcesPage
+                    objectName: "resourcesPage"
+                }
+            }
+
+            Extra.HideableTab {
+                title: page.title
+                page: SearchPage {
+                    id: searchPage
+                    objectName: "searchPage"
+                }
+                show: !wideAspect
+            }
+
+            Tab {
+                title: page.title
+                page: SetttingsPage {
+                    objectName: "settingsPage"
+                }
+            }
+
+            visible: false
         }
 
-        Tab {
-            title: page.title
-            page: BiblePage {
-                id: biblePage
-                objectName: "biblePage"
-            }
-        }
-
-        Tab {
-            title: page.title
-            page: ResourcesPage {
-                id: resourcesPage
-                objectName: "resourcesPage"
-            }
-        }
-
-        Extra.HideableTab {
-            title: page.title
-            page: SearchPage {
-                id: searchPage
-                objectName: "searchPage"
-            }
-            show: !wideAspect
-        }
-
-        Tab {
-            title: page.title
-            page: SetttingsPage {
-                objectName: "settingsPage"
-            }
-        }
+        Component.onCompleted: pageStack.push(tabs)
     }
 
     // TODO: When this actually gets merged into the Ubuntu UI Toolkit,

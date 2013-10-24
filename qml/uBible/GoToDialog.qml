@@ -32,12 +32,10 @@ Dialog {
 
     text: i18n.tr("Enter a chapter/verse to go to:")
 
-    TextField {
-        id: locationField
+    property alias location: locationPicker.location
 
-        placeholderText: i18n.tr("Location...")
-
-        onAccepted: goButton.clicked()
+    LocationPicker {
+        id: locationPicker
     }
 
     Button {
@@ -57,11 +55,10 @@ Dialog {
 //        }
 
         text: i18n.tr("Go")
-        enabled: locationField.acceptableInput && locationField.valid
 
         onClicked: {
-            print("User switched to:", locationField.text)
-            goTo(locationField.text)
+            //print("User switched to:", locationField.text)
+            goTo(locationPicker.getLocation())
             PopupUtils.close(root)
         }
     }

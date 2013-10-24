@@ -118,7 +118,7 @@ Page {
             iconSource: getIcon("location")
             text: i18n.tr("Go To")
             onTriggered: {
-                PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton)
+                PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton, {location: location})
             }
         }
 

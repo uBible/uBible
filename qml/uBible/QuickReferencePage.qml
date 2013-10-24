@@ -26,43 +26,44 @@ import uBible 1.0
 import "ubuntu-ui-extras" as Extra
 
 Page {
-    id: root
-    title: "Resources"
+    id: quickrefPage
 
-    property var quickverses: {
-        "Creation": "Genesis 1",
-        "Christ's Work": {
+    property var ref
 
-        },
-        "How to be Saved": {
-            "John 3:16":"John 3:16",
-            "By faith alone": "Romans 10:9-10",
-            "Saved by faith, not works": "Ephesians 2:8-9"
-        },
-        "The Return of Christ": {
+    property var keys: {
+        var list = []
+        for(var prop in ref) {
+            list.push(prop)
+        }
+        return list
+    }
 
-        },
-        "Judgement": {
+    ListView {
+        anchors.fill: parent
+        model: quickrefPage.keys
 
-        },
-        "Eternal Life": {
+        delegate: SingleValue {
+            text: modelData
+            value: progression || quickrefPage.ref[modelData] === modelData ? "" : quickrefPage.ref[modelData]
+            progression: typeof(quickrefPage.ref[modelData]) !== "string"
 
+            onClicked: {
+                if (progression) {
+                    pageStack.push(Qt.resolvedUrl("QuickReferencePage.qml"), {
+                                       title: modelData,
+                                       ref: quickrefPage.ref[modelData]
+                                   })
+                } else {
+                    goTo(quickrefPage.ref[modelData])
+                }
+            }
         }
     }
 
-    Column {
-        anchors.fill: parent
+    tools: ToolbarItems {
+        locked: wideAspect
+        opened: wideAspect
 
-        Standard {
-            text: i18n.tr("Quick Reference")
-            progression: true
-
-            onClicked: {
-                pageStack.push(Qt.resolvedUrl("QuickReferencePage.qml"), {
-                                   ref: quickverses,
-                                   title: i18n.tr("Quick Reference")
-                               })
-            }
-        }
+        onLockedChanged: opened = wideAspect
     }
 }
