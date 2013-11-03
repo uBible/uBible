@@ -28,88 +28,41 @@ import uBible 1.0
 
 Page {
     id: root
-    title: bookChapter
+    title: currentRegion.title
 
+<<<<<<< HEAD
     property bool isPlaying: false
 
     property string location: "Genesis 1:1"
+=======
+    property alias location: currentRegion.location
+>>>>>>> master
 
-    property string verse: {
-        print ("Updating verse")
-        if (location.lastIndexOf(':') !== -1) {
-            return location.substring(location.lastIndexOf(':') + 1)
-        } else {
-            return 1
-        }
+    onLocationChanged: bibleView.goTo()
+
+    property Location currentRegion: Location {
+        id: currentRegion
     }
 
-    property int startVerse: {
-        if (verse.lastIndexOf('-') !== -1) {
-            print(verse.substring(0, verse.lastIndexOf('-')))
-            return verse.substring(0, verse.lastIndexOf('-'))
-        } else {
-            return verse
-        }
-    }
-
-    property int endVerse: {
-        if (verse.lastIndexOf('-') !== -1) {
-            print(verse.substring(verse.lastIndexOf('-') + 1))
-            return verse.substring(verse.lastIndexOf('-') + 1)
-        } else {
-            return verse
-        }
-    }
-
-    property string book: {
-        print ("Updating book")
-        if (location.lastIndexOf(' ') !== -1) {
-            return location.substring(0, location.lastIndexOf(' '))
-        } else {
-            return location
-        }
-    }
-    property int chapter: {
-        print ("Updating chapter")
-        if (bookChapter.lastIndexOf(' ') !== -1) {
-            return bookChapter.substring(location.lastIndexOf(' ') + 1)
-        } else {
-            return bookChapter
-        }
-    }
-
-    property string bookChapter: {
-        print ("Updating bookChapter")
-        if (location.lastIndexOf(':') !== -1) {
-            return location.substring(0, location.lastIndexOf(':'))
-        } else {
-            return location
-        }
-    }
-
-    function goTo(verse) {
-        tabs.selectedTabIndex = wideAspect ? 0 : 1
-        root.location = verse
-        print("Book:", root.book)
-        print("Chapter:", root.chapter)
-        print("Verse:", root.startVerse)
-        bibleView.goTo()
+    property Location selectedRegion: Location {
+        id: selectedRegion
     }
 
     BibleChapter {
         id: bibleChapter
 
-        book: root.book
-        chapter: root.chapter
+        book: currentRegion.book
+        chapter: currentRegion.chapter
         version: bibleVersionOption.value
     }
 
-    function verseToString(index) {
-        return book + " " + chapter + ":" + (index + 1)
+    function verseToString(verse) {
+        return currentRegion.book + " " + currentRegion.chapter + ":" + verse
     }
 
     flickable: sidebar.expanded ? null : bibleView.flickable
 
+    // FIXME: This is caused by an SDK bug
     onFlickableChanged: {
         var margin
         if (sidebar.expanded) {
@@ -118,7 +71,7 @@ Page {
             margin = units.gu(9.5)
         }
 
-        bibleView.flickable.topMargin = Qt.binding(function() { return audioPanel.height + audioPanel.y + margin})
+        bibleView.flickable.topMargin = Qt.binding(function() { return margin + audioPanel.y + audioPanel.height })
     }
 
     Sidebar {
@@ -144,19 +97,9 @@ Page {
             id: bibleView
             objectName: "bibleView"
 
-//            anchors {
-//                top: audioPanel.bottom
-//                bottom: parent.bottom
-//                left: parent.left
-//                right: parent.right
-//            }
-
             anchors.fill: parent
-            topMargin: audioPanel.height + audioPanel.y
 
             clip: true
-
-            currentVerse: audioPanel.playing ? audioPanel.currentVerse : -1
         }
 
         AudioPanel {
@@ -186,6 +129,23 @@ Page {
         }
 
         ToolbarButton {
+            iconSource: getIcon("speaker")
+            text: i18n.tr("Listen")
+            onTriggered: {
+                audioPanel.playing = !audioPanel.playing
+                if(audioPanel.playing) {
+                    print("isPlaying")
+                    audioPanel.play()
+                } else {
+                    print("!isPlaying")
+                    audioPanel.stop()
+                }
+            }
+
+            //enabled: !audioPanel.playing //How do you make this toggle?
+        }
+
+        ToolbarButton {
             id: bookmarksButton
             iconSource: getIcon("favorite-selected")
             text: i18n.tr("Bookmarks")
@@ -201,6 +161,7 @@ Page {
         }
 
         ToolbarButton {
+<<<<<<< HEAD
             iconSource: getIcon("speaker")
             text: i18n.tr("Listen")
             onTriggered: {
@@ -215,6 +176,12 @@ Page {
                 }
             }
             //enabled: !audioPanel.playing //How do you make this toggle?
+=======
+            id: shareButton
+            iconSource: getIcon("share")
+            text: i18n.tr("Share")
+            onTriggered: PopupUtils.open(Qt.resolvedUrl("SharePopover.qml"), shareButton, {message: "Blah blah blah"})
+>>>>>>> master
         }
 
         ToolbarButton {
@@ -230,5 +197,62 @@ Page {
         id: bookmarksPopover
 
         BookmarksPopover {}
+    }
+
+    Component {
+        id: versePopover
+
+        ActionSelectionPopover {
+            id: popover
+
+            grabDismissAreaEvents: true
+
+            property int verse
+            property string text
+
+            actions: ActionList {
+                Action {
+                    text: bookmarkIndex === -1 ? i18n.tr("Bookmark") : i18n.tr("Remove bookmark")
+                    property int bookmarkIndex: bookmarksOption.value.indexOf(verseToString(verse))
+                    onTriggered: {
+                        var list = bookmarksOption.value
+
+                        if (bookmarkIndex === -1) {
+                            list.push(verseToString(verse))
+                        } else {
+                            list.splice(bookmarkIndex, 1)
+                        }
+                        list.sort()
+                        bookmarksOption.value = list
+                    }
+                }
+
+//                Action {
+//                    text: verse.highlighted
+//                          ? i18n.tr("Remove Highlight")
+//                          : i18n.tr("Highlight")
+//                    onTriggered: {
+//                        verse.highlighted = !verse.highlighted
+//                    }
+//                }
+
+//                Action {
+//                    text: i18n.tr("Notes")
+//                    onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
+//                                                     title: bookChapter + ":" + (index + 1),
+//                                                     notes: verse.notes
+//                                                 })
+//                }
+
+//                Action {
+//                    text: i18n.tr("Share")
+//                }
+                Action {
+                    text: fullscreen ? i18n.tr("Exit Fullscreen") : i18n.tr("Fullscreen")
+
+                    onTriggered: fullscreen = !fullscreen
+                }
+            }
+        }
     }
 }

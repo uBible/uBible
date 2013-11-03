@@ -41,18 +41,19 @@ Extra.Sidebar {
         }
 
         Header {
-            text: "<b>Verse of the Day<b>"
+            text: "Verse of the Day"
             visible: showVerseOption.value
         }
 
         BibleVerse {
             visible: showVerseOption.value
+
             verse: "Proverbs 3:5-6"
             //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
         }
 
         Header {
-            text: "<b>Reading Plan<b>"
+            text: "Reading Plan"
             visible: showReadingPlanOption.value
         }
 
@@ -63,7 +64,7 @@ Extra.Sidebar {
         }
 
         Header {
-            text: "<b>Recent</b>"
+            text: "Recent"
             visible: recentReadingsOption.value.length > 0
         }
 

@@ -6,6 +6,9 @@
  * uBible - Bible application for Ubuntu Touch
  * Copyright (C) 2013 The uBible Developers.
  *
+ * Special Thanks to Jospeh Mills for the framework for accessing system programs
+ *  https://launchpad.net/~josephjamesmills
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * version 2 as published by the Free Software Foundation.
@@ -20,31 +23,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlContext>
-#include <QtQml>
-#include "qtquick2applicationviewer.h"
 
-#include <QDebug>
+#ifndef FESTIVAL_H
+#define FESTIVAL_H
 
-#include "bibleapp.h"
-#include "bible.h"
-#include "biblechapter.h"
-#include "festival.h"
-
-int main(int argc, char *argv[])
+#include <QString>
+#include <QObject>
+#include <QProcess>
+class ScriptLauncher : public QObject
 {
-    QGuiApplication app(argc, argv);
+    Q_OBJECT
+public:
+    explicit ScriptLauncher(QObject *parent = 0);
+    Q_INVOKABLE void launchScript();
+private:
+    QProcess *m_process;
+};
 
-    qmlRegisterType<Bible>("uBible", 1, 0, "Bible");
-    qmlRegisterType<BibleChapter>("uBible", 1, 0, "BibleChapter");
-
-    QtQuick2ApplicationViewer viewer;
-    viewer.rootContext()->setContextProperty("App", new BibleApp());
-    viewer.setMainQmlFile(QStringLiteral("qml/uBible/main.qml"));
-    viewer.showExpanded();
-
-    ScriptLauncher launcher;
-    //viewer.rootContext()->setContextProperty("scriptLauncher", &launcher); //don't think I need this
-    return app.exec();
-}
+#endif // FESTIVAL_H

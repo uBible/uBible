@@ -19,32 +19,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+import QtQuick 2.0
+import Ubuntu.Components 0.1
+import Ubuntu.Components.ListItems 0.1
+import uBible 1.0
+import "ubuntu-ui-extras" as Extra
 
-#include <QtGui/QGuiApplication>
-#include <QtQml/QQmlContext>
-#include <QtQml>
-#include "qtquick2applicationviewer.h"
+Page {
+    id: root
+    title: "Resources"
 
-#include <QDebug>
 
-#include "bibleapp.h"
-#include "bible.h"
-#include "biblechapter.h"
-#include "festival.h"
-
-int main(int argc, char *argv[])
-{
-    QGuiApplication app(argc, argv);
-
-    qmlRegisterType<Bible>("uBible", 1, 0, "Bible");
-    qmlRegisterType<BibleChapter>("uBible", 1, 0, "BibleChapter");
-
-    QtQuick2ApplicationViewer viewer;
-    viewer.rootContext()->setContextProperty("App", new BibleApp());
-    viewer.setMainQmlFile(QStringLiteral("qml/uBible/main.qml"));
-    viewer.showExpanded();
-
-    ScriptLauncher launcher;
-    //viewer.rootContext()->setContextProperty("scriptLauncher", &launcher); //don't think I need this
-    return app.exec();
 }
