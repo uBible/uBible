@@ -83,6 +83,7 @@ Rectangle {
     function play() {
         playing = true
         counter.start()
+        scriptLauncher.launchScript()
     }
 
     function stop(){

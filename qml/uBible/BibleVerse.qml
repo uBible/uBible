@@ -30,7 +30,6 @@ Subtitled {
 
     property string verse
     property string contents: App.verse(verse)
-
     text: verse//"<b>" + verse + "</b>"
     subText: contents
 

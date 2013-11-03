@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     bibleapp.cpp \
     biblechapter.cpp \
     bible.cpp \
-    module.cpp
+    module.cpp \
+    festival.cpp
 
 INCLUDEPATH += /usr/include/sword/
 LIBS        += -lsword
@@ -35,7 +36,8 @@ HEADERS += \
     bibleapp.h \
     biblechapter.h \
     bible.h \
-    module.h
+    module.h \
+    festival.h
 
 OTHER_FILES += \
     README.md \
