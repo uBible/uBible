@@ -24,8 +24,7 @@
  */
 #include "bibleapp.h"
 #include "festival.h"
-//#include    <QProcess>
-
+#include    <QProcess>
 //later add --language and a language variable, once we implement other languages
 ScriptLauncher::ScriptLauncher(QObject *parent) :
     QObject(parent),
@@ -34,6 +33,14 @@ ScriptLauncher::ScriptLauncher(QObject *parent) :
 }
 void ScriptLauncher::launchScript(QString echo, QString bverse, QString program, QString argum)
 {
-    QString festContent = QString("%e %b %p %a").arg(echo, bverse, program, argum);
-    m_process->start(festContent);
+    QString festContent;
+    festContent.append(echo);
+    festContent.append(bverse);
+    festContent.append(program);
+    festContent.append(argum);
+    //m_process->start(festContent);
+    m_process->start("echo \"  The Revelation of Jesus Christ, which God gave unto him, to shew unto his servants things which must shortly come to pass; and he sent and signified it by his angel unto his servant John:  \" | /usr/bin/festival  --tts ");
+}
+void ScriptLauncher::stopScript(){
+    //m_process->kill();  not sure how to do this
 }

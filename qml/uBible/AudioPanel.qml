@@ -32,10 +32,11 @@ Rectangle {
     property bool playing: false
 
     property int currentVerse: 0
-    property string echo: "echo"
-    property string program: "/usr/bin/festival"
-    property string argum: "--tts"
-    property string bverse: bibleChapter
+    property string echo: "\"echo \" "
+    property string program: " \" | /usr/bin/festival"
+    property string argum: " --tts \""
+    property string verse
+    property string bverse: App.verse(verse)
 
     color: Qt.rgba(0.6,0.5,0.6,0.9)
 
@@ -87,7 +88,8 @@ Rectangle {
     function play() {
         playing = true
         counter.start()
-        scriptLauncher.launchScript(echo, bverse, program, argum)
+        scriptLauncher.launchScript(echo, bverse, program, argum);
+        print(echo,bverse,program,argum)
     }
     function stop(){
         playing = false

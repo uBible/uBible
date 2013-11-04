@@ -30,13 +30,9 @@ Page {
     id: root
     title: currentRegion.title
 
-//<<<<<<< HEAD
     property bool isPlaying: false
-
     //property string location: "Genesis 1:1"
-//=======
     property alias location: currentRegion.location
-//>>>>>>> master
 
     onLocationChanged: bibleView.goTo()
 

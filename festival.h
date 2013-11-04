@@ -35,14 +35,14 @@
 class ScriptLauncher : public QObject
 {
     Q_OBJECT
-public:
-    QProcess *m_process;//= new QProcess(parent);
     const QString program;
     const QString echo;
     QString bverse;
     const QString argum;
+public:
+    QProcess *m_process;//= new QProcess(parent);
     explicit ScriptLauncher(QObject *parent = 0);
-    Q_INVOKABLE void launchScript(QString echo, QString bverse, QString program, QString argum);
+    Q_INVOKABLE void launchScript(QString, QString, QString, QString);
 private:
 
 };
