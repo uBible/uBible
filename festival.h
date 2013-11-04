@@ -27,6 +27,7 @@
 #ifndef FESTIVAL_H
 #define FESTIVAL_H
 
+#include "bible.h"
 #include <QString>
 #include <QObject>
 #include <QProcess>
@@ -38,6 +39,7 @@ public:
     Q_INVOKABLE void launchScript();
 private:
     QProcess *m_process;
+    //QProcess *myProcess = new QProcess(parent);
 };
 
 #endif // FESTIVAL_H

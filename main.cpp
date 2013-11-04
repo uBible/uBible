@@ -45,6 +45,6 @@ int main(int argc, char *argv[])
     viewer.showExpanded();
 
     ScriptLauncher launcher;
-    //viewer.rootContext()->setContextProperty("scriptLauncher", &launcher); //don't think I need this
+    viewer.rootContext()->setContextProperty("scriptLauncher", &launcher); //don't think I need this
     return app.exec();
 }
