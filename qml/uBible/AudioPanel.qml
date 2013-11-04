@@ -32,6 +32,10 @@ Rectangle {
     property bool playing: false
 
     property int currentVerse: 0
+    property string echo: "echo"
+    property string program: "/usr/bin/festival"
+    property string argum: "--tts"
+    property string bverse: bibleChapter
 
     color: Qt.rgba(0.6,0.5,0.6,0.9)
 
@@ -83,18 +87,12 @@ Rectangle {
     function play() {
         playing = true
         counter.start()
-        scriptLauncher.launchScript()
+        scriptLauncher.launchScript(echo, bverse, program, argum)
     }
     function stop(){
         playing = false
         counter.stop()
     }
-
-    function stop(){
-        playing = false
-        counter.stop()
-    }
-
     /*
      * This is a temporary test to highlight the currently
      * playing verse

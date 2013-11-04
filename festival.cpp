@@ -25,21 +25,15 @@
 #include "bibleapp.h"
 #include "festival.h"
 //#include    <QProcess>
-QString program = "/usr/bin/festival";
-QString echo = "echo";
-BibleApp get; // not sure how to do this.....
-QString bverse = get.verse(bverse);  //trying.... :)
-QString arguments = "--tts";
+
 //later add --language and a language variable, once we implement other languages
-QString festContent = QString("%e %b %p %a").arg(echo, bverse, program, arguments);
 ScriptLauncher::ScriptLauncher(QObject *parent) :
     QObject(parent),
     m_process(new QProcess(this))
 {
 }
-void ScriptLauncher::launchScript()
+void ScriptLauncher::launchScript(QString echo, QString bverse, QString program, QString argum)
 {
-
+    QString festContent = QString("%e %b %p %a").arg(echo, bverse, program, argum);
     m_process->start(festContent);
-
 }

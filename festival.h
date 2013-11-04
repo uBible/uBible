@@ -31,15 +31,20 @@
 #include <QString>
 #include <QObject>
 #include <QProcess>
+
 class ScriptLauncher : public QObject
 {
     Q_OBJECT
 public:
+    QProcess *m_process;//= new QProcess(parent);
+    const QString program;
+    const QString echo;
+    QString bverse;
+    const QString argum;
     explicit ScriptLauncher(QObject *parent = 0);
-    Q_INVOKABLE void launchScript();
+    Q_INVOKABLE void launchScript(QString echo, QString bverse, QString program, QString argum);
 private:
-    QProcess *m_process;
-    //QProcess *myProcess = new QProcess(parent);
+
 };
 
 #endif // FESTIVAL_H
