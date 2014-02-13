@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
     QtQuick2ApplicationViewer viewer;
     viewer.rootContext()->setContextProperty("App", new BibleApp());
     viewer.setMainQmlFile(QStringLiteral("qml/uBible/main.qml"));
+    viewer.setTitle("uBible");
     viewer.showExpanded();
 
     return app.exec();

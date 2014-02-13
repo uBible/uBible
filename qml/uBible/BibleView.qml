@@ -50,8 +50,8 @@ Item {
          * details) and add a button/link to the module manager
          */
         text: bibleChapter.version == ""
-              ? i18n.tr("No SWORD Bible modules are installed!")
-              : i18n.tr("The SWORD module containing the %1 Bible is not installed!").arg(bibleChapter.version)
+              ? i18n.tr("<b>No Bibles are installed!</b><p>Open the Bible manager to install a Bible.")
+              : i18n.tr("<b>The %1 Bible is not installed!</b><p>Open the Bible manager to install the Bible or choose a different version in Settings.").arg(bibleChapter.version)
         width: Math.min(implicitWidth, parent.width - units.gu(2))
         wrapMode: Text.Wrap
         horizontalAlignment: Text.AlignHCenter
@@ -63,6 +63,7 @@ Item {
         anchors.fill: parent
 
         model: bibleChapter.bible.exists ? bibleChapter : null
+        snapMode: ListView.SnapToItem
 
         /*
          * Used for extra padding to make a 1 gu margin around

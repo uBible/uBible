@@ -127,7 +127,7 @@ MainView {
 
     function goTo(verse) {
         biblePage.location = verse
-        tabs.selectedTabIndex = wideAspect ? 0 : 1
+        tabs.selectedTabIndex = 1//wideAspect ? 0 : 1
         while (pageStack.depth > 1)
             pageStack.pop()
     }
@@ -149,13 +149,12 @@ MainView {
         Tabs {
             id: tabs
 
-            Extra.HideableTab {
+            Tab {
                 title: page.title
                 page: HomePage {
                     id: homePage
                     objectName: "homePage"
                 }
-                show: !wideAspect
             }
 
             Tab {
@@ -171,22 +170,6 @@ MainView {
                 page: ResourcesPage {
                     id: resourcesPage
                     objectName: "resourcesPage"
-                }
-            }
-
-            Extra.HideableTab {
-                title: page.title
-                page: SearchPage {
-                    id: searchPage
-                    objectName: "searchPage"
-                }
-                show: !wideAspect
-            }
-
-            Tab {
-                title: page.title
-                page: SetttingsPage {
-                    objectName: "settingsPage"
                 }
             }
 

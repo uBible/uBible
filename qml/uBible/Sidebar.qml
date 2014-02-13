@@ -10,69 +10,97 @@ Extra.Sidebar {
            ? "transparent"
            : Qt.rgba(0.2,0.2,0.2,0.5)
 
-    Column {
-        anchors.fill: parent
+    property bool searching
+    autoFlick: false
 
-        Empty {
-            TextField {
-                id: searchField
+    function search(text) {
+        searching = true
+    }
 
-                primaryItem: Image {
-                    source: getIcon("search")
-                    height: parent.height - units.gu(1.5)
-                    width: height
-                    anchors.centerIn: parent
-                }
+    Empty {
+        id: searchItem
+        TextField {
+            id: searchField
 
-                placeholderText: "Search..."
-
-
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                    right: parent.right
-                    margins: units.gu(1)
-                }
-
-                onAccepted: search(searchField.text)
+            primaryItem: Image {
+                source: getIcon("search")
+                height: parent.height - units.gu(1.5)
+                width: height
+                anchors.centerIn: parent
             }
 
-            onClicked: search(searchField.text)
+            placeholderText: "Search..."
+
+
+            anchors {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                right: parent.right
+                margins: units.gu(1)
+            }
+
+            onTextChanged: {
+                if (text == "")
+                    searching = false
+            }
+
+            onAccepted: search(searchField.text)
         }
 
-        Header {
-            text: "Verse of the Day"
-            visible: showVerseOption.value
+        onClicked: search(searchField.text)
+    }
+
+    Item {
+        anchors {
+            top: searchItem.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
         }
 
-        BibleVerse {
-            visible: showVerseOption.value
-            verse: "Proverbs 3:5-6"
-            //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
+        SearchView {
+            anchors.fill: parent
+            visible: searching
         }
 
-        Header {
-            text: "Reading Plan"
-            visible: showReadingPlanOption.value
-        }
+        Column {
+            visible: !searching
+            anchors.fill: parent
 
-        BibleVerse {
-            visible: showReadingPlanOption.value
-            verse: "Matthew 6"
-            //contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
-        }
+            Header {
+                text: "Verse of the Day"
+                visible: showVerseOption.value
+            }
 
-        Header {
-            text: "Recent"
-            visible: recentReadingsOption.value.length > 0
-        }
+            BibleVerse {
+                visible: showVerseOption.value
+                verse: "Proverbs 3:5-6"
+                //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
+            }
 
-        Repeater {
-            model: recentReadingsOption.value
+            Header {
+                text: "Reading Plan"
+                visible: showReadingPlanOption.value
+            }
 
-            delegate: BibleVerse {
-                verse: modelData
-                removable: true
+            BibleVerse {
+                visible: showReadingPlanOption.value
+                verse: "Matthew 6"
+                //contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
+            }
+
+            Header {
+                text: "Recent"
+                visible: recentReadingsOption.value.length > 0
+            }
+
+            Repeater {
+                model: recentReadingsOption.value
+
+                delegate: BibleVerse {
+                    verse: modelData
+                    removable: true
+                }
             }
         }
     }

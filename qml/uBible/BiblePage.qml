@@ -140,18 +140,19 @@ Page {
         }
 
         ToolbarButton {
+            id: searchButton
+            iconSource: getIcon("search")
+            text: i18n.tr("Search")
+            visible: !wideAspect || fullscreen
+            onTriggered: pageStack.push(Qt.resolvedUrl("SearchPage.qml"))
+        }
+
+        ToolbarButton {
             id: bookmarksButton
             iconSource: getIcon("favorite-selected")
             text: i18n.tr("Bookmarks")
             //enabled: bookmarksOption.value.length > 0
             onTriggered: PopupUtils.open(bookmarksPopover, bookmarksButton)
-        }
-
-        ToolbarButton {
-            visible: !wideAspect
-            iconSource: getIcon("search")
-            text: i18n.tr("Search")
-            onTriggered: search()
         }
 
         ToolbarButton {
@@ -167,6 +168,14 @@ Page {
             iconSource: fullscreen ? getIcon("view-restore") : getIcon("view-fullscreen")
 
             onTriggered: fullscreen = !fullscreen
+        }
+
+        ToolbarButton {
+            id: settingsButton
+            iconSource: getIcon("settings")
+            text: i18n.tr("Settings")
+            visible: wideAspect
+            onTriggered: PopupUtils.open(Qt.resolvedUrl("SettingsPage.qml"), value)
         }
     }
 

@@ -43,10 +43,10 @@ Page {
 
         },
         "Judgement": {
-
+            "The wages of sin is death": "Romans 6:23"
         },
         "Eternal Life": {
-
+            "Christ has destroyed the power of death": "1 Corinthians 15:50-57"
         }
     }
 
