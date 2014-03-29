@@ -29,7 +29,7 @@ import "ubuntu-ui-extras" as Extra
 UbuntuShape {
     color: Qt.rgba(0.5,0.5,0.5,0.4)
 
-    width: units.gu(20)
+    width: units.gu(25)
     height: units.gu(18)
 
     property alias location: pointer.location
