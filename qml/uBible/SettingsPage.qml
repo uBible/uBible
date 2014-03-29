@@ -23,6 +23,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
+import "ubuntu-ui-extras" as Extra
 
 // TODO: Update the switches and value selectors to use
 // the action property with the actual option instead of
@@ -61,11 +62,16 @@ ComposerSheet {
             id: column
             anchors.fill: parent
 
-            ValueSelector {
-                id: bibleVersionSelector
+            Standard {
+                id: versionText
                 text: i18n.tr("Bible Version")
+            }
+            Extra.ValuesSpinner  {
+                id: bibleVersionSelector
                 values: App.availableBibles()
                 selectedIndex: values.indexOf(bibleVersionOption.value)
+                height: units.gu(15)
+                anchors.right: column.horizontalCenter
             }
 
             Standard {
