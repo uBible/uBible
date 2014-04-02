@@ -24,7 +24,6 @@
 #include <QtQml/QQmlContext>
 #include <QtQml>
 #include "qtquick2applicationviewer.h"
-
 #include <QDebug>
 
 #include "bibleapp.h"
@@ -39,6 +38,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<BibleChapter>("uBible", 1, 0, "BibleChapter");
 
     QtQuick2ApplicationViewer viewer;
+    viewer.rootContext()->setContextProperty("Bible", new Bible());
     viewer.rootContext()->setContextProperty("App", new BibleApp());
     viewer.setMainQmlFile(QStringLiteral("qml/uBible/main.qml"));
     viewer.setTitle("uBible");

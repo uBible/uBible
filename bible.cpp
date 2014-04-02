@@ -45,6 +45,8 @@ void Bible::onNameChanged(const QString &name) {
         option->setOptionValue("On");
         module()->AddRenderFilter(option);
     }
+    //TODO:
+    //why are we referecing &name?  what is it supposed to do?
 }
 
 QStringList Bible::books() {
@@ -67,7 +69,7 @@ QStringList Bible::books() {
             max--; // max == 1
 
         if (min > max) {
-            qWarning("Bible (%s) no OT and not NT! Check your config!", module()->Name());
+            qWarning("Bible (%s) no OT and no NT! Check your config!", module()->Name());
         } else {
             QSharedPointer<sword::VerseKey> key((sword::VerseKey *)module()->CreateKey());
             key->setPosition(sword::TOP);
@@ -177,8 +179,8 @@ QStringList Bible::search(const QString &phrase) {
     qDebug() << "Results:";
     QStringList results;
     for (searchResults = TOP; !searchResults.Error(); searchResults++) {
-        //qDebug() << (const char *) searchResults << ":\n";
-        //qDebug() << (const char *) *module() << "\n";
+        qDebug() << (const char *) searchResults << ":\n";
+        qDebug() << (const char *) *module() << "\n";
         results.append((const char *) searchResults);
     }
 

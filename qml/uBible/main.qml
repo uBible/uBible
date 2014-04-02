@@ -172,6 +172,13 @@ MainView {
                     objectName: "resourcesPage"
                 }
             }
+            Tab {
+                 title: page.title
+                 page: SearchPage {
+                     id: searchPage
+                     objectName: "searchPage"
+                 }
+                }
 
             visible: false
         }
@@ -187,7 +194,11 @@ MainView {
             name: "showVerse"
             defaultValue: true
         }
-
+        Extra.Option {
+            id: strongsOption
+            name: "showStrongs"
+            defaultValue: false
+        }
         Extra.Option {
             id: bibleVersionOption
             name: "bibleVersion"
