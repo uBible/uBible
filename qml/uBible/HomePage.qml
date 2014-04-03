@@ -24,6 +24,7 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import uBible 1.0
 import "ubuntu-ui-extras" as Extra
+//import Ubuntu.Components.Pickers 0.1
 
 Page {
     id: root
@@ -54,13 +55,23 @@ Page {
                 TextField {
                     id: searchField
 
-                    placeholderText: "Search..."
+                    placeholderText: i18n.tr("Search...")
 
                     anchors {
                         verticalCenter: parent.verticalCenter
                         left: parent.left
                         right: searchButton.left
                         margins: units.gu(1)
+                    }
+
+                    focus: true
+                    Keys.onPressed: {
+                            if ( event.key === Qt.Key_Return ) {
+                                search(searchField.text)
+                                print("Return Pressed")
+                            }
+                            else{event.accepted = false}
+
                     }
                 }
 
@@ -86,14 +97,14 @@ Page {
                         }
                     }
 
-                    text: "Search"
+                    text: i18n.tr("Search")
 
                     onClicked: search(searchField.text)
                 }
             }
 
             Header {
-                text: "Verse of the Day"
+                text: i18n.tr("Verse of the Day")
                 visible: showVerseOption.value
             }
 
@@ -104,7 +115,7 @@ Page {
             }
 
             Header {
-                text: "Reading Plan"
+                text: i18n.tr("Reading Plan")
                 visible: showReadingPlanOption.value
             }
 
@@ -116,7 +127,7 @@ Page {
             }
 
             Header {
-                text: "Recent"
+                text: i18n.tr("Recent")
                 visible: recentReadingsOption.value.length > 0
             }
 
@@ -128,6 +139,35 @@ Page {
                     removable: true
                 }
             }
+            Header {
+                text: i18n.tr("Choose")
+            }
+
+            property alias location: locationPicker.location
+
+
+            Row{
+            LocationPicker {
+
+                anchors.margins: units.gu(1)
+                id: locationPicker
+            }
+            Button {
+                //anchors.top: textLabel.bottom
+                anchors.verticalCenter: locationPicker.verticalCenter
+                id: goButton
+                objectName: "goToButton"
+            text: i18n.tr("Go")
+
+                onClicked: {
+                    //print("User switched to:", locationField.text)
+                    goTo(locationPicker.getLocation())
+                    PopupUtils.close(root)
+                }
+            }
+            }
+
+
         }
 
     }

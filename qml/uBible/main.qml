@@ -23,6 +23,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import U1db 1.0 as U1db
+//import uBible 1.0
 import "ubuntu-ui-extras" as Extra
 
 MainView {
@@ -119,14 +120,16 @@ MainView {
     }
 
     function search(text) {
-        searchPage.searchText = (text || "")
+        //searchPage.searchText = (text || "")
         // TODO: Better way to do this???
-        tabs.selectedTabIndex = 2
-        searchPage.search()
+        //searchPage.search()
+        //var result =
+        tabs.selectedTabIndex = 3
+        return Bible.search(text)
     }
 
     function goTo(verse) {
-        biblePage.location = verse
+        biblePage.location = verse //
         tabs.selectedTabIndex = 1//wideAspect ? 0 : 1
         while (pageStack.depth > 1)
             pageStack.pop()

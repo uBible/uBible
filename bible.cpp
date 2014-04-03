@@ -163,7 +163,7 @@ QString Bible::verse(int book, int chapter, int verse) {
     key.setVerse(verse);
 
     module()->setKey(key);
-
+    module()->AddRenderFilter(new GBFPlain()); //added this for copy function
     return module()->RenderText();
 }
 
@@ -175,7 +175,7 @@ QStringList Bible::search(const QString &phrase) {
     searchResults.Persist(true);
     qDebug() << "Setting key...";
     module()->setKey(searchResults);
-
+     module()->AddRenderFilter(new GBFPlain()); //search results
     qDebug() << "Results:";
     QStringList results;
     for (searchResults = TOP; !searchResults.Error(); searchResults++) {

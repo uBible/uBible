@@ -31,9 +31,9 @@ Page {
     title: i18n.tr("Search")
 
     property alias searchText: searchField.text
-    //function search(searchText) {
+   // function search(searchText) {
 
-//    }
+    //}
     Flickable {
         id: flickable
         anchors.fill: parent
@@ -49,7 +49,7 @@ Page {
                 TextField {
                     id: searchField
 
-                    placeholderText: "Search..."
+                    placeholderText:  i18n.tr("Search...")
 
                     anchors {
                         verticalCenter: parent.verticalCenter
@@ -59,10 +59,11 @@ Page {
                     }
                     focus: true
                     Keys.onPressed: {
-                            if ( event.key === Qt.Key_Return ) {
-                                search(searchText)
-                                print("Return Pressed")
-                            }
+                        if ( event.key === Qt.Key_Return ) {
+                            search(searchText)
+                            print("Return Pressed")
+                        }
+                        else{event.accepted = false}
 
                     }
                 }
@@ -89,28 +90,26 @@ Page {
                         }
                     }
 
-                    text: "Search"
+                    text:  i18n.tr("Search")
 
                     onClicked: {
                         search(searchText)
                     }
                 }
             }
+            Row{
 
-          /*  Header {
-                id: searchHeader
-                anchors.top: searchField.Bottom
-                text: "Search Results"
+            Header {
+                text:  i18n.tr("Search Results")
             }
 
             SearchView{
              id: searchView
-             anchors.top: searchHeader.Bottom
-
              objectName: "searchView"
              anchors.fill: parent
              clip: true
-            }*/
+            }
+            }
         }
     }
 

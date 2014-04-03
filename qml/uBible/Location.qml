@@ -36,6 +36,7 @@ Object {
     }
 
     property int startVerse: {
+
         if (verse.lastIndexOf('-') !== -1) {
             print(verse.substring(0, verse.lastIndexOf('-')))
             return verse.substring(0, verse.lastIndexOf('-'))

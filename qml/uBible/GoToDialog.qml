@@ -58,7 +58,7 @@ Dialog {
 
         onClicked: {
             //print("User switched to:", locationField.text)
-            goTo(locationPicker.getLocation())
+            goTo(locationPicker.getLocation()) // goTo() main.qml 132
             PopupUtils.close(root)
         }
     }

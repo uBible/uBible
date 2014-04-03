@@ -86,7 +86,6 @@ Page {
         }
 
         clip: true
-
         BibleView {
             id: bibleView
             objectName: "bibleView"
@@ -184,6 +183,9 @@ Page {
 
         BookmarksPopover {}
     }
+    Bible {
+        id: bible
+    }
 
     Component {
         id: versePopover
@@ -212,6 +214,11 @@ Page {
                         bookmarksOption.value = list
                     }
                 }
+                Action{
+                    text: i18n.tr("Copy Verse")
+                    onTriggered: Clipboard.push(verseToString(verse)+ " " + bible.verse(currentRegion.book, currentRegion.chapter, verse))
+                }
+
 
 //                Action {
 //                    text: verse.highlighted

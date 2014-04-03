@@ -27,8 +27,8 @@ import Ubuntu.Components.Pickers 0.1
 import uBible 1.0
 import "ubuntu-ui-extras" as Extra
 
-UbuntuShape {
-    color: Qt.rgba(0.5,0.5,0.5,0.4)
+Item {
+    //color: Qt.rgba(0.5,0.5,0.5,0.4)
 
     width: units.gu(55)
     height: units.gu(18)
@@ -37,7 +37,7 @@ UbuntuShape {
     Location {
         id: pointer
 
-        location: "Matthew " + 1
+        location: "Genesis 1"
     }
 
     function getLocation() {
@@ -66,7 +66,7 @@ UbuntuShape {
                 left: parent.left
                 top: parent.top
                 bottom: parent.bottom
-                right: divider1.horizontalCenter
+                right: chapterItem.left
                 margins: units.gu(1)
             }
             model: bible.books
@@ -78,17 +78,12 @@ UbuntuShape {
                         text: modelData
                     }
                 }
-            selectedIndex: 1
+            selectedIndex: 0
             onSelectedIndexChanged: {
                     print("selected book: " + selectedIndex);
                     print(bible.books[selectedIndex])
 
                 }
-        }
-
-        Extra.VerticalDivider {
-            id: divider1
-            anchors.horizontalCenter: chapterItem.left
         }
 
         Item {
@@ -109,13 +104,13 @@ UbuntuShape {
                     right: parent.right
                     //margins: units.gu(1)
                 }
-                model: (bible.chapterCount(bookSpinner.selectedIndex))
+                model: bible.chapterCount( bookSpinner.selectedIndex + 1 )
                 width: units.gu(25)
                 delegate: PickerDelegate {
                         Label {
                             anchors.centerIn: parent
                             id: chapterLabel
-                            text: 1 + modelData
+                            text: modelData + 1
                         }
                     }
                 selectedIndex: 1
