@@ -28,6 +28,7 @@ import "ubuntu-ui-extras" as Extra
 // TODO: Update the switches and value selectors to use
 // the action property with the actual option instead of
 // having to manually sync the values
+//TODO: add in font, and fontsize for VerseDelegate,
 ComposerSheet {
     id: sheet
     title: i18n.tr("Settings")
@@ -45,6 +46,7 @@ ComposerSheet {
         showVerseOption.value = showVerseSwitch.checked
         showReadingPlanOption.value = showReadingPlanSwitch.checked
         themeOption.value = themeSelector.values[themeSelector.selectedIndex]
+        strongsOption.value = strongsSwitch.checked
     }
 
     Flickable {
@@ -91,13 +93,21 @@ ComposerSheet {
                     checked: showReadingPlanOption.value
                 }
             }
+            /*Standard {
+                text: i18n.tr("Strongs Numbers")
 
+                control: Switch {
+                    id: strongsSwitch
+                    checked: strongsOption.value
+                }
+            }*/
             ValueSelector {
                 id: themeSelector
                 text: i18n.tr("Theme")
                 values: ["Suru", "Dark", "Light"]
                 selectedIndex: values.indexOf(themeOption.value)
             }
+
         }
     }
 }

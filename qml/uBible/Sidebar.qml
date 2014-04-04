@@ -29,7 +29,7 @@ Extra.Sidebar {
                 anchors.centerIn: parent
             }
 
-            placeholderText: "Search..."
+            placeholderText: i18n.tr("Search...")
 
 
             anchors {
@@ -68,7 +68,7 @@ Extra.Sidebar {
             anchors.fill: parent
 
             Header {
-                text: "Verse of the Day"
+                text: i18n.tr("Verse of the Day")
                 visible: showVerseOption.value
             }
 
@@ -90,7 +90,7 @@ Extra.Sidebar {
             }
 
             Header {
-                text: "Recent"
+                text: i18n.tr("Recent")
                 visible: recentReadingsOption.value.length > 0
             }
 

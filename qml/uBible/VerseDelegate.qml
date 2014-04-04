@@ -102,8 +102,8 @@ Empty {
 
         text: verseDelegate.text
         textFormat: Text.RichText
-        font.family: "Liberation Serif"
-        fontSize: "large"
+        font.family: "Liberation Serif"  //change this in settings
+        fontSize: "large" //have this change with pinch gesture
         color: currentRegion.inRange(verseDelegate.verse) ? selectionColor : textColor
 
         Behavior on color {
