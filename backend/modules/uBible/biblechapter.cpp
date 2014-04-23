@@ -71,7 +71,7 @@ QString BibleChapter::previousChapter() const
         } else {
             return "";
         }
-        chapter = 1;
+        chapter = bible()->chapterCount(book);
     }
 
     return QString("%1 %2").arg(book).arg(chapter);
