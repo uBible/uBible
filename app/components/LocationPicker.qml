@@ -27,98 +27,221 @@ import Ubuntu.Components.Pickers 0.1
 import uBible 1.0
 import "../ubuntu-ui-extras" as Extra
 
-Item {
-    //color: Qt.rgba(0.5,0.5,0.5,0.4)
+/*
+ * Copyright 2013 Canonical Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; version 3.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-    width: units.gu(55)
-    height: units.gu(18)
+StyledItem {
+    id: datePicker
+
     property alias location: pointer.location
-    property alias selectedIndex: bookSpinner.selectedIndex
+    property int selectedIndex: 0//bookSpinner.selectedIndex
     Location {
         id: pointer
 
-        location: "Genesis 1"
+        location: biblePage.location
     }
 
     function getLocation() {
-        console.log("inside getLocation() :" + bible.books[bookSpinner.selectedIndex]+ " " + (1+chapterSpinner.selectedIndex) + " selected index: " + selectedIndex)
-        return bible.books[bookSpinner.selectedIndex] + " " + (1+chapterSpinner.selectedIndex)
+        return location
     }
 
     Bible {
         id: bible
     }
 
-    Item {
-        id: rectangle
-        //color: Qt.rgba(0.2,0.2,0.2,0.2)
+    /*!
+      \qmlproperty bool moving
+      \readonly
+      The property holds whether the component's pickers are moving.
+      \sa Picker::moving
+      */
+    readonly property alias moving: positioner.moving
 
+    implicitWidth: units.gu(36)
+    implicitHeight: units.gu(20)
+
+
+    Component.onCompleted: {
+        internals.completed = true;
+        tumblerModel.setPickerModel(bookModel, "BookPicker", 0)
+        tumblerModel.setPickerModel(chapterModel, "ChapterPicker", 1)
+        for (var i = 0; i < tumblerModel.count; i++) {
+            var model = tumblerModel.get(i).pickerModel
+            var pickerItem = model.pickerItem;
+            pickerItem.resetPicker();
+            pickerItem.positionViewAtIndex(model.indexOf(), PathView.Center);
+        }
+    }
+
+    style: Theme.createStyleComponent("DatePickerStyle.qml", datePicker)
+    Binding {
+        target: __styleInstance
+        property: "view"
+        value: positioner
+    }
+    Binding {
+        target: __styleInstance
+        property: "pickerModels"
+        value: tumblerModel
+    }
+
+    PickerModelBase {
+        id: bookModel
+        circular: false
+        pickerWidth: units.gu(20)
+        property int selectedIndex
+
+        onSelectedIndexChanged: {
+            pointer.location = "%1 %2".arg(get(selectedIndex).book).arg(pointer.chapter)
+            chapterModel.reset()
+        }
+
+        function reset() {
+            resetting = true;
+
+            clear();
+            var list = bible.books
+            for (var i = 0; i < list.length; i++) {
+                append({"book": list[i]});
+            }
+
+            resetting = false;
+        }
+
+        function text(modelData) {
+            return modelData
+        }
+
+        function indexOf() {
+            print("INDEX OF")
+            print(pointer.book)
+            print(bible.books.indexOf(pointer.book))
+            return bible.books.indexOf(pointer.book)
+        }
+
+        mainComponent: datePicker
+        pickerCompleted: internals.completed
+
+    }
+
+    PickerModelBase {
+        id: chapterModel
+        circular: false
+        pickerWidth: units.gu(5)
+
+        property int selectedIndex
+
+        onSelectedIndexChanged: {
+            pointer.location = "%1 %2".arg(pointer.book).arg(get(selectedIndex).chapter)
+        }
+
+        function reset() {
+            resetting = true;
+
+            clear();
+            var count = bible.chapterCount(pointer.book)
+            for (var i = 0; i < count; i++) {
+                append({"chapter": i + 1});
+            }
+
+            resetting = false;
+        }
+
+        function text(modelData) {
+            return modelData
+        }
+
+        function indexOf() {
+            return pointer.chapter - 1
+        }
+
+        mainComponent: datePicker
+        pickerCompleted: internals.completed
+    }
+
+    // tumbler positioner
+    PickerRow {
+        id: positioner
+        parent: (datePicker.__styleInstance && datePicker.__styleInstance.hasOwnProperty("tumblerHolder")) ?
+                    datePicker.__styleInstance.tumblerHolder : datePicker
+        mainComponent: datePicker
+        model: tumblerModel
+        margins: internals.margin
         anchors {
-            fill: parent
-            //left: parent.left
-            //right: parent.right
-            //top: header.bottom
+            top: parent.top
+            bottom: parent.bottom
+            horizontalCenter: parent.horizontalCenter
         }
+    }
 
-        Picker {
-            id: bookSpinner
-            anchors {
-                left: parent.left
-                top: parent.top
-                bottom: parent.bottom
-                right: chapterItem.left
-                margins: units.gu(1)
-            }
-            model: bible.books
-            width: units.gu(25)
-            delegate: PickerDelegate {
-                    Label {
-                        anchors.centerIn: parent
-                        id: bookLabel
-                        text: modelData
-                    }
-                }
-            selectedIndex: 0
-            onSelectedIndexChanged: {
-                    print("selected book: " + selectedIndex);
-                    print(bible.books[selectedIndex])
+    ListModel {
+        /*
+              Model to hold tumbler order for repeaters.
+              Roles:
+              - pickerModel
+              - pickerName
+              */
+        id: tumblerModel
 
-                }
-        }
+        /*
+          Signal triggered when the model is about to remove a picker. We cannot rely on
+          rowAboutToBeRemoved, as by the time the signal is called the list element is
+          already removed from the model.
+          */
+        signal pickerRemoved(int index)
 
-        Item {
-            id: chapterItem
-            anchors {
-                right: parent.right
-                top: parent.top
-                bottom: parent.bottom
-            }
-
-            width: parent.width/3
-            Picker {
-                id: chapterSpinner
-                anchors {
-                    left: parent.left
-                    top: parent.top
-                    bottom: parent.bottom
-                    right: parent.right
-                    //margins: units.gu(1)
-                }
-                model: bible.chapterCount( bookSpinner.selectedIndex + 1 )
-                width: units.gu(25)
-                delegate: PickerDelegate {
-                        Label {
-                            anchors.centerIn: parent
-                            id: chapterLabel
-                            text: modelData + 1
-                        }
-                    }
-                selectedIndex: 1
-                onSelectedIndexChanged: {
-                        print("selected chapter: " + (selectedIndex+1));
-
+        // the function checks whether a pickerModel was added or not
+        // returns the index of the model object the pickerModel was found
+        // or -1 on error.
+        function pickerModelIndex(name) {
+            for (var i = 0; i < count; i++) {
+                if (get(i).pickerName === name) {
+                    return i;
                 }
             }
+            return -1;
         }
+
+        // the function checks whether a pickerModel is present in the list;
+        // moves the existing one to the given index or inserts it if not present
+        function setPickerModel(model, name, index) {
+            var idx = pickerModelIndex(name);
+            if (idx >= 0) {
+                move(idx, index, 1);
+            } else {
+                print(name)
+                append({"pickerModel": model, "pickerName": name});
+            }
+        }
+
+        // removes the given picker
+        function removePicker(name) {
+            var idx = pickerModelIndex(name);
+            if (idx >= 0) {
+                pickerRemoved(idx);
+                remove(idx);
+            }
+        }
+    }
+
+    // component to calculate text fitting
+    Label { id: textSizer; visible: false }
+    QtObject {
+        id: internals
+        property bool completed: false
+        property real margin: units.gu(1.5)
     }
 }

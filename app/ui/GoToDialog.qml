@@ -26,6 +26,7 @@ import Ubuntu.Components.ListItems 0.1
 import uBible 1.0
 
 import "../components"
+import "../ubuntu-ui-extras"
 
 Dialog {
     id: root
@@ -38,41 +39,47 @@ Dialog {
 
     LocationPicker {
         id: locationPicker
+
+        style: SuruDatePickerStyle {}
     }
 
-    Button {
-        id: goButton
-        objectName: "goButton"
+    Item {
+        width: parent.width
+        height: childrenRect.height
 
-//        gradient: Gradient {
-//            GradientStop {
-//                position: 0
-//                color: "green"//Qt.rgba(0,0.7,0,1)
-//            }
+        Button {
+            objectName: "cancelButton"
+            text: i18n.tr("Cancel")
 
-//            GradientStop {
-//                position: 1
-//                color: Qt.rgba(0.3,0.7,0.3,1)
-//            }
-//        }
+            anchors {
+                left: parent.left
+                right: parent.horizontalCenter
+                rightMargin: units.gu(1)
+            }
 
-        text: i18n.tr("Go")
+            color: "gray"
 
-        onClicked: {
-            //print("User switched to:", locationField.text)
-            goTo(locationPicker.getLocation()) // goTo() main.qml 132
-            PopupUtils.close(root)
+            onClicked: {
+                PopupUtils.close(root)
+            }
         }
-    }
 
-    Button {
-        objectName: "cancelButton"
-        text: i18n.tr("Cancel")
+        Button {
+            id: okButton
+            objectName: "okButton"
 
-        gradient: UbuntuColors.greyGradient
+            anchors {
+                left: parent.horizontalCenter
+                right: parent.right
+                leftMargin: units.gu(1)
+            }
 
-        onClicked: {
-            PopupUtils.close(root)
+            text: i18n.tr("Ok")
+
+            onClicked: {
+                PopupUtils.close(root)
+                goTo(locationPicker.getLocation())
+            }
         }
     }
 }
