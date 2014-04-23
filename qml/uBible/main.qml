@@ -182,6 +182,14 @@ MainView {
                      objectName: "searchPage"
                  }
                 }
+            Tab {
+                 title: page.title
+                 page: SettingsPage {
+                     id: settingsPage
+                     objectName: "settingsPage"
+                 }
+                }
+
 
             visible: false
         }
@@ -201,6 +209,16 @@ MainView {
             id: strongsOption
             name: "showStrongs"
             defaultValue: false
+            onValueChanged: {
+                if (true){
+
+                }
+            }
+        }
+        Extra.Option {
+            id: fontOption
+            name: "userFont"
+            defaultValue: "Liberation Serif"
         }
         Extra.Option {
             id: bibleVersionOption

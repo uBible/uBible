@@ -24,34 +24,55 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
 import "ubuntu-ui-extras" as Extra
+import Ubuntu.Components.Pickers 0.1
 
 // TODO: Update the switches and value selectors to use
 // the action property with the actual option instead of
 // having to manually sync the values
 //TODO: add in font, and fontsize for VerseDelegate,
-ComposerSheet {
+Page {
     id: sheet
     title: i18n.tr("Settings")
+    property string fontastic: ""
 
-    Component.onCompleted: {
-        sheet.__leftButton.text = i18n.tr("Close")
-        sheet.__leftButton.gradient = UbuntuColors.greyGradient
-        sheet.__rightButton.text = i18n.tr("Confirm")
-        sheet.__rightButton.color = sheet.__rightButton.__styleInstance.defaultColor
-        sheet.__foreground.style = Theme.createStyleComponent(Qt.resolvedUrl("SuruSheetStyle.qml"), sheet)
+  /*  onConfirmClicked: {
+
     }
-
-    onConfirmClicked: {
-        bibleVersionOption.value = bibleVersionSelector.values[bibleVersionSelector.selectedIndex]
-        showVerseOption.value = showVerseSwitch.checked
-        showReadingPlanOption.value = showReadingPlanSwitch.checked
-        themeOption.value = themeSelector.values[themeSelector.selectedIndex]
-        strongsOption.value = strongsSwitch.checked
-    }
-
-    Flickable {
-        id: flickable
+*/ Picker{
+        //anchors.top: flickable.bottom
         anchors {
+            //fill: parent
+            top: parent
+            right: sheet.horizontalCenter
+            margins: units.gu(1)
+        }
+
+        width: units.gu(45)
+         id:fontList
+         model: Qt.fontFamilies()
+         delegate: PickerDelegate {
+             Label {
+                 text: modelData
+                 anchors.centerIn: parent
+                 font.family: modelData
+                 font.pixelSize: 24
+                 //color: "white"
+             }
+         }
+             selectedIndex: 1
+             onSelectedIndexChanged: {
+                     print("selected font: " + selectedIndex);
+                     print(model[selectedIndex]);
+                    fontastic = model[selectedIndex]
+
+                 }
+
+
+         }
+    Empty {
+        id: flickable
+        anchors.top: fontList.bottom
+        /*anchors {
             fill: parent
             margins: units.gu(-1)
         }
@@ -59,8 +80,26 @@ ComposerSheet {
         contentHeight: column.height
         contentWidth: width
         interactive: contentHeight > height
-
+*/
         Column {
+            Button{
+                text: i18n.tr("Confirm")
+            onClicked: {
+                bibleVersionOption.value = bibleVersionSelector.values[bibleVersionSelector.selectedIndex]
+                showVerseOption.value = showVerseSwitch.checked
+                showReadingPlanOption.value = showReadingPlanSwitch.checked
+                themeOption.value = themeSelector.values[themeSelector.selectedIndex]
+                strongsOption.value = strongsSwitch.checked
+                fontOption.value = fontastic
+                /*
+                sheet.__leftButton.text = i18n.tr("Close")
+                sheet.__leftButton.gradient = UbuntuColors.greyGradient
+                sheet.__rightButton.text = i18n.tr("Confirm")
+                sheet.__rightButton.color = sheet.__rightButton.__styleInstance.defaultColor
+                sheet.__foreground.style = Theme.createStyleComponent(Qt.resolvedUrl("SuruSheetStyle.qml"), sheet)
+                */
+            }
+            }
             id: column
             anchors.fill: parent
 
@@ -82,6 +121,7 @@ ComposerSheet {
                 control: Switch {
                     id: showVerseSwitch
                     checked: showVerseOption.value
+
                 }
             }
 
@@ -93,14 +133,14 @@ ComposerSheet {
                     checked: showReadingPlanOption.value
                 }
             }
-            /*Standard {
+            Standard {
                 text: i18n.tr("Strongs Numbers")
 
                 control: Switch {
                     id: strongsSwitch
                     checked: strongsOption.value
                 }
-            }*/
+            }
             ValueSelector {
                 id: themeSelector
                 text: i18n.tr("Theme")
@@ -108,6 +148,11 @@ ComposerSheet {
                 selectedIndex: values.indexOf(themeOption.value)
             }
 
+
+                }
+
+
         }
-    }
+
 }
+

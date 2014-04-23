@@ -30,7 +30,7 @@ Empty {
 
     property int verse: index + 1
     property string text: model.verse
-
+    property string userFont: fontOption.value
     height: units.gu(0.5) + verse.height
     selected: selectedRegion.inRange(index + 1)
     property bool current: currentRegion.inRange(index + 1)
@@ -102,7 +102,7 @@ Empty {
 
         text: verseDelegate.text
         textFormat: Text.RichText
-        font.family: "Liberation Serif"  //change this in settings
+        font.family: userFont //change this in settings
         fontSize: "large" //have this change with pinch gesture
         color: currentRegion.inRange(verseDelegate.verse) ? selectionColor : textColor
 
