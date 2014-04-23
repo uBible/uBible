@@ -1,0 +1,15 @@
+{
+    "name": "com.ubuntu.developer.mdspencer.ubible",
+    "description": "description of uBible",
+    "framework": "ubuntu-sdk-14.04-qml-dev1",
+    "architecture": "all",
+    "title": "uBible",
+    "hooks": {
+        "uBible": {
+            "apparmor": "uBible.json",
+            "desktop": "uBible.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Michael Spencer <sonrisesoftware@gmail.com>"
+}
