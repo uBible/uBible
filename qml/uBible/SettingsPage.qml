@@ -29,7 +29,7 @@ import Ubuntu.Components.Pickers 0.1
 // TODO: Update the switches and value selectors to use
 // the action property with the actual option instead of
 // having to manually sync the values
-//TODO: add in font, and fontsize for VerseDelegate,
+//fontsize for VerseDelegate, in PinchArea
 Page {
     id: sheet
     title: i18n.tr("Settings")

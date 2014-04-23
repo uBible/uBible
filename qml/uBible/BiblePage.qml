@@ -174,7 +174,7 @@ Page {
             iconSource: getIcon("settings")
             text: i18n.tr("Settings")
             visible: wideAspect
-            onTriggered: PopupUtils.open(Qt.resolvedUrl("SettingsPage.qml"), value)
+            onTriggered: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
         }
     }
 
