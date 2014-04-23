@@ -25,6 +25,8 @@ import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
 import uBible 1.0
 
+import "../components"
+
 Dialog {
     id: root
 

@@ -36,3 +36,43 @@ BibleChapter::BibleChapter(Bible *bible, const QString &book, int chapter, QObje
 
     bibleChanged(m_bible);
 }
+
+QString BibleChapter::nextChapter() const
+{
+    int chapter = m_chapter;
+    QString book = m_book;
+    if (chapter < bible()->chapterCount(book)) {
+        chapter++;
+    } else {
+        QStringList books = bible()->books();
+        int currentIndex = books.indexOf(book);
+        if (currentIndex < books.length() - 1) {
+            book = books[currentIndex + 1];
+        } else {
+            return "";
+        }
+        chapter = 1;
+    }
+
+    return QString("%1 %2").arg(book).arg(chapter);
+}
+
+QString BibleChapter::previousChapter() const
+{
+    int chapter = m_chapter;
+    QString book = m_book;
+    if (chapter > 1) {
+        chapter--;
+    } else {
+        QStringList books = bible()->books();
+        int currentIndex = books.indexOf(book);
+        if (currentIndex > 0) {
+            book = books[currentIndex - 1];
+        } else {
+            return "";
+        }
+        chapter = 1;
+    }
+
+    return QString("%1 %2").arg(book).arg(chapter);
+}

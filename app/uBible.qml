@@ -50,8 +50,12 @@ MainView {
      */
     automaticOrientation: true
 
-    width: units.gu(100)
-    height: units.gu(75)
+    //width: units.gu(100)
+    //height: units.gu(75)
+
+    // The size of the Nexus 4
+    width: units.gu(42)
+    height: units.gu(67)
 
     headerColor: (themeOption.value === "" || themeOption.value === "Suru") ? "#57365E" : backgroundColor
     backgroundColor: (themeOption.value === "" || themeOption.value === "Suru")
@@ -186,6 +190,10 @@ MainView {
         }
 
         Component.onCompleted: pageStack.push(tabs)
+    }
+
+    Extra.Notification {
+        id: notification
     }
 
     // TODO: When this actually gets merged into the Ubuntu UI Toolkit,

@@ -31,13 +31,15 @@ Object {
         if (location.lastIndexOf(':') !== -1) {
             return location.substring(location.lastIndexOf(':') + 1)
         } else {
-            return -1
+            return ""
         }
     }
 
     property int startVerse: {
 
-        if (verse.lastIndexOf('-') !== -1) {
+        if (verse === "") {
+            return -1
+        } else if (verse.lastIndexOf('-') !== -1) {
             print(verse.substring(0, verse.lastIndexOf('-')))
             return verse.substring(0, verse.lastIndexOf('-'))
         } else {
@@ -46,7 +48,9 @@ Object {
     }
 
     property int endVerse: {
-        if (verse.lastIndexOf('-') !== -1) {
+        if (verse === "") {
+            return -1
+        } else if (verse.lastIndexOf('-') !== -1) {
             print(verse.substring(verse.lastIndexOf('-') + 1))
             return verse.substring(verse.lastIndexOf('-') + 1)
         } else {
