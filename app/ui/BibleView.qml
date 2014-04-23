@@ -241,6 +241,19 @@ Item {
     }
 
     Label {
+        opacity: pullDownLabel.visible && diff > units.gu(6) ? 0.5 : 0
+        text: i18n.tr("Release to load")
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: pullDownLabel.bottom
+        }
+
+        Behavior on opacity {
+            UbuntuNumberAnimation {}
+        }
+    }
+
+    Label {
         id: pullUpLabel
         anchors {
             horizontalCenter: parent.horizontalCenter
@@ -251,6 +264,19 @@ Item {
         fontSize: "large"
         text: bibleChapter.nextChapter
         visible: atEnd && text !== ""
+    }
+
+    Label {
+        opacity: pullUpLabel.visible && diff > units.gu(6) ? 0.5 : 0
+        text: i18n.tr("Release to load")
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: pullUpLabel.top
+        }
+
+        Behavior on opacity {
+            UbuntuNumberAnimation {}
+        }
     }
 
     Scrollbar {

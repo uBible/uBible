@@ -62,7 +62,7 @@ Page {
                         verticalCenter: parent.verticalCenter
                         left: parent.left
                         right: searchButton.left
-                        margins: units.gu(1)
+                        margins: units.gu(2)
                     }
 
                     focus: true
@@ -83,19 +83,7 @@ Page {
                         top: searchField.top
                         bottom: searchField.bottom
                         right: parent.right
-                        rightMargin: units.gu(1)
-                    }
-
-                    gradient: Gradient {
-                        GradientStop {
-                            position: 0
-                            color: "green"
-                        }
-
-                        GradientStop {
-                            position: 1
-                            color: Qt.rgba(0.3,0.7,0.3,1)
-                        }
+                        rightMargin: units.gu(2)
                     }
 
                     text: i18n.tr("Search")

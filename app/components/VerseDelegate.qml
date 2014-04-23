@@ -35,6 +35,8 @@ Empty {
     selected: selectedRegion.inRange(index + 1)
     property bool current: currentRegion.inRange(index + 1)
 
+    property bool bookmarked: bookmarksOption.value.indexOf(verseToString(verseDelegate.verse)) !== -1
+
     onClicked: {
         PopupUtils.open(versePopover, verseDelegate,
                         {
@@ -52,6 +54,7 @@ Empty {
         text: verseDelegate.verse
         color: textColor
         font.bold: true
+        visible: !bookmarked
 
         anchors {
             left: parent.left
@@ -59,6 +62,19 @@ Empty {
             top: verse.top
             //topMargin: units.gu(0.5)
         }
+    }
+
+    ColorizedImage {
+        anchors {
+            left: parent.left
+            leftMargin: units.gu(0.5)
+            verticalCenter: number.verticalCenter
+        }
+        visible: bookmarked
+        color: textColor
+        width: units.gu(2)
+        height: width
+        source: getIcon("starred")
     }
 
     Rectangle {
@@ -96,8 +112,8 @@ Empty {
          * component.
          */
         onWidthChanged: {
-            text = ""
-            text = Qt.binding(function() { return model.verse })
+            //text = ""
+            //text = Qt.binding(function() { return model.verse })
         }
 
         text: verseDelegate.text
