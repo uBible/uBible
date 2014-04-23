@@ -50,6 +50,7 @@ Empty {
      * the number with an audio symbol
      */
     PinchArea{
+        anchors.fill: parent
         onPinchUpdated: { //TODO: does this work?
             var pinchVar = pinch.scale
             if (pinchVar === 1.0){
