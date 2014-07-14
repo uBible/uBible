@@ -18,8 +18,8 @@ uBible
 * U1db library from the `qtdeclarative5-u1db-plugin` package
 * U1db library in [Trusty] is the `qtdeclarative5-u1db1.0` package
 * Ubuntu Mobile icon theme from the `ubuntu-mobile-icons` package
-* ubuntu-ui-extras is required https://github.com/iBeliever/ubuntu-ui-extras
-  copy this into uBible/qml/uBible
+* ubuntu-ui-extras is required from https://github.com/iBeliever/ubuntu-ui-extras. Copy or link this into `app/`
+* uData is required from https://github.com/iBeliever/udata. Copy or link this into `app/`
 
 Currently, there is no module manager, so you will need to install Bibles using another SWORD program or from the Ubuntu repositories. For example, the KJV Bible is available from the `sword-text-kjv` package.
 
