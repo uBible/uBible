@@ -23,4 +23,4 @@ uBible
 
 Currently, there is no module manager, so you will need to install Bibles using another SWORD program or from the Ubuntu repositories. For example, the KJV Bible is available from the `sword-text-kjv` package.
 
-To run/build, just open the `.pro` file in Qt Creator.
+To run/build, just open the `CMakeLists.txt` file in Qt Creator.
