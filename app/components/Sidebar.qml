@@ -4,11 +4,7 @@ import Ubuntu.Components.ListItems 0.1
 import "../ubuntu-ui-extras" as Extra
 
 Extra.Sidebar {
-    //color: "lightgray"
-
-    color: themeOption.value === "Light"
-           ? "transparent"
-           : Qt.rgba(0.2,0.2,0.2,0.5)
+    color: "transparent"
 
     property bool searching
     autoFlick: false

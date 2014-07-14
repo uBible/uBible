@@ -118,10 +118,12 @@ Page {
 
         ToolbarButton {
             id: goToButton
-            iconSource: getIcon("location")
-            text: i18n.tr("Go To")
-            onTriggered: {
-                PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton, {location: location})
+            action: Action {
+                iconSource: getIcon("location")
+                text: i18n.tr("Go To")
+                onTriggered: {
+                    PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton, {location: location})
+                }
             }
         }
 
@@ -144,10 +146,12 @@ Page {
 
         ToolbarButton {
             id: searchButton
-            iconSource: getIcon("search")
-            text: i18n.tr("Search")
-            visible: !wideAspect || fullscreen
-            onTriggered: pageStack.push(Qt.resolvedUrl("SearchPage.qml"))
+            action: Action {
+                iconSource: getIcon("search")
+                text: i18n.tr("Search")
+                visible: !wideAspect || fullscreen
+                onTriggered: pageStack.push(Qt.resolvedUrl("SearchPage.qml"))
+            }
         }
 
         ToolbarButton {
