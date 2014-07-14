@@ -36,7 +36,7 @@ ComposerSheet {
 
     TextArea {
         id: textArea
-        placeholderText: "Notes"
+        placeholderText: i18n.tr("Notes")
         anchors {
             fill: parent
         }

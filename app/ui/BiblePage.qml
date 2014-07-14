@@ -177,7 +177,7 @@ Page {
             id: settingsButton
             iconSource: getIcon("settings")
             text: i18n.tr("Settings")
-            onTriggered: PopupUtils.open(Qt.resolvedUrl("SettingsPage.qml"), value)
+            onTriggered: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
         }
     }
 

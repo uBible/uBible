@@ -63,7 +63,7 @@ Rectangle {
 
         Label {
             anchors.centerIn: parent
-            text: "Audio is still in development. This is just for testing."
+            text: i18n.tr("Audio is still in development. This is just for testing.")
         }
 
         height: units.gu(6)

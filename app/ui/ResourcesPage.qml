@@ -27,7 +27,7 @@ import "../ubuntu-ui-extras" as Extra
 
 Page {
     id: root
-    title: "Resources"
+    title: i18n.tr("Resources")
 
     property var quickverses: {
         "Creation": "Genesis 1",

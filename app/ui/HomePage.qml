@@ -112,8 +112,7 @@ Page {
             // TODO: Use real reading plan backend
             BibleVerse {
                 visible: settings.showReadingPlan
-                verse: "Matthew 6"
-                //contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
+                verse: "1 John 3"
             }
         }
     }

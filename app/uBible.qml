@@ -175,13 +175,6 @@ MainView {
                     objectName: "resourcesPage"
                 }
             }
-//            Tab {
-//                title: page.title
-//                page: SearchPage {
-//                    id: searchPage
-//                    objectName: "searchPage"
-//                }
-//            }
 
             visible: false
         }

@@ -33,9 +33,8 @@ import uBible 1.0
 Page {
     id: sheet
     title: i18n.tr("Settings")
-
     Flickable {
-        id: flickable
+       id: flickable
         anchors {
             fill: parent
         }
@@ -80,6 +79,15 @@ Page {
                     onCheckedChanged: settings.showReadingPlan = checked
                 }
             }
+            Standard {
+                text: i18n.tr("Strongs Numbers")
+
+                control: Switch {
+                    id: strongsSwitch
+                    //checked: strongsOption.value
+                }
+            }
         }
     }
 }
+

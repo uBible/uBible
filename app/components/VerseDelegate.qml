@@ -28,8 +28,10 @@ import "../ubuntu-ui-extras" as Extra
 Empty {
     id: verseDelegate
 
+    property string fontsize: "large"
     property int verse: index + 1
     property string text: model.verse
+    property string userFont: fontOption.value
 
     height: units.gu(0.5) + verse.height
     selected: selectedRegion.inRange(index + 1)
@@ -49,6 +51,20 @@ Empty {
      * TODO: When playing the current verse, replace
      * the number with an audio symbol
      */
+    PinchArea{
+        anchors.fill: parent
+        onPinchUpdated: { //TODO: does this work?
+            var pinchVar = pinch.scale
+            if (pinchVar === 1.0){
+                fontsize = "large"
+            }
+            else if (pinchVar === 2.0){
+                fontsize = "x-large"
+            }
+            else if (pinchVar >= -1.0 && pinchVar >= 1.0){
+                fontsize = "medium"
+            }
+        }
     Label {
         id: number
         text: verseDelegate.verse
@@ -118,14 +134,15 @@ Empty {
 
         text: verseDelegate.text
         textFormat: Text.RichText
-        font.family: "Liberation Serif"
-        fontSize: "large"
+        font.family: userFont //change this in settings
+        fontSize: fontsize //have this change with pinch gesture
         color: currentRegion.inRange(verseDelegate.verse) ? selectionColor : textColor
 
         Behavior on color {
             ColorAnimation { duration: 500 }
         }
     }
-
+}
     showDivider: false
 }
+

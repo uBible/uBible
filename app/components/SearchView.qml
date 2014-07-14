@@ -21,7 +21,7 @@ Item {
         }
 
         Label {
-            text: "Searching..."
+            text: i18n.tr("Searching...")
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
@@ -31,7 +31,7 @@ Item {
         visible: !loading
 
         Header {
-            text: "Search Results"
+            text: i18n.tr("Search Results")
         }
         ListView {
 
