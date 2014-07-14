@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>icons/listen.png</file>
-        <file>icons/uBible.png</file>
-    </qresource>
-</RCC>
