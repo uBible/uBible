@@ -39,7 +39,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: themeOption.value === "Light" ? "white" : "transparent"
+        color: "#fefefe"//themeOption.value === "Light" ? "#f0f0f0" : "transparent"
     }
 
     Label {

@@ -2,3 +2,4 @@
 *~
 *.autosave
 qml/uBible/ubuntu-ui-extras
+build/

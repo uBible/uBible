@@ -25,7 +25,7 @@ import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Pickers 0.1
 import uBible 1.0
-import "../ubuntu-ui-extras" as Extra
+import "../ubuntu-ui-extras"
 
 /*
  * Copyright 2013 Canonical Ltd.
@@ -58,9 +58,7 @@ StyledItem {
         return location
     }
 
-    Bible {
-        id: bible
-    }
+    property var bible: settings.bible
 
     /*!
       \qmlproperty bool moving
@@ -86,7 +84,8 @@ StyledItem {
         }
     }
 
-    style: Theme.createStyleComponent("DatePickerStyle.qml", datePicker)
+    style: SuruDatePickerStyle {}
+
     Binding {
         target: __styleInstance
         property: "view"
@@ -117,6 +116,9 @@ StyledItem {
             for (var i = 0; i < list.length; i++) {
                 append({"book": list[i]});
             }
+
+            if (list.length == 0)
+                append({"book": "EMPTY"})
 
             resetting = false;
         }
@@ -156,6 +158,9 @@ StyledItem {
             for (var i = 0; i < count; i++) {
                 append({"chapter": i + 1});
             }
+
+            if (count == 0)
+                append({"chapter": "EMPTY"})
 
             resetting = false;
         }
@@ -223,8 +228,10 @@ StyledItem {
                 move(idx, index, 1);
             } else {
                 print(name)
+                print(model.count)
                 append({"pickerModel": model, "pickerName": name});
             }
+            print("Done")
         }
 
         // removes the given picker

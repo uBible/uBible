@@ -35,7 +35,7 @@ Empty {
     selected: selectedRegion.inRange(index + 1)
     property bool current: currentRegion.inRange(index + 1)
 
-    property bool bookmarked: bookmarksOption.value.indexOf(verseToString(verseDelegate.verse)) !== -1
+    property bool bookmarked: settings.bookmarks.indexOf(verseToString(verseDelegate.verse)) !== -1
 
     onClicked: {
         PopupUtils.open(versePopover, verseDelegate,

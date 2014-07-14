@@ -64,6 +64,9 @@ public:
 
     Q_INVOKABLE QStringList search(const QString &phrase);
 
+    Q_INVOKABLE QString verse(const QString &verse);
+    Q_INVOKABLE QStringList availableBibles();
+
 signals:
     
 public slots:

@@ -26,6 +26,10 @@
 #include <QSharedPointer>
 
 #include <sword/gbfplain.h>
+#include <swmgr.h>
+#include <swmodule.h>
+#include <swfilter.h>
+#include <versekey.h>
 #include <sword/gbfredletterwords.h>
 
 using namespace sword;
@@ -59,6 +63,11 @@ QStringList Bible::books() {
         if (!m_boundsInitialized)
             initBounds();
 
+        if (module() == NULL) {
+            qWarning("Bible not found: %s", qPrintable(name()));
+            return *m_bookList;
+        }
+
         int min = 1; // 1 = OT
         int max = 2; // 2 = NT
 
@@ -87,7 +96,14 @@ void Bible::initBounds() {
     // Code taken from BibleTime
     Q_ASSERT(!m_boundsInitialized);
 
+    qDebug() << "Initializing bounds...";
+
     sword::SWModule *m = module();
+
+    if (m == NULL) {
+        return;
+    }
+
     const bool oldStatus = m->getSkipConsecutiveLinks();
     m->setSkipConsecutiveLinks(true);
 
@@ -111,6 +127,12 @@ unsigned int Bible::bookNumber(const QString &book) const {
     // Code taken from BibleTime
     unsigned int bookNumber = 0;
 
+    qDebug() << "Book" << book;
+
+    if (book == 0 || book.isEmpty() || module() == 0) {
+        return 0;
+    }
+
     QSharedPointer<sword::VerseKey> key((sword::VerseKey *)module()->CreateKey());
     key->setPosition(sword::TOP);
 
@@ -125,6 +147,8 @@ unsigned int Bible::bookNumber(const QString &book) const {
 unsigned int Bible::chapterCount(int bookNumber) const {
     // Code taken from BibleTime
     int result = 0;
+
+    if (module() == 0) return 0;
 
     QSharedPointer<sword::VerseKey> key((sword::VerseKey *)module()->CreateKey());
     key->setPosition(sword::TOP);
@@ -141,6 +165,8 @@ unsigned int Bible::chapterCount(int bookNumber) const {
 unsigned int Bible::verseCount(int book, int chapter) const {
     // Code taken from BibleTime
     unsigned int result = 0;
+
+    if (module() == 0) return 0;
 
     QSharedPointer<sword::VerseKey> key((sword::VerseKey *)module()->CreateKey());
     key->setPosition(sword::TOP);
@@ -161,6 +187,9 @@ QString Bible::verse(int book, int chapter, int verse) {
     key.setBook(book);
     key.setChapter(chapter);
     key.setVerse(verse);
+
+    if (module() == 0)
+        return "";
 
     module()->setKey(key);
     module()->AddRenderFilter(new GBFPlain()); //added this for copy function
@@ -186,3 +215,38 @@ QStringList Bible::search(const QString &phrase) {
 
     return results;
 }
+
+QString Bible::verse(const QString &verse) {
+    qDebug() << "Getting version" << verse;
+
+    if (module() == 0) {
+        return "No Bibles installed.";
+    }
+
+    module()->setKey(qPrintable(verse));
+    module()->AddRenderFilter(new GBFPlain()); //added this for copy function
+    return module()->RenderText();
+}
+
+QStringList Bible::availableBibles() {
+    QStringList list;
+
+    SWMgr library;
+    ModMap modules = library.Modules;
+    ModMap::iterator it;
+    SWModule *curMod = 0;
+
+    for (it = modules.begin(); it != modules.end(); it++) {
+        curMod = (*it).second;
+        if (!strcmp(curMod->Type(), "Biblical Texts")) {
+            list.append(curMod->Name());
+        } else if (!strcmp(curMod->Type(), "Commentaries")) {
+            // do something with curMod
+        } else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries")) {
+            // do something with curMod
+        }
+    }
+
+    return list;
+}
+

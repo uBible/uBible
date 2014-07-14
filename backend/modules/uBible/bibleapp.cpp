@@ -38,6 +38,7 @@ BibleApp::BibleApp(QObject *parent) :
 }
 
 QString BibleApp::verse(const QString &verse) {
+    qDebug() << "Getting version" << verse;
     SWMgr library;
     SWModule *kjv = library.getModule("KJV");
     if (kjv == 0 && availableBibles().length() > 0) {

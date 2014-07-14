@@ -1,0 +1,15 @@
+{
+	"settings": {
+		"showVerse": "bool:true",
+		"showStrongs": "bool:false",
+		"bibleVersion": "string",
+		"showReadingPlan": "bool:true",
+		"showRecent": "bool:true",
+		"theme":"string:\"Suru\"",
+		"bookmarks": "var:[]"
+	},
+	
+	"objects": {
+	
+	}
+}

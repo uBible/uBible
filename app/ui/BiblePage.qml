@@ -49,7 +49,9 @@ Page {
 
         book: currentRegion.book
         chapter: currentRegion.chapter
-        version: bibleVersionOption.value
+        version: settings.bibleVersion
+
+        onVersionChanged: print("VERSION:", version)
     }
 
     function verseToString(verse) {
@@ -175,7 +177,6 @@ Page {
             id: settingsButton
             iconSource: getIcon("settings")
             text: i18n.tr("Settings")
-            visible: wideAspect
             onTriggered: PopupUtils.open(Qt.resolvedUrl("SettingsPage.qml"), value)
         }
     }
@@ -185,9 +186,8 @@ Page {
 
         BookmarksPopover {}
     }
-    Bible {
-        id: bible
-    }
+
+    property var bible: settings.bible
 
     Component {
         id: versePopover

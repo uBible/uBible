@@ -21,6 +21,7 @@
  */
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.ListItems 0.1
 import uBible 1.0
 import "../components"
@@ -94,74 +95,49 @@ Page {
 
             Header {
                 text: i18n.tr("Verse of the Day")
-                visible: showVerseOption.value
+                visible: settings.showVerse
             }
 
             BibleVerse {
-                visible: showVerseOption.value
+                visible: settings.showVerse
                 verse: "Proverbs 3:5-6"
                 //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
             }
 
             Header {
                 text: i18n.tr("Reading Plan")
-                visible: showReadingPlanOption.value
+                visible: settings.showReadingPlan
             }
 
             // TODO: Use real reading plan backend
             BibleVerse {
-                visible: showReadingPlanOption.value
+                visible: settings.showReadingPlan
                 verse: "Matthew 6"
                 //contents: "Take heed that ye do not your alms before men, to be seen of them: otherwise ye have no reward of your Father which is in heaven. "
             }
-
-            Header {
-                text: i18n.tr("Recent")
-                visible: recentReadingsOption.value.length > 0
-            }
-
-            Repeater {
-                model: recentReadingsOption.value
-
-                delegate: BibleVerse {
-                    verse: modelData
-                    removable: true
-                }
-            }
-            Header {
-                text: i18n.tr("Choose")
-            }
-
-            property alias location: locationPicker.location
-
-
-            Row{
-                LocationPicker {
-
-                    anchors.margins: units.gu(1)
-                    id: locationPicker
-                }
-                Button {
-                    //anchors.top: textLabel.bottom
-                    anchors.verticalCenter: locationPicker.verticalCenter
-                    id: goButton
-                    objectName: "goToButton"
-                text: i18n.tr("Go")
-
-                    onClicked: {
-                        //print("User switched to:", locationField.text)
-                        goTo(locationPicker.getLocation())
-                        PopupUtils.close(root)
-                    }
-                }
-            }
-
-
         }
-
     }
 
     Scrollbar {
         flickableItem: flickable
+    }
+
+    tools: ToolbarItems {
+        ToolbarButton {
+            action: Action {
+                iconSource: getIcon("location")
+                text: i18n.tr("Go To")
+                onTriggered: PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"))
+            }
+        }
+
+        ToolbarButton {
+            id: settingsButton
+            action: Action {
+                iconSource: getIcon("settings")
+                text: i18n.tr("Settings")
+                onTriggered: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+            }
+        }
     }
 }

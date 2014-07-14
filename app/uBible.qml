@@ -22,11 +22,12 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
-import U1db 1.0 as U1db
 //import uBible 1.0
 
-import "ubuntu-ui-extras" as Extra
+import "ubuntu-ui-extras"
 import "ui"
+import "model"
+import "udata"
 
 MainView {
     id: mainView
@@ -57,11 +58,7 @@ MainView {
     width: units.gu(42)
     height: units.gu(67)
 
-    headerColor: (themeOption.value === "" || themeOption.value === "Suru") ? "#57365E" : backgroundColor
-    backgroundColor: (themeOption.value === "" || themeOption.value === "Suru")
-                     ? "#A55263"
-                     : themeOption.value === "Dark" ? Qt.rgba(0.3,0.3,0.3,1) : "#EDEDED"
-    footerColor: (themeOption.value === "" || themeOption.value === "Suru") ? "#D75669" : backgroundColor
+    useDeprecatedToolbar: false
 
     states: [
         State {
@@ -77,7 +74,7 @@ MainView {
     //////////// PROPERTY DEFINITIONS ////////////
 
     // TODO: Use color from theme!
-    property color textColor: themeOption.value === "Light" ? UbuntuColors.coolGrey : "white"
+    property color textColor: Theme.palette.normal.baseText
 
     property color selectionColor: UbuntuColors.orange
 
@@ -178,13 +175,13 @@ MainView {
                     objectName: "resourcesPage"
                 }
             }
-            Tab {
-                 title: page.title
-                 page: SearchPage {
-                     id: searchPage
-                     objectName: "searchPage"
-                 }
-                }
+//            Tab {
+//                title: page.title
+//                page: SearchPage {
+//                    id: searchPage
+//                    objectName: "searchPage"
+//                }
+//            }
 
             visible: false
         }
@@ -192,73 +189,30 @@ MainView {
         Component.onCompleted: pageStack.push(tabs)
     }
 
-    Extra.Notification {
+    Notification {
         id: notification
     }
 
-    // TODO: When this actually gets merged into the Ubuntu UI Toolkit,
-    // Remove the 'Extra.' prefix from this all all the Option objects
-    Extra.Settings {
-        Extra.Option {
-            id: showVerseOption
-            name: "showVerse"
-            defaultValue: true
-        }
-        Extra.Option {
-            id: strongsOption
-            name: "showStrongs"
-            defaultValue: false
-        }
-        Extra.Option {
-            id: bibleVersionOption
-            name: "bibleVersion"
-            defaultValue: "KJV"
-
-            onValueChanged: {
-                if (value === "")
-                    return
-
-                if (App.availableBibles().indexOf(value) === -1) {
-                    if (App.availableBibles().length > 0)
-                        value = App.availableBibles()[0]
-                    else
-                        value = ""
-                }
-            }
-        }
-
-        Extra.Option {
-            id: showReadingPlanOption
-            name: "showReadingPlan"
-            defaultValue: true
-        }
-
-        Extra.Option {
-            id: recentReadingsOption
-            name: "recentReadings"
-            defaultValue: []
-        }
-
-        Extra.Option {
-            id: showSidebarOption
-            name: "showSidebar"
-            defaultValue: true
-        }
-
-        Extra.Option {
-            id: themeOption
-            name: "theme"
-            defaultValue: "Suru"
-        }
-
-        Extra.Option {
-            id: bookmarksOption
-            name: "bookmarks"
-            defaultValue: []
-        }
+    Database {
+        id: storage
+        path: "ubible.db"
+        modelPath: Qt.resolvedUrl("model")
     }
 
-    Extra.SettingsStorage {
-        id: settingsStorage
+    Settings {
+        id: settings
+        _db: storage
+
+        onLoaded: {
+            print("Loaded!", bibleVersion)
+            if (!bibleVersion === "" && App.availableBibles().indexOf(bibleVersion) === -1) {
+                if (App.availableBibles().length > 0)
+                    bibleVersion = App.availableBibles()[0]
+                else
+                    bibleVersion = ""
+            } else if (bibleVersion === "" && App.availableBibles().length > 0) {
+                bibleVersion = App.availableBibles()[0]
+            }
+        }
     }
 }

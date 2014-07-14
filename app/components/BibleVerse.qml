@@ -31,27 +31,28 @@ Subtitled {
     id: root
 
     property string verse
-    property string contents: App.verse(root.verse)
+    property string contents: settings.bible.verse(root.verse)
 
     text: verse//"<b>" + verse + "</b>"
     subText: contents
 
-    height: implicitHeight + units.gu(1)
+    height: implicitHeight + units.gu(2)
 
     onClicked: {
         goTo(root.verse)
     }
 
-//    Rectangle {
-//        anchors {
-//            fill: parent
-//            leftMargin: units.gu(-2)
-//            rightMargin: units.gu(-2)
-//        }
+    Rectangle {
+        anchors {
+            fill: parent
+            leftMargin: units.gu(-2)
+            rightMargin: units.gu(-2)
+            bottomMargin: units.dp(2)
+        }
 
-//        color: "white"
-//        z: -1
-//    }
+        color: "#fafafa"
+        z: -1
+    }
 
     onItemRemoved: {
         var list = recentReadingsOption.value

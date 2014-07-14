@@ -25,39 +25,19 @@ import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
 import "../ubuntu-ui-extras" as Extra
 
-import uBible 0.1
+import uBible 1.0
 
 // TODO: Update the switches and value selectors to use
 // the action property with the actual option instead of
 // having to manually sync the values
-ComposerSheet {
+Page {
     id: sheet
     title: i18n.tr("Settings")
-
-    // Full screen on a phone, modal sheet on a tablet/desktop
-    contentsHeight: maximized ? mainView.height : units.gu(40)
-    property bool maximized: sheet.contentsWidth > sheet.__foreground.maxWidth
-
-    Component.onCompleted: {
-        sheet.__leftButton.text = i18n.tr("Close")
-        sheet.__leftButton.color = "gray"
-        sheet.__rightButton.text = i18n.tr("Confirm")
-        sheet.__rightButton.color = sheet.__rightButton.__styleInstance.defaultColor
-        sheet.__foreground.style = Theme.createStyleComponent(Qt.resolvedUrl("ubuntu-ui-extras/SuruSheetStyle.qml"), sheet)
-    }
-
-    onConfirmClicked: {
-        bibleVersionOption.value = bibleVersionSelector.values[bibleVersionSelector.selectedIndex]
-        showVerseOption.value = showVerseSwitch.checked
-        showReadingPlanOption.value = showReadingPlanSwitch.checked
-        themeOption.value = themeSelector.values[themeSelector.selectedIndex]
-    }
 
     Flickable {
         id: flickable
         anchors {
             fill: parent
-            margins: units.gu(-1)
         }
         clip: true
         contentHeight: column.height
@@ -66,18 +46,17 @@ ComposerSheet {
 
         Column {
             id: column
-            anchors.fill: parent
+            width: flickable.width
 
-            Standard {
-                id: versionText
-                text: i18n.tr("Bible Version")
-            }
-            Extra.ValuesSpinner  {
+            ValueSelector  {
                 id: bibleVersionSelector
-                values: App.availableBibles()
-                selectedIndex: values.indexOf(bibleVersionOption.value)
-                height: units.gu(15)
-                anchors.right: column.horizontalCenter
+                text: "Bible Version"
+                values: settings.bible.availableBibles()
+                selectedIndex: values.indexOf(settings.bible.name)
+
+                onSelectedIndexChanged: {
+                    settings.bible.name = values[selectedIndex]
+                }
             }
 
             Standard {
@@ -85,7 +64,9 @@ ComposerSheet {
 
                 control: Switch {
                     id: showVerseSwitch
-                    checked: showVerseOption.value
+                    checked: settings.showVerse
+
+                    onCheckedChanged: settings.showVerse = checked
                 }
             }
 
@@ -94,15 +75,10 @@ ComposerSheet {
 
                 control: Switch {
                     id: showReadingPlanSwitch
-                    checked: showReadingPlanOption.value
-                }
-            }
+                    checked: settings.showReadingPlan
 
-            ValueSelector {
-                id: themeSelector
-                text: i18n.tr("Theme")
-                values: ["Suru", "Dark", "Light"]
-                selectedIndex: values.indexOf(themeOption.value)
+                    onCheckedChanged: settings.showReadingPlan = checked
+                }
             }
         }
     }
