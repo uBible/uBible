@@ -33,11 +33,11 @@ import uBible 1.0
 Page {
     id: sheet
     title: i18n.tr("Settings")
+
     Flickable {
-       id: flickable
-        anchors {
-            fill: parent
-        }
+        id: flickable
+        anchors.fill: parent
+
         clip: true
         contentHeight: column.height
         contentWidth: width
@@ -58,27 +58,6 @@ Page {
                 }
             }
 
-            Standard {
-                text: i18n.tr("Verse of the Day")
-
-                control: Switch {
-                    id: showVerseSwitch
-                    checked: settings.showVerse
-
-                    onCheckedChanged: settings.showVerse = checked
-                }
-            }
-
-            Standard {
-                text: i18n.tr("Reading Plan")
-
-                control: Switch {
-                    id: showReadingPlanSwitch
-                    checked: settings.showReadingPlan
-
-                    onCheckedChanged: settings.showReadingPlan = checked
-                }
-            }
             Standard {
                 text: i18n.tr("Strongs Numbers")
 

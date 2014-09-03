@@ -27,7 +27,7 @@ import "../ubuntu-ui-extras" as Extra
 
 import uBible 1.0
 
-Subtitled {
+SubtitledListItem {
     id: root
 
     property string verse
@@ -36,7 +36,7 @@ Subtitled {
     text: verse//"<b>" + verse + "</b>"
     subText: contents
 
-    height: implicitHeight + units.gu(2)
+    //height: implicitHeight + units.gu(2)
 
     onClicked: {
         goTo(root.verse)

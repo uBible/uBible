@@ -10,18 +10,16 @@ Document {
     _id: "settings"
 
     _properties: [
-        "showStrongs", "showRecent",
-        "theme", "bibleVersion", "bookmarks",
-        "showVerse", "showReadingPlan"
+        "showStrongs", "showReadingPlan",
+        "bibleVersion", "bookmarks",
+        "history"
     ]
 
     property bool showStrongs: false
-    property bool showRecent: true
-    property string theme: "Suru"
+    property bool showReadingPlan: true
     property string bibleVersion
     property var bookmarks: []
-    property bool showVerse: true
-    property bool showReadingPlan: true
+    property var history: []
 
     onLoaded: {
         print("Bible: ", bibleVersion, JSON.stringify(bible.availableBibles()))

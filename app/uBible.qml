@@ -60,17 +60,6 @@ MainView {
 
     useDeprecatedToolbar: false
 
-    states: [
-        State {
-            when: toolbar.tools.opened && toolbar.tools.locked
-
-            PropertyChanges {
-                target: tabs
-                anchors.bottomMargin: -mainView.toolbar.triggerSize
-            }
-        }
-    ]
-
     //////////// PROPERTY DEFINITIONS ////////////
 
     // TODO: Use color from theme!
@@ -90,13 +79,6 @@ MainView {
 
     Component.onDestruction: {
         saveRecentReadings()
-        recentReadingsOption.saveValue()
-    }
-
-    Component.onCompleted: {
-//        if (wideAspect) {
-//            tabs.selectedTabIndex = 1
-//        }
     }
 
     //////////// FUNCTION DEFINITIONS ////////////
@@ -136,8 +118,7 @@ MainView {
     }
 
     function saveRecentReadings() {
-        recentReadingsOption.value = [biblePage.currentRegion.title]
-        print("Recent readings:", recentReadingsOption.value)
+        settings.history = [biblePage.currentRegion.title]
     }
 
     //////////// CHILD OBJECTS ////////////

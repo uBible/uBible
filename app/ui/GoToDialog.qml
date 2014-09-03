@@ -31,16 +31,14 @@ import "../ubuntu-ui-extras"
 Dialog {
     id: root
 
-    title: i18n.tr("Go To Location")
+    title: i18n.tr("Go To Chapter")
 
-    text: i18n.tr("Enter a chapter/verse to go to:")
+    text: i18n.tr("Enter a book and chapter to go to:")
 
     property alias location: locationPicker.location
 
     LocationPicker {
         id: locationPicker
-
-        style: SuruDatePickerStyle {}
     }
 
     Item {
@@ -57,8 +55,6 @@ Dialog {
                 rightMargin: units.gu(1)
             }
 
-            color: "gray"
-
             onClicked: {
                 PopupUtils.close(root)
             }
@@ -74,7 +70,8 @@ Dialog {
                 leftMargin: units.gu(1)
             }
 
-            text: i18n.tr("Ok")
+            color: UbuntuColors.orange
+            text: i18n.tr("Go")
 
             onClicked: {
                 PopupUtils.close(root)

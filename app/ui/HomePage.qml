@@ -20,17 +20,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
-import Ubuntu.Components.ListItems 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
+import Ubuntu.Components.ListItems 1.0
 import uBible 1.0
+
 import "../components"
 import "../ubuntu-ui-extras" as Extra
-//import Ubuntu.Components.Pickers 0.1
 
 Page {
     id: root
     title: "uBible"
+
+    head.actions: [
+        Action {
+            iconName: "location"
+            text: i18n.tr("Go To")
+            onTriggered: PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"))
+        },
+
+        Action {
+            iconName: "settings"
+            text: i18n.tr("Settings")
+            onTriggered: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+        }
+    ]
 
     flickable: flickable
 
@@ -95,11 +109,9 @@ Page {
 
             Header {
                 text: i18n.tr("Verse of the Day")
-                visible: settings.showVerse
             }
 
             BibleVerse {
-                visible: settings.showVerse
                 verse: "Proverbs 3:5-6"
                 //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
             }
@@ -119,24 +131,5 @@ Page {
 
     Scrollbar {
         flickableItem: flickable
-    }
-
-    tools: ToolbarItems {
-        ToolbarButton {
-            action: Action {
-                iconSource: getIcon("location")
-                text: i18n.tr("Go To")
-                onTriggered: PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"))
-            }
-        }
-
-        ToolbarButton {
-            id: settingsButton
-            action: Action {
-                iconSource: getIcon("settings")
-                text: i18n.tr("Settings")
-                onTriggered: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
-            }
-        }
     }
 }

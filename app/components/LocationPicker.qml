@@ -20,10 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
-import Ubuntu.Components.ListItems 0.1
-import Ubuntu.Components.Pickers 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
+import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components.Pickers 1.0
 import uBible 1.0
 import "../ubuntu-ui-extras"
 
@@ -71,6 +71,7 @@ StyledItem {
     implicitWidth: units.gu(36)
     implicitHeight: units.gu(20)
 
+    style: Theme.createStyleComponent("DatePickerStyle.qml", datePicker)
 
     Component.onCompleted: {
         internals.completed = true;
@@ -83,8 +84,6 @@ StyledItem {
             pickerItem.positionViewAtIndex(model.indexOf(), PathView.Center);
         }
     }
-
-    style: SuruDatePickerStyle {}
 
     Binding {
         target: __styleInstance

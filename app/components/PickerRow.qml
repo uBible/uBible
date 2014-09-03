@@ -97,7 +97,7 @@ Row {
             }
             delegate: PickerDelegate {
                 Label {
-                    color:  "#F3F3E7"
+                    //color:  "#F3F3E7"
                     objectName: "PickerRow_PickerLabel"
                     text: pickerModel ? pickerModel.text(modelData) : ""
                     anchors.fill: parent

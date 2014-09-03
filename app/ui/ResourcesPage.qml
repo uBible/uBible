@@ -64,5 +64,10 @@ Page {
                                })
             }
         }
+
+        Standard {
+            text: i18n.tr("Start a Reading Plan")
+            progression: true
+        }
     }
 }
