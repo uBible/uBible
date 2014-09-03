@@ -11,15 +11,26 @@ uBible
 
 ### Building from Source
 
+To build uBible from source, you need to be on Ubuntu 14.10 to get the latest and great Ubuntu SDK. The SDK team is not updating 14.04 with the latest Ubuntu SDK.
+
 **You will need the following dependencies:**
 
 * [Ubuntu SDK](http://developer.ubuntu.com/get-started/)
 * SWORD library from the `libsword-dev` package
-* U1db library from the `qtdeclarative5-u1db-plugin` package
-* U1db library in [Trusty] is the `qtdeclarative5-u1db1.0` package
-* Ubuntu Mobile icon theme from the `ubuntu-mobile-icons` package
-* ubuntu-ui-extras is required from https://github.com/iBeliever/ubuntu-ui-extras. Copy or link this into `app/`
-* uData is required from https://github.com/iBeliever/udata. Copy or link this into `app/`
+* Suru icon theme from the `suru-icon-theme` package
+
+uBible no longer uses U1db, as we are using [uData](https://github.com/sonrisesoftware/udata) for a stronly-typed persistent storage framework.
+
+**Submodule Dependencies**
+
+In addition to the above packages, uBible requires several GitHub libraries, which are referenced as Git Submodules. If you're unfamiliar with how submodules work, check out [the chapter of the Git book on submodules](http://git-scm.com/book/en/Git-Tools-Submodules). Basically, check out the Taskly repository, then run
+
+    git submodule init
+
+Now, any time you do a `git pull` in the uBible repository, and you see a change to the files `udata`, `qml-extras`, or `ubuntu-ui-extras`, that means the versions of those submodules have been changed. Now, you need to update the submodules using this command:
+
+    git submodule update
+
 
 Currently, there is no module manager, so you will need to install Bibles using another SWORD program or from the Ubuntu repositories. For example, the KJV Bible is available from the `sword-text-kjv` package.
 
