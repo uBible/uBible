@@ -11,6 +11,7 @@ set(
     modules/uBible/bibleapp.cpp
     modules/uBible/biblechapter.cpp
     modules/uBible/module.cpp
+    modules/uBible/searchtask.cpp
 )
 
 add_library(uBiblebackend MODULE

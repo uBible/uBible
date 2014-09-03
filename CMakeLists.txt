@@ -4,9 +4,12 @@ cmake_minimum_required(VERSION 2.8.9)
 set (UBUNTU_PROJECT_TYPE "ClickApp" CACHE INTERNAL "Tells QtCreator this is a Click application project")
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 find_package(Qt5Core)
 find_package(Qt5Qml)
 find_package(Qt5Quick)
+find_package(Qt5Concurrent)
 #find_package(ubuntu-sdk-libs)
 
 #automatically create moc files

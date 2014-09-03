@@ -202,31 +202,39 @@ QStringList Bible::search(const QString &phrase) {
     qDebug() << "Doing search...";
     sword::ListKey searchResults = module()->search(qPrintable(phrase), 2);
 
-    qDebug() << "Making persistent...";
-    searchResults.Persist(true);
     qDebug() << "Setting key...";
     module()->setKey(searchResults);
-     module()->AddRenderFilter(new GBFPlain()); //search results
+    module()->addRenderFilter(new GBFPlain()); //search results
     qDebug() << "Results:";
     QStringList results;
-    for (searchResults = TOP; !searchResults.Error(); searchResults++) {
+    for (searchResults = TOP; !searchResults.popError(); searchResults++) {
+        module()->setKey(searchResults);
+
         qDebug() << (const char *) searchResults << ":\n";
-        qDebug() << (const char *) *module() << "\n";
-        results.append((const char *) searchResults);
+        qDebug() << module() << "\n";
+        results.append(QString((const char *) searchResults));
     }
+
+    qDebug() << "List: " << results;
 
     return results;
 }
 
 QString Bible::verse(const QString &verse) {
-    qDebug() << "Getting verse" << verse << module()->Name();
+    qDebug() << "Getting verse" << verse << module()->getName();
 
     if (module() == 0) {
         return "No Bibles installed.";
     }
 
-    module()->setKey(qPrintable(verse));
+    SWKey key(qPrintable(verse));
+
+    qDebug() << "Setting key" << qPrintable(verse);
+
+    module()->setKey(key);
     module()->addRenderFilter(new GBFPlain());
+    qDebug() << "Returning result";
+
     return QString(module()->renderText());
 }
 

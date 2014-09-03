@@ -48,6 +48,7 @@ Page {
         Action {
             iconName: "search"
             text: i18n.tr("Search")
+            onTriggered: pageStack.push(Qt.resolvedUrl("SearchPage.qml"))
         }
     ]
 

@@ -20,101 +20,106 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
-import Ubuntu.Components.ListItems 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
+import Ubuntu.Components.ListItems 1.0
 import uBible 1.0
 import "../components"
 
 Page {
-    id: root
+    id: page
 
     title: i18n.tr("Search")
 
     property alias searchText: searchField.text
-   // function search(searchText) {
 
-    //}
-    Flickable {
-        id: flickable
+    head.actions: [
+        Action {
+            iconName: "search"
+            onTriggered: search()
+        }
+    ]
+
+    head.contents: TextField {
+        id: searchField
+        placeholderText: i18n.tr("Search...")
+        width: parent ? parent.width : parent
+    }
+
+    UbuntuListView {
         anchors.fill: parent
-        contentWidth: content.width
-        contentHeight: content.height
+        model: searchTask.results
+        delegate: BibleVerse {
+            verse: modelData
+        }
+    }
 
-        Standard {
-            id: content
-            width: root.width
+    Column {
+        anchors.centerIn: parent
+        visible: searchTask.busy
+        spacing: units.gu(1)
 
+        ActivityIndicator {
+            anchors.horizontalCenter: parent.horizontalCenter
+            running: searchTask.busy
+        }
 
-            Empty {
-                TextField {
-                    id: searchField
+        Label {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: i18n.tr("Searching...")
+            fontSize: "large"
+        }
+    }
 
-                    placeholderText:  i18n.tr("Search...")
+    Column {
+        anchors.centerIn: parent
+        visible: searchTask.results.length == 0 && !searchTask.busy
+        spacing: units.gu(0.5)
 
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        left: parent.left
-                        right: searchButton.left
-                        margins: units.gu(1)
-                    }
-                    focus: true
-                    Keys.onPressed: {
-                        if ( event.key === Qt.Key_Return ) {
-                            search(searchText)
-                            print("Return Pressed")
-                        }
-                        else{event.accepted = false}
+        Icon {
+            name: "search"
+            opacity: 0.5
+            width: units.gu(10)
+            height: width
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
 
-                    }
+        Item {
+            width: parent.width
+            height: units.gu(2)
+        }
+
+        Label {
+            fontSize: "large"
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: page.width - units.gu(8)
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+            opacity: 0.5
+
+            text: {
+                if (actualQuery != "") {
+                    return i18n.tr("No results found")
+                } else {
+                    return i18n.tr("Enter a search query and tap the search icon")
                 }
-
-                Button {
-                    id: searchButton
-
-                    anchors {
-                        top: searchField.top
-                        bottom: searchField.bottom
-                        right: parent.right
-                        rightMargin: units.gu(1)
-                    }
-
-                    gradient: Gradient {
-                        GradientStop {
-                            position: 0
-                            color: "green"
-                        }
-
-                        GradientStop {
-                            position: 1
-                            color: Qt.rgba(0.3,0.7,0.3,1)
-                        }
-                    }
-
-                    text:  i18n.tr("Search")
-
-                    onClicked: {
-                        search(searchText)
-                    }
-                }
-            }
-            Row{
-
-            Header {
-                text:  i18n.tr("Search Results")
-            }
-
-            SearchView{
-             id: searchView
-             objectName: "searchView"
-             anchors.fill: parent
-             clip: true
-            }
             }
         }
     }
 
     Scrollbar {
         flickableItem: flickable
+    }
+
+    property string actualQuery
+
+    function search() {
+        actualQuery = searchText
+        searchTask.search(searchText)
+    }
+
+    SearchTask {
+        id: searchTask
+        bible: settings.bible
     }
 }
