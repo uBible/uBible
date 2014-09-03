@@ -40,6 +40,7 @@ Bible::Bible(const QString& name, QObject *parent) :
 {
     QObject::connect(this, SIGNAL(nameChanged(QString)), this, SLOT(onNameChanged(QString)));
     onNameChanged(name);
+    qDebug() << "BIBLE CREATED";
 }
 
 void Bible::onNameChanged(const QString &name) {
@@ -191,9 +192,10 @@ QString Bible::verse(int book, int chapter, int verse) {
     if (module() == 0)
         return "";
 
-    module()->setKey(key);
-    module()->AddRenderFilter(new GBFPlain()); //added this for copy function
-    return module()->RenderText();
+
+    module()->setKey(qPrintable(verse));
+    module()->addRenderFilter(new GBFPlain());
+    return QString(module()->renderText());
 }
 
 QStringList Bible::search(const QString &phrase) {
@@ -217,15 +219,15 @@ QStringList Bible::search(const QString &phrase) {
 }
 
 QString Bible::verse(const QString &verse) {
-    qDebug() << "Getting version" << verse;
+    qDebug() << "Getting verse" << verse << module();
 
     if (module() == 0) {
         return "No Bibles installed.";
     }
 
     module()->setKey(qPrintable(verse));
-    module()->AddRenderFilter(new GBFPlain()); //added this for copy function
-    return module()->RenderText();
+    module()->addRenderFilter(new GBFPlain());
+    return QString(module()->renderText());
 }
 
 QStringList Bible::availableBibles() {
@@ -241,7 +243,7 @@ QStringList Bible::availableBibles() {
         if (!strcmp(curMod->Type(), "Biblical Texts")) {
             list.append(curMod->Name());
         } else if (!strcmp(curMod->Type(), "Commentaries")) {
-            // do something with curMod
+            // do RenderTextsomething with curMod
         } else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries")) {
             // do something with curMod
         }

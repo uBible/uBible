@@ -28,7 +28,7 @@
 #include <QDebug>
 
 #include <sword/swmodule.h>
-#include <sword/versemgr.h>
+#include <sword/swmgr.h>
 
 #include "bible.h"
 
