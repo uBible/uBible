@@ -1,0 +1,9 @@
+[submodule "app/udata"]
+	path = app/udata
+	url = https://github.com/sonrisesoftware/udata.git
+[submodule "app/ubuntu-ui-extras"]
+	path = app/ubuntu-ui-extras
+	url = https://github.com/iBeliever/ubuntu-ui-extras.git
+[submodule "app/qml-extras"]
+	path = app/qml-extras
+	url = https://github.com/iBeliever/qml-extras.git

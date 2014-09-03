@@ -1,7 +1,7 @@
 *.user*
 *~
 *.autosave
-qml/uBible/ubuntu-ui-extras
+
 build/
-app/ubuntu-ui-extras
-app/udata
+
+
