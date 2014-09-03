@@ -69,6 +69,7 @@ private:
     bool m_busy = false;
     Bible * m_bible = nullptr;
     QStringList m_results;
+    QString m_query;
 };
 
 #endif // SEARCHTASK_H

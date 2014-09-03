@@ -74,8 +74,6 @@ Page {
         return currentRegion.book + " " + currentRegion.chapter + ":" + verse
     }
 
-    flickable: sidebar.expanded ? null : bibleView.flickable
-
     // FIXME: This is caused by an SDK bug
     onFlickableChanged: {
         var margin

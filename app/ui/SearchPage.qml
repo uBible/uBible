@@ -43,7 +43,7 @@ Page {
     head.contents: TextField {
         id: searchField
         placeholderText: i18n.tr("Search...")
-        width: parent ? parent.width : parent
+        width: parent ? parent.width : 0
     }
 
     UbuntuListView {

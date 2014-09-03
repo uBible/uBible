@@ -14,12 +14,18 @@ void SearchTask::search(const QString &query)
 
 void SearchTask::run(const QString &query) {
     setBusy(true);
+    this->m_query = query;
 
     // Clear the list immediately
     m_results = QStringList();
-
-    m_results = this->bible()->search(query);
-
-    setBusy(false);
     resultsChanged(m_results);
+
+    QStringList results = this->bible()->search(query);
+
+    if (query == this->m_query) {
+        m_results = results;
+
+        setBusy(false);
+        resultsChanged(m_results);
+    }
 }

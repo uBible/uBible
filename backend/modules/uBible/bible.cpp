@@ -200,22 +200,26 @@ QString Bible::verse(int book, int chapter, int verse) {
 
 QStringList Bible::search(const QString &phrase) {
     qDebug() << "Doing search...";
-    sword::ListKey searchResults = module()->search(qPrintable(phrase), 2);
+    sword::SWMgr *library = new sword::SWMgr();
+
+    sword::SWModule *module = library->getModule(this->module()->getName());
+
+    sword::ListKey searchResults = module->search(qPrintable(phrase), 2);
 
     qDebug() << "Setting key...";
-    module()->setKey(searchResults);
-    module()->addRenderFilter(new GBFPlain()); //search results
-    qDebug() << "Results:";
+    module->setKey(searchResults);
+    module->addRenderFilter(new GBFPlain()); //search results
+
     QStringList results;
     for (searchResults = TOP; !searchResults.popError(); searchResults++) {
-        module()->setKey(searchResults);
+        module->setKey(searchResults);
 
-        qDebug() << (const char *) searchResults << ":\n";
-        qDebug() << module() << "\n";
         results.append(QString((const char *) searchResults));
     }
 
     qDebug() << "List: " << results;
+
+    delete module;
 
     return results;
 }
