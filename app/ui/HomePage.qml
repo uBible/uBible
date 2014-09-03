@@ -66,47 +66,6 @@ Page {
             id: content
             width: root.width
 
-
-            Empty {
-                TextField {
-                    id: searchField
-
-                    placeholderText: i18n.tr("Search...")
-
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        left: parent.left
-                        right: searchButton.left
-                        margins: units.gu(2)
-                    }
-
-                    focus: true
-                    Keys.onPressed: {
-                            if ( event.key === Qt.Key_Return ) {
-                                search(searchField.text)
-                                print("Return Pressed")
-                            }
-                            else{event.accepted = false}
-
-                    }
-                }
-
-                Button {
-                    id: searchButton
-
-                    anchors {
-                        top: searchField.top
-                        bottom: searchField.bottom
-                        right: parent.right
-                        rightMargin: units.gu(2)
-                    }
-
-                    text: i18n.tr("Search")
-
-                    onClicked: search(searchField.text)
-                }
-            }
-
             Header {
                 text: i18n.tr("Verse of the Day")
             }

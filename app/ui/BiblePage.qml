@@ -20,10 +20,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
-import Ubuntu.Components.ListItems 0.1
-import Ubuntu.Layouts 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
+import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Layouts 1.0
 
 import uBible 1.0
 import "../components"
@@ -35,6 +35,21 @@ Page {
     property alias location: currentRegion.location
 
     onLocationChanged: bibleView.goTo()
+
+    head.actions: [
+        Action {
+            iconName: "location"
+            text: i18n.tr("Go To")
+            onTriggered: {
+                PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), root, {location: location})
+            }
+        },
+
+        Action {
+            iconName: "search"
+            text: i18n.tr("Search")
+        }
+    ]
 
     property Location currentRegion: Location {
         id: currentRegion
@@ -72,117 +87,14 @@ Page {
         bibleView.flickable.topMargin = Qt.binding(function() { return margin + audioPanel.y + audioPanel.height })
     }
 
-    Sidebar {
-        id: sidebar
-        objectName: "sidebar"
 
-        expanded: wideAspect && !fullscreen
-        onExpandedChanged: tools.opened = sidebar.expanded
-    }
+    BibleView {
+        id: bibleView
+        objectName: "bibleView"
 
-    Item {
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            left: sidebar.right
-            right: parent.right
-            leftMargin: units.gu(1/8)
-        }
+        anchors.fill: parent
 
         clip: true
-        BibleView {
-            id: bibleView
-            objectName: "bibleView"
-
-            anchors.fill: parent
-
-            clip: true
-        }
-
-        AudioPanel {
-            id: audioPanel
-
-            anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-            }
-        }
-    }
-
-    onActiveChanged: tools.opened = sidebar.expanded
-
-    tools: ToolbarItems {
-        locked: sidebar.expanded
-        opened: sidebar.expanded
-
-        ToolbarButton {
-            id: goToButton
-            action: Action {
-                iconSource: getIcon("location")
-                text: i18n.tr("Go To")
-                onTriggered: {
-                    PopupUtils.open(Qt.resolvedUrl("GoToDialog.qml"), goToButton, {location: location})
-                }
-            }
-        }
-
-        ToolbarButton {
-            iconSource: getIcon("speaker")
-            text: i18n.tr("Listen")
-            onTriggered: {
-                audioPanel.playing = !audioPanel.playing
-                if(audioPanel.playing) {
-                    print("isPlaying")
-                    audioPanel.play()
-                } else {
-                    print("!isPlaying")
-                    audioPanel.stop()
-                }
-            }
-
-            //enabled: !audioPanel.playing //How do you make this toggle?
-        }
-
-        ToolbarButton {
-            id: searchButton
-            action: Action {
-                iconSource: getIcon("search")
-                text: i18n.tr("Search")
-                visible: !wideAspect || fullscreen
-                onTriggered: pageStack.push(Qt.resolvedUrl("SearchPage.qml"))
-            }
-        }
-
-        ToolbarButton {
-            id: bookmarksButton
-            iconSource: getIcon("non-starred")
-            text: i18n.tr("Bookmarks")
-            //enabled: bookmarksOption.value.length > 0
-            onTriggered: PopupUtils.open(bookmarksPopover, bookmarksButton)
-        }
-
-        ToolbarButton {
-            id: shareButton
-            iconSource: getIcon("share")
-            text: i18n.tr("Share")
-            onTriggered: PopupUtils.open(Qt.resolvedUrl("SharePopover.qml"), shareButton, {message: "Blah blah blah"})
-        }
-
-        ToolbarButton {
-            visible: wideAspect
-            text: fullscreen ? i18n.tr("Restore") : i18n.tr("Fullscreen")
-            iconSource: fullscreen ? getIcon("view-restore") : getIcon("view-fullscreen")
-
-            onTriggered: fullscreen = !fullscreen
-        }
-
-        ToolbarButton {
-            id: settingsButton
-            iconSource: getIcon("settings")
-            text: i18n.tr("Settings")
-            onTriggered: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
-        }
     }
 
     Component {

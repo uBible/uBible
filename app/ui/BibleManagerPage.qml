@@ -9,7 +9,7 @@ Page {
         id: listView
         anchors.fill: parent
 
-        model: settings.bible.availableBibles()
+        model: settings.availableBibles
         delegate: ListItem.Standard {
             text: modelData.name
             selected: modelData.name == settings.bibleVersion

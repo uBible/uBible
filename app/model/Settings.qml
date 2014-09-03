@@ -39,6 +39,7 @@ Document {
 
         print("Setting bible version", bibleVersion)
         internalBible.name = bibleVersion
+        bible = internalBible
     }
 
     function containsBible(name) {
@@ -53,6 +54,7 @@ Document {
     }
 
     property Bible bible
+    property var availableBibles: internalBible.availableBibles()
 
     Bible {
         id: internalBible

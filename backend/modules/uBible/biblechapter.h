@@ -66,7 +66,7 @@ public:
     }
 
     virtual QVariant data(const QModelIndex &index, int role) const {
-        //qDebug() << "Data" << index.row() << role;
+        qDebug() << "Data" << index.row() << role;
         return QVariant(bible()->verse(book(), chapter(), index.row() + 1));
     }
 

@@ -132,7 +132,7 @@ Empty {
         }
 
         text: verseDelegate.text
-        textFormat: Text.RichText
+        textFormat: Text.PlainText
         //font.family: userFont //change this in settings
         fontSize: fontsize //have this change with pinch gesture
         color: currentRegion.inRange(verseDelegate.verse) ? selectionColor : textColor

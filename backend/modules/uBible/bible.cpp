@@ -193,7 +193,7 @@ QString Bible::verse(int book, int chapter, int verse) {
         return "";
 
 
-    module()->setKey(qPrintable(verse));
+    module()->setKey(key);
     module()->addRenderFilter(new GBFPlain());
     return QString(module()->renderText());
 }
