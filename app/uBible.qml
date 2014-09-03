@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
 //import uBible 1.0
 
 import "ubuntu-ui-extras"
@@ -187,25 +187,14 @@ MainView {
     }
 
     Database {
-        id: storage
-        path: "ubible.db"
+        id: database
+        name: "uBible"
+        description: "A powerful Bible app for Ubuntu Touch"
         modelPath: Qt.resolvedUrl("model")
     }
 
     Settings {
         id: settings
-        _db: storage
-
-        onLoaded: {
-            print("Loaded!", bibleVersion)
-            if (!bibleVersion === "" && App.availableBibles().indexOf(bibleVersion) === -1) {
-                if (App.availableBibles().length > 0)
-                    bibleVersion = App.availableBibles()[0]
-                else
-                    bibleVersion = ""
-            } else if (bibleVersion === "" && App.availableBibles().length > 0) {
-                bibleVersion = App.availableBibles()[0]
-            }
-        }
+        _db: database
     }
 }
