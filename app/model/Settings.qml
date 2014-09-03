@@ -21,19 +21,45 @@ Document {
     property var bookmarks: []
     property var history: []
 
-    onLoaded: {
-        print("Bible: ", bibleVersion, JSON.stringify(bible.availableBibles()))
-        if (!bibleVersion === "" && bible.availableBibles().indexOf(bibleVersion) === -1) {
-            if (App.availableBibles().length > 0)
-                bibleVersion = bible.availableBibles()[0]
-            else
-                bibleVersion = ""
-        } else if (bibleVersion === "" && bible.availableBibles().length > 0) {
-            bibleVersion = bible.availableBibles()[0]
-        }
+    onBibleVersionChanged: {
+        print("New version!")
+        internalBible.name = bibleVersion
     }
 
-    property Bible bible: Bible {
-        onNameChanged: print("Name changed:", name)
+    onLoaded: {
+        print("Bible: ", bibleVersion, JSON.stringify(internalBible.availableBibles()))
+        if (!bibleVersion === "" && !containsBible(bibleVersion)) {
+            if (internalBible.availableBibles().length > 0)
+                bibleVersion = internalBible.availableBibles()[0].name
+            else
+                bibleVersion = ""
+        } else if (bibleVersion === "" && internalBible.availableBibles().length > 0) {
+            bibleVersion = internalBible.availableBibles()[0].name
+        }
+
+        print("Setting bible version", bibleVersion)
+        internalBible.name = bibleVersion
+    }
+
+    function containsBible(name) {
+        for (var i = 0; i < internalBible.availableBibles().length; i++) {
+            var bibleInfo = internalBible.availableBibles()[i]
+
+            if (bibleInfo.name == name)
+                return true
+        }
+
+        return false
+    }
+
+    property Bible bible
+
+    Bible {
+        id: internalBible
+        onNameChanged: {
+            print("Name changed:", name)
+            bible = null
+            bible = internalBible
+        }
     }
 }

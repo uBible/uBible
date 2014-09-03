@@ -36,7 +36,6 @@ void Module::setName(const QString &name) {
     if (m_name == name) return;
 
     m_name = name;
-    nameChanged(m_name);
 
     qDebug() << "Creating a new module:" << name;
     sword::SWMgr *library = new sword::SWMgr();
@@ -50,6 +49,8 @@ void Module::setName(const QString &name) {
 
         qDebug() << "Module" << name << m_module->Name();
     }
+
+    nameChanged(m_name);
 
     existsChanged(m_exists);
 }

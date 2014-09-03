@@ -47,15 +47,12 @@ Page {
             id: column
             width: flickable.width
 
-            ValueSelector  {
-                id: bibleVersionSelector
-                text: "Bible Version"
-                values: settings.bible.availableBibles()
-                selectedIndex: values.indexOf(settings.bible.name)
+            SingleValue {
+                text: i18n.tr("Bible version")
+                value: "<font color=\"%1\">%2</font>".arg(UbuntuColors.midAubergine).arg(settings.bible.name)
 
-                onSelectedIndexChanged: {
-                    settings.bible.name = values[selectedIndex]
-                }
+                progression: true
+                onClicked: pageStack.push(Qt.resolvedUrl("BibleManagerPage.qml"))
             }
 
             Standard {

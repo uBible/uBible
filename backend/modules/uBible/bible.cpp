@@ -219,7 +219,7 @@ QStringList Bible::search(const QString &phrase) {
 }
 
 QString Bible::verse(const QString &verse) {
-    qDebug() << "Getting verse" << verse << module();
+    qDebug() << "Getting verse" << verse << module()->Name();
 
     if (module() == 0) {
         return "No Bibles installed.";
@@ -230,8 +230,8 @@ QString Bible::verse(const QString &verse) {
     return QString(module()->renderText());
 }
 
-QStringList Bible::availableBibles() {
-    QStringList list;
+QVariantList Bible::availableBibles() {
+    QVariantList list;
 
     SWMgr library;
     ModMap modules = library.Modules;
@@ -241,7 +241,11 @@ QStringList Bible::availableBibles() {
     for (it = modules.begin(); it != modules.end(); it++) {
         curMod = (*it).second;
         if (!strcmp(curMod->Type(), "Biblical Texts")) {
-            list.append(curMod->Name());
+            QVariantMap json;
+            json.insert("name", QVariant(curMod->Name()));
+            json.insert("description", QVariant(curMod->Description()));
+
+            list.append(json);
         } else if (!strcmp(curMod->Type(), "Commentaries")) {
             // do RenderTextsomething with curMod
         } else if (!strcmp(curMod->Type(), "Lexicons / Dictionaries")) {
