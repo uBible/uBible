@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=uBible
+Comment=A powerful Bible app for Ubuntu Touch using the SWORD Bible librar
+Keywords=bible;study;reading;god;book;christian;christianity;jesus;christ
+Exec=@EXEC@
+Icon=@ICON@
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+X-Ubuntu-Default-Department-ID=accessories
