@@ -22,7 +22,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
 import Ubuntu.Components.Popups 1.0
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components.ListItems 1.0 as ListItem
 import uBible 1.0
 import "../components"
 
@@ -48,9 +48,15 @@ Page {
 
     UbuntuListView {
         anchors.fill: parent
-        model: searchTask.results
+        model: model
+
+        section.property: "book"
+        section.delegate: ListItem.Header {
+            text: section
+        }
+
         delegate: BibleVerse {
-            verse: modelData
+            verse: model.verse
         }
     }
 
@@ -73,7 +79,7 @@ Page {
 
     Column {
         anchors.centerIn: parent
-        visible: searchTask.results.length == 0 && !searchTask.busy
+        visible: model.count == 0 && !searchTask.busy
         spacing: units.gu(0.5)
 
         Icon {
@@ -118,8 +124,24 @@ Page {
         searchTask.search(searchText)
     }
 
+    ListModel {
+        id: model
+    }
+
     SearchTask {
         id: searchTask
         bible: settings.bible
+
+        onBusyChanged: {
+            if (!busy) {
+                model.clear()
+                searchTask.results.forEach(function(verse) {
+                    model.append({
+                                  verse: verse,
+                                  book: verse.split(" ")[0]
+                              })
+                })
+            }
+        }
     }
 }
