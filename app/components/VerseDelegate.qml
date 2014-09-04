@@ -50,22 +50,6 @@ Empty {
         }
     }
 
-    Rectangle {
-        width: parent.width
-        height: units.dp(1)
-        color: colors["purple"]
-        visible: selected && selectedRegion.indexOf(verseNumber - 1) == -1
-    }
-
-
-    Rectangle {
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: units.dp(1)
-        color: colors["purple"]
-        visible: selected && selectedRegion.indexOf(verseNumber + 1) == -1
-    }
-
     /*
      * TODO: When playing the current verse, replace
      * the number with an audio symbol

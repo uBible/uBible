@@ -77,7 +77,7 @@ MainView {
     // TODO: Use color from theme!
     property color textColor: Theme.palette.normal.baseText
 
-    property color selectionColor: UbuntuColors.orange
+    property color selectionColor: colors["purple"]
 
     /*
      * True if the app is wide enough and should display its

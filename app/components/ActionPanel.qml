@@ -139,8 +139,9 @@ Panel {
         style: Theme.createStyleComponent("ToolbarStyle.qml", background)
     }
 
-    Item {
+    Rectangle {
         id: visibleToolsContainer
+        color: colors["blue"]
         anchors {
             fill: background
         }

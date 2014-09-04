@@ -24,6 +24,7 @@ import Ubuntu.Components 1.1
 import Ubuntu.Components.Popups 1.0
 import Ubuntu.Components.ListItems 1.0
 import Ubuntu.Layouts 1.0
+import Ubuntu.Content 0.1
 
 import uBible 1.0
 import "../components"
@@ -169,6 +170,7 @@ Page {
                     text: "Close"
                     onTriggered: selectedRegion = []
                 }
+                style: ActionButton {}
             }
 
             ToolbarButton {
@@ -176,6 +178,7 @@ Page {
                     iconName: "note"
                     text: "Notes"
                 }
+                style: ActionButton {}
             }
 
             // You can only bookmark a single verse
@@ -201,6 +204,7 @@ Page {
                         settings.bookmarks = list
                     }
                 }
+                style: ActionButton {}
             }
 
 
@@ -210,14 +214,44 @@ Page {
                     text: i18n.tr("Copy")
                     onTriggered: Clipboard.push(selectionTitle + "\n" + selectionContents)
                 }
+                style: ActionButton {}
             }
 
             ToolbarButton {
                 action: Action {
                     iconName: "share"
                     text: "Share"
+                    onTriggered: pageStack.push(sharePicker)
                 }
+                style: ActionButton {}
             }
         }
     }
+
+    Component {
+        id: sharePicker
+
+        Page {
+            ContentPeerPicker {
+                objectName: "sharePicker"
+                anchors.fill: parent
+                visible: parent.active
+                contentType: ContentType.Text
+                handler: ContentHandler.Share
+
+                onPeerSelected: {
+                    pageStack.pop()
+
+                    var curTransfer = peer.request();
+                    if (curTransfer.state === ContentTransfer.InProgress)
+                    {
+                        curTransfer.items = [ contentItemComp.createObject(parent, {"url": viewerWrapper.media.path}) ];
+                        curTransfer.state = ContentTransfer.Charged;
+                    }
+                }
+                onCancelPressed: pageStack.pop()
+            }
+        }
+    }
+
 }
