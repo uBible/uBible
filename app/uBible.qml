@@ -60,6 +60,18 @@ MainView {
 
     useDeprecatedToolbar: false
 
+    property var colors: {
+        "green": "#5cb85c",
+        "red": "#d9534f",
+        "yellow": "#f0ad4e",
+        "blue": "#428bca",
+        "purple": UbuntuColors.midAubergine,
+        "orange": UbuntuColors.orange,
+        "default": Theme.palette.normal.baseText,
+        "white": "#F5F5F5",
+        "overlay": "#666"
+    }
+
     //////////// PROPERTY DEFINITIONS ////////////
 
     // TODO: Use color from theme!
@@ -119,6 +131,10 @@ MainView {
 
     function saveRecentReadings() {
         settings.history = [biblePage.currentRegion.title]
+    }
+
+    function htmlColor(text, color) {
+        return "<font color=\"%1\">%2</font>".arg(color).arg(text)
     }
 
     //////////// CHILD OBJECTS ////////////

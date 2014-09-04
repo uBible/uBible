@@ -44,7 +44,7 @@ Page {
 
         delegate: SingleValue {
             text: modelData
-            value: progression || quickrefPage.ref[modelData] === modelData ? "" : quickrefPage.ref[modelData]
+            value: progression || quickrefPage.ref[modelData] === modelData ? "" : htmlColor(quickrefPage.ref[modelData], colors["purple"])
             progression: typeof(quickrefPage.ref[modelData]) !== "string"
 
             onClicked: {

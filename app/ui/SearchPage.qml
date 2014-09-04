@@ -124,7 +124,8 @@ Page {
 
     function search() {
         actualQuery = searchText
-        searchTask.search(searchText)
+        if (searchText !== "")
+            searchTask.search(searchText)
     }
 
     ListModel {

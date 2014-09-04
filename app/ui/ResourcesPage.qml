@@ -35,7 +35,7 @@ Page {
 
         },
         "How to be Saved": {
-            "John 3:16":"John 3:16",
+            "God wants all to be saved":"John 3:16",
             "By faith alone": "Romans 10:9-10",
             "Saved by faith, not works": "Ephesians 2:8-9"
         },
