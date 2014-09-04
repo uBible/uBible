@@ -60,6 +60,55 @@ Page {
 
     onSelectedRegionChanged: print("changing")
 
+    property string selectionTitle: {
+        var list = JSON.parse(JSON.stringify(selectedRegion))
+        list = list.sort(function(a,b) { return Number(a) - Number(b) })
+
+        var result = []
+        var start = -1; var end = -9;
+        for (var i = 0; i < list.length; i++) {
+            var verse = list[i];
+            print(verse, start, end)
+            if (verse == end + 1) {
+                end = verse
+            } else {
+                if (start != -1) {
+                    if (start == end)
+                        result.push(start)
+                    else
+                        result.push(start + "-" + end)
+                }
+
+                start = verse
+                end = verse
+            }
+
+            print("--> ", verse, start, end)
+        }
+
+        if (start != -1) {
+            if (start == end)
+                result.push(start)
+            else
+                result.push(start + "-" + end)
+        }
+
+        return currentRegion.book + " " + currentRegion.chapter + ":" + result.join(", ")
+    }
+
+    property string selectionContents: {
+        var list = JSON.parse(JSON.stringify(selectedRegion))
+        list = list.sort(function(a,b) { return Number(a) - Number(b) })
+
+        var result = []
+        for (var i = 0; i < list.length; i++) {
+            var verseNumber = list[i]
+            result.push(bible.verse(currentRegion.book, currentRegion.chapter, verseNumber))
+        }
+
+        return result.join("\n")
+    }
+
     BibleChapter {
         id: bibleChapter
 
@@ -104,67 +153,7 @@ Page {
 
     property var bible: settings.bible
 
-    Component {
-        id: versePopover
-
-        ActionSelectionPopover {
-            id: popover
-
-            grabDismissAreaEvents: true
-
-            property int verse
-            property string text
-
-            actions: ActionList {
-                Action {
-                    text: bookmarkIndex === -1 ? i18n.tr("Bookmark") : i18n.tr("Remove bookmark")
-                    property int bookmarkIndex: bookmarksOption.value.indexOf(verseToString(verse))
-                    onTriggered: {
-                        var list = bookmarksOption.value
-
-                        if (bookmarkIndex === -1) {
-                            list.push(verseToString(verse))
-                        } else {
-                            list.splice(bookmarkIndex, 1)
-                        }
-                        list.sort()
-                        bookmarksOption.value = list
-                    }
-                }
-                Action{
-                    text: i18n.tr("Copy Verse")
-                    onTriggered: Clipboard.push(verseToString(verse)+ " " + bible.verse(currentRegion.book, currentRegion.chapter, verse))
-                }
-
-
-//                Action {
-//                    text: verse.highlighted
-//                          ? i18n.tr("Remove Highlight")
-//                          : i18n.tr("Highlight")
-//                    onTriggered: {
-//                        verse.highlighted = !verse.highlighted
-//                    }
-//                }
-
-//                Action {
-//                    text: i18n.tr("Notes")
-//                    onTriggered: PopupUtils.open(Qt.resolvedUrl("NotesDialog.qml"), root, {
-//                                                     title: bookChapter + ":" + (index + 1),
-//                                                     notes: verse.notes
-//                                                 })
-//                }
-
-//                Action {
-//                    text: i18n.tr("Share")
-//                }
-                Action {
-                    text: fullscreen ? i18n.tr("Exit Fullscreen") : i18n.tr("Fullscreen")
-
-                    onTriggered: fullscreen = !fullscreen
-                }
-            }
-        }
-    }
+    property int verseNumber: selectedRegion.length > 0 ? selectedRegion[0] : -1
 
     ActionPanel {
         opened: selectedRegion.length > 0
@@ -186,6 +175,40 @@ Page {
                 action: Action {
                     iconName: "note"
                     text: "Notes"
+                }
+            }
+
+            // You can only bookmark a single verse
+            ToolbarButton {
+                width: units.gu(8)
+                action: Action {
+                    iconName: bookmarkIndex == -1 ? "non-starred" : "starred"
+                    enabled: selectedRegion.length == 1
+
+                    text: bookmarkIndex === -1 ? i18n.tr("Bookmark") : i18n.tr("Unbookmark")
+
+                    property int bookmarkIndex: settings.bookmarks.indexOf(verseToString(verseNumber))
+
+                    onTriggered: {
+                        var list = settings.bookmarks
+
+                        if (bookmarkIndex === -1) {
+                            list.push(verseToString(verseNumber))
+                        } else {
+                            list.splice(bookmarkIndex, 1)
+                        }
+                        list.sort()
+                        settings.bookmarks = list
+                    }
+                }
+            }
+
+
+            ToolbarButton {
+                action: Action {
+                    iconName: "edit-copy"
+                    text: i18n.tr("Copy")
+                    onTriggered: Clipboard.push(selectionTitle + "\n" + selectionContents)
                 }
             }
 
