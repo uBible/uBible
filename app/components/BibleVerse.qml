@@ -31,7 +31,24 @@ SubtitledListItem {
     id: root
 
     property string verse
-    property string contents: settings.bible.verse(root.verse)
+    property string contents: {
+        var contents = settings.bible.verse(root.verse)
+
+        if (highlight) {
+            var lowerCase = contents.toLowerCase()
+            var startIndex = lowerCase.indexOf(highlight.toLowerCase())
+            if (startIndex !== -1) {
+                var replace = contents.substring(startIndex, startIndex + highlight.length)
+
+                print(highlight, startIndex, replace)
+
+                contents = contents.replace(replace, "<font color=\"%1\">%2</font>".arg(UbuntuColors.orange).arg(replace))
+            }
+        }
+
+        return contents
+    }
+    property string highlight
 
     text: verse//"<b>" + verse + "</b>"
     subText: contents

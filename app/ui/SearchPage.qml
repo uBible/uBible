@@ -44,6 +44,8 @@ Page {
         id: searchField
         placeholderText: i18n.tr("Search...")
         width: parent ? parent.width : 0
+
+        onTriggered: search()
     }
 
     UbuntuListView {
@@ -57,6 +59,7 @@ Page {
 
         delegate: BibleVerse {
             verse: model.verse
+            highlight: actualQuery
         }
     }
 
@@ -132,13 +135,23 @@ Page {
         id: searchTask
         bible: settings.bible
 
-        onBusyChanged: {
+        onResultsChanged: {
+            model.clear()
+
             if (!busy) {
-                model.clear()
                 searchTask.results.forEach(function(verse) {
+                    var array = verse.split(" ")
+                    var book
+
+                    if (verse.indexOf("I") == 0) {
+                        book = array[0] + " " + array[1]
+                    } else {
+                        book = array[0]
+                    }
+
                     model.append({
                                   verse: verse,
-                                  book: verse.split(" ")[0]
+                                  book: book
                               })
                 })
             }
