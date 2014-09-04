@@ -18,7 +18,13 @@ add_library(uBiblebackend MODULE
     ${uBiblebackend_SRCS}
 )
 
-target_link_libraries(uBiblebackend sword)
+message("Build click is ${BUILD_CLICK}")
+
+if(BUILD_CLICK)
+    target_link_libraries(uBiblebackend /usr/lib/libsword.a)
+else()
+    target_link_libraries(uBiblebackend sword)
+endif()
 
 set_target_properties(uBiblebackend PROPERTIES
          LIBRARY_OUTPUT_DIRECTORY uBible)

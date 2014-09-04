@@ -34,4 +34,9 @@ Now, any time you do a `git pull` in the uBible repository, and you see a change
 
 Currently, there is no module manager, so you will need to install Bibles using another SWORD program or from the Ubuntu repositories. For example, the KJV Bible is available from the `sword-text-kjv` package.
 
+**Compiling and Running**
+
 To run/build, just open the `CMakeLists.txt` file in Qt Creator.
+
+To build a click package, use the option `-DBUILD_CLICK=YES`, either in the Projects tab of Qt Creator, or when running `cmake` from the command line.
+

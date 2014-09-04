@@ -24,9 +24,10 @@ execute_process(
 set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 
 option(INSTALL_TESTS "Install the tests on make install" on)
+option(BUILD_CLICK   "Build a click package statically linked with SWORD" off)
 
 set(APP_NAME          uBible)
-set(UBIBLE_DIR "share/qml/uBible")
+set(UBIBLE_DIR        "share/qml/uBible")
 set(MAIN_QML          "uBible.qml")
 set(ICON              "grapics/toolbarIcon@8.png")
 
