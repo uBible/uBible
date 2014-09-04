@@ -34,7 +34,9 @@ Item {
     property variant flickable: list
 
     function goTo() {
-        list.positionViewAtIndex(currentRegion.startVerse - 1, ListView.Beginning)
+        print("Going to index", currentRegion.startVerse - 1)
+        //list.currentIndex = currentRegion.startVerse - 1
+        list.positionViewAtIndex(currentRegion.startVerse - 1, ListView.Center)
     }
 
     Rectangle {
@@ -67,6 +69,8 @@ Item {
 
         model: bibleChapter.bible.exists ? bibleChapter : null
         snapMode: ListView.SnapToItem
+
+        onCountChanged: goTo()
 
         /*
          * Used for extra padding to make a 1 gu margin around

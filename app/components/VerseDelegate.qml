@@ -29,21 +29,41 @@ Empty {
     id: verseDelegate
 
     property string fontsize: "large"
-    property int verse: index + 1
+    property int verseNumber: index + 1
     property string text: model.verse
 
     height: units.gu(0.5) + verse.height
-    selected: selectedRegion.inRange(index + 1)
-    property bool current: currentRegion.inRange(index + 1)
+    selected: selectedRegion.indexOf(verseNumber) != -1
+    property bool current: currentRegion.inRange(verseNumber)
 
-    property bool bookmarked: settings.bookmarks.indexOf(verseToString(verseDelegate.verse)) !== -1
+    property bool bookmarked: settings.bookmarks.indexOf(verseToString(verseNumber)) !== -1
 
     onClicked: {
-        PopupUtils.open(versePopover, verseDelegate,
-                        {
-                            text: verseDelegate.text,
-                            verse: verseDelegate.verse
-                        })
+        if (selected) {
+            selectedRegion.splice(selectedRegion.indexOf(verseNumber), 1)
+
+            selectedRegion = selectedRegion
+        } else {
+            selectedRegion.push(verseNumber)
+
+            selectedRegion = selectedRegion
+        }
+    }
+
+    Rectangle {
+        width: parent.width
+        height: units.dp(1)
+        color: colors["purple"]
+        visible: selected && selectedRegion.indexOf(verseNumber - 1) == -1
+    }
+
+
+    Rectangle {
+        anchors.bottom: parent.bottom
+        width: parent.width
+        height: units.dp(1)
+        color: colors["purple"]
+        visible: selected && selectedRegion.indexOf(verseNumber + 1) == -1
     }
 
     /*
@@ -66,7 +86,7 @@ Empty {
         }
     Label {
         id: number
-        text: verseDelegate.verse
+        text: verseNumber
         color: textColor
         font.bold: true
         visible: !bookmarked
@@ -90,17 +110,6 @@ Empty {
         width: units.gu(2)
         height: width
         source: getIcon("starred")
-    }
-
-    Rectangle {
-        anchors {
-            fill: verse
-            leftMargin: units.gu(-0.5)
-            bottomMargin: units.gu(-0.4)
-            topMargin: units.gu(-0.1)
-        }
-        color: Qt.rgba(0.2,0.2,0.2,0.5)
-        visible: selectedRegion.inRange(verse)
     }
 
     Label {
@@ -135,7 +144,7 @@ Empty {
         textFormat: Text.PlainText
         //font.family: userFont //change this in settings
         fontSize: fontsize //have this change with pinch gesture
-        color: currentRegion.inRange(verseDelegate.verse) ? selectionColor : textColor
+        color: current ? selectionColor : textColor
 
         Behavior on color {
             ColorAnimation { duration: 500 }

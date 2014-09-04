@@ -34,7 +34,7 @@ Page {
 
     property alias location: currentRegion.location
 
-    onLocationChanged: bibleView.goTo()
+    onLocationChanged:selectedRegion = []
 
     head.actions: [
         Action {
@@ -56,9 +56,9 @@ Page {
         id: currentRegion
     }
 
-    property Location selectedRegion: Location {
-        id: selectedRegion
-    }
+    property var selectedRegion: []
+
+    onSelectedRegionChanged: print("changing")
 
     BibleChapter {
         id: bibleChapter
@@ -161,6 +161,38 @@ Page {
                     text: fullscreen ? i18n.tr("Exit Fullscreen") : i18n.tr("Fullscreen")
 
                     onTriggered: fullscreen = !fullscreen
+                }
+            }
+        }
+    }
+
+    ActionPanel {
+        opened: selectedRegion.length > 0
+
+        onOpenedChanged: print("Opened", opened)
+
+        tools: ToolbarItems {
+            locked: true
+
+            back: ToolbarButton {
+                action: Action {
+                    iconName: "close"
+                    text: "Close"
+                    onTriggered: selectedRegion = []
+                }
+            }
+
+            ToolbarButton {
+                action: Action {
+                    iconName: "note"
+                    text: "Notes"
+                }
+            }
+
+            ToolbarButton {
+                action: Action {
+                    iconName: "share"
+                    text: "Share"
                 }
             }
         }
