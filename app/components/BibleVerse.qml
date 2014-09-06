@@ -20,9 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
-import Ubuntu.Components.ListItems 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
+import Ubuntu.Components.ListItems 1.0 as ListItem
 import "../ubuntu-ui-extras" as Extra
 
 import uBible 1.0
@@ -81,5 +81,17 @@ SubtitledListItem {
         iconSource: getIcon("edit-clear")
         text: i18n.tr("Remove")
         state: swipingState
+    }
+
+    showDivider: false
+
+    ListItem.ThinDivider {
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+            leftMargin: units.gu(-2)
+            rightMargin: units.gu(-2)
+        }
     }
 }

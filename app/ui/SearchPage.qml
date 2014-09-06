@@ -53,7 +53,7 @@ Page {
         model: model
 
         section.property: "book"
-        section.delegate: ListItem.Header {
+        section.delegate: ListHeader {
             text: section
         }
 

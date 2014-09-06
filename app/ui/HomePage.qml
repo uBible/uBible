@@ -66,7 +66,8 @@ Page {
             id: content
             width: root.width
 
-            Header {
+            // Use our own custom component so the divider goes full width
+            ListHeader {
                 text: i18n.tr("Verse of the Day")
             }
 
@@ -75,7 +76,8 @@ Page {
                 //contents: "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."
             }
 
-            Header {
+            // Use our own custom component so the divider goes full width
+            ListHeader {
                 text: i18n.tr("Reading Plan")
                 visible: settings.showReadingPlan
             }
