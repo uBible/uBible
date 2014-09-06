@@ -12,7 +12,8 @@ Document {
     _properties: [
         "showStrongs", "showReadingPlan",
         "bibleVersion", "bookmarks",
-        "history"
+        "history",
+        "permissionConfirmed"
     ]
 
     property bool showStrongs: false
@@ -20,6 +21,11 @@ Document {
     property string bibleVersion
     property var bookmarks: []
     property var history: []
+    property bool permissionConfirmed
+
+    onPermissionConfirmedChanged: {
+        bibleManager.confirmedPermission = permissionConfirmed
+    }
 
     onBibleVersionChanged: {
         print("New version!")
@@ -27,24 +33,26 @@ Document {
     }
 
     onLoaded: {
-        print("Bible: ", bibleVersion, JSON.stringify(internalBible.availableBibles()))
+        print("Bible: ", bibleVersion, JSON.stringify(availableBibles))
         if (!bibleVersion === "" && !containsBible(bibleVersion)) {
-            if (internalBible.availableBibles().length > 0)
-                bibleVersion = internalBible.availableBibles()[0].name
+            if (availableBibles.length > 0)
+                bibleVersion = availableBibles[0].name
             else
                 bibleVersion = ""
-        } else if (bibleVersion === "" && internalBible.availableBibles().length > 0) {
-            bibleVersion = internalBible.availableBibles()[0].name
+        } else if (bibleVersion === "" && availableBibles.length > 0) {
+            bibleVersion = availableBibles[0].name
         }
 
         print("Setting bible version", bibleVersion)
         internalBible.name = bibleVersion
         bible = internalBible
+
+        bibleManager.confirmedPermission = permissionConfirmed
     }
 
     function containsBible(name) {
-        for (var i = 0; i < internalBible.availableBibles().length; i++) {
-            var bibleInfo = internalBible.availableBibles()[i]
+        for (var i = 0; i < availableBibles.length; i++) {
+            var bibleInfo = availableBibles[i]
 
             if (bibleInfo.name == name)
                 return true
@@ -54,7 +62,7 @@ Document {
     }
 
     property Bible bible
-    property var availableBibles: internalBible.availableBibles()
+    property alias availableBibles: bibleManager.installedBibles
 
     Bible {
         id: internalBible
@@ -64,4 +72,10 @@ Document {
             bible = internalBible
         }
     }
+
+    BibleManager {
+        id: bibleManager
+    }
+
+    property alias bibleManager: bibleManager
 }

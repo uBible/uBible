@@ -10,6 +10,7 @@ set(
     modules/uBible/bible.cpp
     modules/uBible/bibleapp.cpp
     modules/uBible/biblechapter.cpp
+    modules/uBible/biblemanager.cpp
     modules/uBible/module.cpp
     modules/uBible/searchtask.cpp
 )

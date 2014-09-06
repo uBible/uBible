@@ -176,7 +176,20 @@ MainView {
             visible: false
         }
 
-        Component.onCompleted: pageStack.push(tabs)
+        InstallPage {
+            id: tutorialPage
+            visible: false
+            onFinished: pageStack.push(tabs)
+        }
+
+        Component.onCompleted: {
+            if (settings.availableBibles.length == 0) {
+                print("No Bibles")
+                pageStack.push(tutorialPage)
+            } else {
+                pageStack.push(tabs)
+            }
+        }
     }
 
     Notification {

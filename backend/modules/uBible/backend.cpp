@@ -4,6 +4,7 @@
 #include "bible.h"
 #include "bibleapp.h"
 #include "biblechapter.h"
+#include "biblemanager.h"
 #include "searchtask.h"
 
 void BackendPlugin::registerTypes(const char *uri)
@@ -15,6 +16,7 @@ void BackendPlugin::registerTypes(const char *uri)
     qmlRegisterType<Bible>(uri, 1, 0, "Bible");
     qmlRegisterType<BibleChapter>(uri, 1, 0, "BibleChapter");
     qmlRegisterType<SearchTask>(uri, 1, 0, "SearchTask");
+    qmlRegisterType<BibleManager>(uri, 1, 0, "BibleManager");
 }
 
 void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

@@ -51,9 +51,9 @@ public slots:
     void setName(const QString &name);
     
 private:
-    sword::SWModule *m_module;
-    bool m_exists;
-    QString m_name;
+    sword::SWModule *m_module = nullptr;
+    bool m_exists = false;
+    QString m_name = "";
 };
 
 #endif // MODULE_H
