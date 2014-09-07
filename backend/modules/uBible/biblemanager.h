@@ -18,6 +18,8 @@ class BibleManager : public QObject
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
 
+    Q_PROPERTY(QVariantList availableBibles READ availableBibles NOTIFY availableBiblesChanged)
+
 public:
     explicit BibleManager(QObject *parent = 0);
 
@@ -43,6 +45,11 @@ public:
         return m_status;
     }
 
+    QVariantList availableBibles() const
+    {
+        return m_availableBibles;
+    }
+
 signals:
 
     void installedBiblesChanged(QVariantList arg);
@@ -53,9 +60,13 @@ signals:
 
     void statusChanged(QString arg);
 
+    void availableBiblesChanged(QVariantList arg);
+
 public slots:
 
-    void refresh();
+    void installModule(QString source, QString module);
+
+    void refresh(bool force = false);
 
     void setConfirmedPermission(bool arg)
     {
@@ -81,14 +92,24 @@ public slots:
         }
     }
 
+    void setAvailableBibles(QVariantList arg)
+    {
+        if (m_availableBibles != arg) {
+            m_availableBibles = arg;
+            emit availableBiblesChanged(arg);
+        }
+    }
+
 protected slots:
     void setInstalledBibles(QVariantList installedBibles) {
         m_installedBibles = installedBibles;
         emit installedBiblesChanged(installedBibles);
     }
 
+    void loadRemoteSources();
+
 private:
-    void loadAvailableBibles();
+    void loadInstalledBibles();
     QVariantList loadRemoteBibles(sword::SWMgr *library);
     void run();
 
@@ -99,6 +120,7 @@ private:
     bool m_confirmedPermission;
     bool m_busy;
     QString m_status;
+    QVariantList m_availableBibles;
 };
 
 #endif // BIBLEMANAGER_H

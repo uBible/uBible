@@ -1,13 +1,26 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
+import Ubuntu.Components.ListItems 1.0 as ListItem
 
 import "../ubuntu-ui-extras"
+import "../components"
 
 Walkthough {
     title: currentIndex == 0 ? i18n.tr("Welcome!")
                              : i18n.tr("Install Bibles")
     showSkipButton: false
     showFooter: false
+    swipingEnabled: false
+
+    head.actions: [
+        Action {
+            iconName: "reload"
+            text: i18n.tr("Refresh")
+            visible: currentIndex == 1
+            onTriggered: settings.bibleManager.refresh(true)
+        }
+    ]
+
     Component.onCompleted: {
         if (settings.permissionConfirmed) {
             currentIndex = 1
@@ -65,6 +78,40 @@ Walkthough {
                         fontSize: "large"
                         text: settings.bibleManager.status
                     }
+                }
+
+                ListView {
+                    id: listView
+                    anchors.fill: parent
+                    anchors.margins: -units.gu(2)
+                    model: settings.bibleManager.availableBibles
+
+                    section.property: "modelData.source"
+                    section.delegate: ListItem.Header {
+                        text: section
+                    }
+
+                    delegate: SubtitledListItem {
+                        text: modelData.name
+                        subText: modelData.description
+                        onClicked: modelData.install()
+
+                        Icon {
+                            name: "save-to"
+                            width: units.gu(2.5)
+                            height: width
+                            visible: modelData.installed
+                            anchors {
+                                rightMargin: units.gu(2)
+                                right: parent.right
+                                verticalCenter: parent.verticalCenter
+                            }
+                        }
+                    }
+                }
+
+                Scrollbar {
+                    flickableItem: listView
                 }
             }
         }

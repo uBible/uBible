@@ -23,6 +23,8 @@
 #include "module.h"
 
 #include <QDebug>
+#include <QStandardPaths>
+#include <QDir>
 
 #include <sword/swmgr.h>
 
@@ -37,8 +39,18 @@ void Module::setName(const QString &name) {
 
     m_name = name;
 
+    QString dataPath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    QString configPath = dataPath + "/library/";
+
+    qDebug() << configPath << QDir(configPath).mkpath("modules");
+    qDebug() << QDir(configPath).mkpath("mods.d");
+
     qDebug() << "Creating a new module:" << name;
-    sword::SWMgr *library = new sword::SWMgr();
+    sword::SWMgr *library = new sword::SWMgr(qPrintable(configPath));
+
+    if (library->config == nullptr) {
+        qFatal("SWORD configuration file not found!");
+    }
 
     m_module = library->getModule(qPrintable(name));
     if (m_module == 0) {
