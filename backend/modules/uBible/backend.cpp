@@ -13,10 +13,10 @@ void BackendPlugin::registerTypes(const char *uri)
 
     // @uri uBible
     qmlRegisterUncreatableType<BibleApp>(uri, 1, 0, "App", "Main utilities for the app");
-    qmlRegisterType<Bible>(uri, 1, 0, "Bible");
     qmlRegisterType<BibleChapter>(uri, 1, 0, "BibleChapter");
     qmlRegisterType<SearchTask>(uri, 1, 0, "SearchTask");
     qmlRegisterType<BibleManager>(uri, 1, 0, "BibleManager");
+    qmlRegisterType<Bible>(uri, 1, 0, "Bible");
 }
 
 void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

@@ -28,13 +28,10 @@ BibleChapter::BibleChapter(Bible *bible, const QString &book, int chapter, QObje
     QAbstractListModel(parent),
     m_bible(bible), m_book(book), m_chapter(chapter)
 {
+    if (m_bible == nullptr)
+        m_bible = new Bible(this);
+
     qDebug() << "BIBLE:" << m_bible;
-
-    if (m_bible == 0) {
-        m_bible = new Bible("KJV", this);
-    }
-
-    bibleChanged(m_bible);
 }
 
 QString BibleChapter::nextChapter() const

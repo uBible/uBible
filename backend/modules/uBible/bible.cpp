@@ -34,39 +34,28 @@
 
 using namespace sword;
 
-Bible::Bible(const QString& name, QObject *parent) :
-    Module(name, parent),
-    m_bookList(0), m_hasOT(false), m_hasNT(false), m_boundsInitialized(false)
+Bible::Bible(SWModule *module, BibleManager *parent)
+    : Module(module, parent)
 {
-    QObject::connect(this, SIGNAL(nameChanged(QString)), this, SLOT(onNameChanged(QString)));
-    onNameChanged(name);
-    qDebug() << "BIBLE CREATED";
-}
+    sword::GBFRedLetterWords *option = new sword::GBFRedLetterWords();
+    option->setOptionValue("On");
+    module->AddRenderFilter(option);
 
-void Bible::onNameChanged(const QString &name) {
-    if (exists()) {
-        //module()->AddRenderFilter(new sword::GBFPlain());
-        sword::GBFRedLetterWords *option = new sword::GBFRedLetterWords();
-        option->setOptionValue("On");
-        module()->AddRenderFilter(option);
-    }
-    //TODO:
-    //why are we referecing &name?  what is it supposed to do?
+    qDebug() << "In constructor" << this << m_module;
 }
 
 QStringList Bible::books() {
     // Code taken from BibleTime
-    if (!m_bookList) {
+    if (m_bookList.size() == 0) {
         qDebug() << "Creating book list...";
-        m_bookList = new QStringList();
 
         // Initialize m_hasOT and m_hasNT
         if (!m_boundsInitialized)
             initBounds();
 
-        if (module() == NULL) {
+        if (module() == nullptr) {
             qWarning("Bible not found: %s", qPrintable(name()));
-            return *m_bookList;
+            return m_bookList;
         }
 
         int min = 1; // 1 = OT
@@ -85,12 +74,12 @@ QStringList Bible::books() {
             key->setPosition(sword::TOP);
 
             for (key->setTestament(min); !key->Error() && key->getTestament() <= max; key->setBook(key->getBook() + 1)) {
-                m_bookList->append( QString::fromUtf8(key->getBookName()) );
+                m_bookList.append( QString::fromUtf8(key->getBookName()) );
             }
         }
     }
 
-    return *m_bookList;
+    return m_bookList;
 }
 
 void Bible::initBounds() {
@@ -128,9 +117,10 @@ unsigned int Bible::bookNumber(const QString &book) const {
     // Code taken from BibleTime
     unsigned int bookNumber = 0;
 
-    qDebug() << "Book" << book;
+    qDebug() << this;
+    qDebug() << "Book" << book << m_module;
 
-    if (book == 0 || book.isEmpty() || module() == 0) {
+    if (book == 0 || book.isEmpty() || module() == nullptr) {
         return 0;
     }
 

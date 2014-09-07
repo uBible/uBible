@@ -13,7 +13,6 @@ set(
     modules/uBible/biblemanager.cpp
     modules/uBible/module.cpp
     modules/uBible/searchtask.cpp
-    modules/uBible/remotebible.cpp
 )
 
 add_library(uBiblebackend MODULE

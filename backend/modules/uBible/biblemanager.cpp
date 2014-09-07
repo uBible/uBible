@@ -8,7 +8,8 @@
 #include <swlog.h>
 #include <QFile>
 
-#include "remotebible.h"
+#include "module.h"
+#include "bible.h"
 
 using namespace sword;
 
@@ -38,17 +39,6 @@ BibleManager::BibleManager(QObject *parent) :
 
     qDebug() << configPath << QDir(configPath).mkpath("modules");
     qDebug() << QDir(configPath).mkpath("mods.d");
-
-//    QFile confFile(configPath + "/sword.conf");
-//    if (!confFile.exists()) {
-//        QString initialConfig = "[Install]\nDataPath=" + configPath;
-//        confFile.open(QFile::WriteOnly);
-//        confFile.write(initialConfig.toLocal8Bit());
-//        confFile.close();
-//    }
-
-    //qFatal("SWORD configuration file not found!");
-    //QString configFile = QStandardPaths::locate(QStandardPaths::DataLocation, "sword.conf");
 
     m_manager = new SWMgr(qPrintable(configPath));
 
@@ -83,6 +73,22 @@ void BibleManager::refresh(bool force) {
     } else {
         loadRemoteSources();
     }
+}
+
+Bible *BibleManager::getBible(const QString &name)
+{
+    SWModule *module = m_manager->getModule(qPrintable(name));
+
+    if (module == nullptr)
+        return nullptr;
+
+    Bible *bible = new Bible(module, this);
+    bible->setInstalled(true);
+    bible->setName(module->getName());
+    bible->setDescription(module->getDescription());
+    bible->setLanguage(module->getLanguage());
+
+    return bible;
 }
 
 void BibleManager::installModule(QString sourceName, QString moduleName) {
@@ -133,7 +139,7 @@ void BibleManager::loadRemoteSources() {
             if (strcmp(module->getType(), "Biblical Texts") != 0)
                 continue;
 
-            RemoteBible *bible = new RemoteBible(this);
+            Module *bible = new Module(module, this);
             bible->setInstalled(!(modPair.second & InstallMgr::MODSTAT_NEW));
             bible->setName(module->getName());
             bible->setDescription(module->getDescription());
@@ -163,50 +169,31 @@ void BibleManager::run() {
     }
 }
 
-QVariantList BibleManager::loadRemoteBibles(SWMgr *library) {
-    QVariantList list;
-    ModMap modules = library->Modules;
-    ModMap::iterator it;
-    SWModule *curMod = 0;
-
-    for (it = modules.begin(); it != modules.end(); it++) {
-        curMod = (*it).second;
-        if (!strcmp(curMod->getType(), "Biblical Texts")) {
-            QVariantMap json;
-            json.insert("name", QVariant(curMod->getName()));
-            json.insert("description", QVariant(curMod->getDescription()));
-
-            list.append(json);
-        } else if (!strcmp(curMod->getType(), "Commentaries")) {
-            // do RenderTextsomething with curMod
-        } else if (!strcmp(curMod->getType(), "Lexicons / Dictionaries")) {
-            // do something with curMod
-        }
-    }
-
-    return list;
-}
-
-
 void BibleManager::loadInstalledBibles() {
     QVariantList list;
 
     ModMap modules = m_manager->Modules;
     ModMap::iterator it;
-    SWModule *curMod = 0;
+    SWModule *module = 0;
 
     for (it = modules.begin(); it != modules.end(); it++) {
-        curMod = (*it).second;
-        if (!strcmp(curMod->getType(), "Biblical Texts")) {
-            QVariantMap json;
-            json.insert("name", QVariant(curMod->getName()));
-            json.insert("description", QVariant(curMod->getDescription()));
+        module = (*it).second;
+        if (!strcmp(module->getType(), "Biblical Texts")) {
 
-            list.append(json);
-        } else if (!strcmp(curMod->getType(), "Commentaries")) {
-            // do RenderTextsomething with curMod
-        } else if (!strcmp(curMod->getType(), "Lexicons / Dictionaries")) {
-            // do something with curMod
+            Bible *bible = new Bible(module, this);
+            bible->setInstalled(true);
+            bible->setName(module->getName());
+            bible->setDescription(module->getDescription());
+            bible->setLanguage(module->getLanguage());
+
+            qDebug() << bible->books();
+
+            list.append(QVariant::fromValue(bible));
+
+        } else if (!strcmp(module->getType(), "Commentaries")) {
+            // do RenderTextsomething with module
+        } else if (!strcmp(module->getType(), "Lexicons / Dictionaries")) {
+            // do something with module
         }
     }
 

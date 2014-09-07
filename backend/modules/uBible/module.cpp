@@ -25,44 +25,31 @@
 #include <QDebug>
 #include <QStandardPaths>
 #include <QDir>
+#include <QtConcurrent/QtConcurrent>
 
 #include <sword/swmgr.h>
 
-Module::Module(const QString &name, QObject *parent) :
-    QObject(parent)
+#include "biblemanager.h"
+
+Module::Module(sword::SWModule *module, BibleManager *parent) :
+    QObject()
 {
-    setName(name);
+    m_module = module;
+    m_manager = parent;
 }
 
-void Module::setName(const QString &name) {
-    if (m_name == name) return;
+void Module::install() {
+    QFuture<void> future = QtConcurrent::run(this, &Module::install_background);
+    QFutureWatcher<void> *watcher = new QFutureWatcher<void>(this);
 
-    m_name = name;
+    connect(watcher, SIGNAL(finished()), this, SLOT(finished()));
+    watcher->setFuture(future);
+}
 
-    QString dataPath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
-    QString configPath = dataPath + "/library/";
+void Module::install_background() {
+    m_manager->installModule(this->source(), this->name());
+}
 
-    qDebug() << configPath << QDir(configPath).mkpath("modules");
-    qDebug() << QDir(configPath).mkpath("mods.d");
-
-    qDebug() << "Creating a new module:" << name;
-    sword::SWMgr *library = new sword::SWMgr(qPrintable(configPath));
-
-    if (library->config == nullptr) {
-        qFatal("SWORD configuration file not found!");
-    }
-
-    m_module = library->getModule(qPrintable(name));
-    if (m_module == 0) {
-        m_exists = false;
-        qDebug() << "Module does not exist:" << name;
-    } else {
-        m_exists = true;
-
-        qDebug() << "Module" << name << m_module->Name();
-    }
-
-    nameChanged(m_name);
-
-    existsChanged(m_exists);
+void Module::finished() {
+    setInstalled(true);
 }

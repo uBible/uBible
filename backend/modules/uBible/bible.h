@@ -28,8 +28,10 @@
 #include <QObject>
 #include <QStringList>
 
+#include <sword/swmgr.h>
 #include <sword/swmodule.h>
 #include <sword/versekey.h>
+
 
 class Bible : public Module
 {
@@ -38,7 +40,13 @@ class Bible : public Module
     Q_PROPERTY(QStringList books READ books)
 
 public:
-    explicit Bible(const QString &name = "KJV", QObject *parent = 0);
+    explicit Bible(QObject *parent = nullptr) : Module(parent) {}
+
+    explicit Bible(sword::SWModule *module, BibleManager *parent);
+
+    ~Bible() {
+        qDebug() << "Deleted!";
+    }
 
     Q_INVOKABLE unsigned int chapterCount(const QString &book) const {
         return chapterCount(bookNumber(book));
@@ -70,19 +78,16 @@ signals:
     
 public slots:
 
-private slots:
-    void onNameChanged(const QString &name);
-
 private:
     void initBounds();
 
-    QStringList *m_bookList;
-    bool m_hasOT;
-    bool m_hasNT;
+    QStringList m_bookList;
+    bool m_hasOT = false;
+    bool m_hasNT = false;
     sword::VerseKey m_lowerBound;
     sword::VerseKey m_upperBound;
 
-    bool m_boundsInitialized;
+    bool m_boundsInitialized = false;
 };
 
 #endif // BIBLE_H

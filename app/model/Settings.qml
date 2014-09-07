@@ -28,24 +28,23 @@ Document {
     }
 
     onBibleVersionChanged: {
-        print("New version!")
-        internalBible.name = bibleVersion
+        if (bible == null || bible.name != bibleVersion)
+            bible = bibleManager.getBible(bibleVersion)
     }
 
     onLoaded: {
         print("Bible: ", bibleVersion, JSON.stringify(availableBibles))
-        if (!bibleVersion === "" && !containsBible(bibleVersion)) {
-            if (availableBibles.length > 0)
-                bibleVersion = availableBibles[0].name
-            else
-                bibleVersion = ""
-        } else if (bibleVersion === "" && availableBibles.length > 0) {
-            bibleVersion = availableBibles[0].name
+
+        bible = bibleManager.getBible(bibleVersion)
+
+        if (bible == null) {
+            bible = bibleManager.installedBibles[0]
+
+            if (bible != null)
+                bibleVersion = bible.name
         }
 
-        print("Setting bible version", bibleVersion)
-        internalBible.name = bibleVersion
-        bible = internalBible
+        qDebug() << "Bible: " << bible;
 
         bibleManager.confirmedPermission = permissionConfirmed
     }
@@ -61,17 +60,8 @@ Document {
         return false
     }
 
-    property Bible bible
+    property Bible bible: Bible {}
     property alias availableBibles: bibleManager.installedBibles
-
-    Bible {
-        id: internalBible
-        onNameChanged: {
-            print("Name changed:", name)
-            bible = null
-            bible = internalBible
-        }
-    }
 
     BibleManager {
         id: bibleManager

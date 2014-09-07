@@ -7,6 +7,8 @@
 #include <sword/swmodule.h>
 #include <sword/installmgr.h>
 
+#include "bible.h"
+
 class BibleManager : public QObject
 {
     Q_OBJECT
@@ -49,6 +51,8 @@ public:
     {
         return m_availableBibles;
     }
+
+    Q_INVOKABLE Bible *getBible(const QString &name);
 
 signals:
 
