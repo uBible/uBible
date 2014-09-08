@@ -35,7 +35,7 @@ BibleManager::BibleManager(QObject *parent) :
     SWLog::getSystemLog()->setLogLevel(SWLog::LOG_DEBUG);
 
     QString dataPath(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
-    QString configPath = dataPath + "/library/";
+    QString configPath = dataPath + "/Databases/library/";
 
     qDebug() << configPath << QDir(configPath).mkpath("modules");
     qDebug() << QDir(configPath).mkpath("mods.d");

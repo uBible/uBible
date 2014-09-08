@@ -115,9 +115,7 @@ Page {
 
         book: currentRegion.book
         chapter: currentRegion.chapter
-        version: settings.bibleVersion
-
-        onVersionChanged: print("VERSION:", version)
+        bible: settings.bible
     }
 
     function verseToString(verse) {
@@ -135,6 +133,8 @@ Page {
 
         bibleView.flickable.topMargin = Qt.binding(function() { return margin + audioPanel.y + audioPanel.height })
     }
+
+    flickable: bibleView.flickable
 
 
     BibleView {

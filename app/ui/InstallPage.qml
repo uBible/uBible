@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
 import Ubuntu.Components.ListItems 1.0 as ListItem
 
 import "../ubuntu-ui-extras"
@@ -65,7 +66,7 @@ Walkthough {
 
                 Column {
                     anchors.centerIn: parent
-                    visible: settings.bibleManager.busy
+                    visible: settings.bibleManager.busy && listView.count == 0
                     spacing: units.gu(1)
 
                     ActivityIndicator {
@@ -94,7 +95,10 @@ Walkthough {
                     delegate: SubtitledListItem {
                         text: modelData.name
                         subText: modelData.description
-                        onClicked: modelData.install()
+                        onClicked: {
+                            modelData.install()
+                            showInstallDialog(modelData.name)
+                        }
 
                         Icon {
                             name: "save-to"
@@ -117,6 +121,33 @@ Walkthough {
         }
 
     ]
+
+    Component {
+        id: installDialog
+
+        Dialog {
+            id: dialog
+
+            title: i18n.tr("Installing Bible")
+            text: i18n.tr("Installing module: %1").arg(module)
+
+            ActivityIndicator {
+                running: dialog.visible
+            }
+        }
+    }
+
+    function showInstallDialog(moduleName) {
+        module = moduleName
+        PopupUtils.open(installDialog)
+    }
+
+    Connections {
+        target: settings.bibleManager
+        onBusyChanged: if (!settings.bibleManager.busy && installDialog.visible) installDialog.hide()
+    }
+
+    property string module
 
     property string disclaimer: "uBible allows you to download Bibles from the internet. " +
                                 "While this is a useful feature, it also allows you to be potentially tracked.<br/><br/>" +

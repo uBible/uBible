@@ -31,7 +31,7 @@ import "../components"
 Item {
     id: root
 
-    property variant flickable: list
+    property alias flickable: list
 
     function goTo() {
         print("Going to index", currentRegion.startVerse - 1)
@@ -54,20 +54,18 @@ Item {
          * the references to SWORD and modules (extra unneeded
          * details) and add a button/link to the module manager
          */
-        text: bibleChapter.version == ""
-              ? i18n.tr("<b>No Bibles are installed!</b><p>Open the Bible manager to install a Bible.")
-              : i18n.tr("<b>The %1 Bible is not installed!</b><p>Open the Bible manager to install the Bible or choose a different version in Settings.").arg(bibleChapter.version)
+        text: i18n.tr("<b>No Bibles are installed!</b><p>Open the Bible manager from Settings to install a Bible.")
         width: Math.min(implicitWidth, parent.width - units.gu(2))
         wrapMode: Text.Wrap
         horizontalAlignment: Text.AlignHCenter
-        visible: !bibleChapter.bible.exists
+        visible: settings.bible == null
     }
 
     ListView {
         id: list
         anchors.fill: parent
 
-        model: bibleChapter.bible.exists ? bibleChapter : null
+        model: settings.bible != null ? bibleChapter : null
         snapMode: ListView.SnapToItem
 
         onCountChanged: goTo()

@@ -38,8 +38,7 @@ class BibleChapter : public QAbstractListModel
 
     Q_PROPERTY(int chapter READ chapter WRITE setChapter NOTIFY chapterChanged)
     Q_PROPERTY(QString book READ book WRITE setBook NOTIFY bookChanged)
-    Q_PROPERTY(Bible *bible READ bible NOTIFY bibleChanged)
-    Q_PROPERTY(QString version READ version WRITE setVersion NOTIFY versionChanged)
+    Q_PROPERTY(Bible *bible READ bible WRITE setBible NOTIFY bibleChanged)
 
     Q_PROPERTY(QString previousChapter READ previousChapter NOTIFY previousChapterChanged)
     Q_PROPERTY(QString nextChapter READ nextChapter NOTIFY nextChapterChanged)
@@ -73,7 +72,6 @@ public:
     int chapter() const { return m_chapter; }
     QString book() const { return m_book; }
     Bible *bible() const { return m_bible; }
-    QString version() const { return m_version; }
 
     QString previousChapter() const;
     QString nextChapter() const;
@@ -82,7 +80,6 @@ signals:
     void chapterChanged(int chapter);
     void bookChanged(const QString& book);
     void bibleChanged(Bible *bible);
-    void versionChanged(const QString& version);
 
     void previousChapterChanged(const QString& previousChapter);
     void nextChapterChanged(const QString& nextChapter);
@@ -108,13 +105,12 @@ public slots:
         emit nextChapterChanged(this->nextChapter());
     }
 
-    void setVersion(const QString& version) {
+    void setBible(Bible *bible) {
         beginResetModel();
-        m_version = version;
-        bible()->setName(version);
+        m_bible = bible;
         endResetModel();
 
-        emit versionChanged(version);
+        emit bibleChanged(bible);
     }
 
 private slots:
@@ -123,7 +119,6 @@ private:
     int m_chapter;
     QString m_book;
     Bible *m_bible;
-    QString m_version;
 };
 
 #endif // BIBLECHAPTER_H
