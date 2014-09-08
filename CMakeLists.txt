@@ -19,8 +19,8 @@ option(INSTALL_TESTS "Install the tests on make install" on)
 option(CLICK_MODE "Build as a click package" on)
 
 set(APP_NAME                uBible)
-set(APP_HARDCODE            uBible)
-set(MAIN_QML                ${APP_HARDCODE}.qml)
+set(APP_HARDCODE            ubible-app)
+set(MAIN_QML                ${APP_NAME}.qml)
 set(ICON                    ubible-app)
 SET(AUTOPILOT_DIR           ubible_app)
 

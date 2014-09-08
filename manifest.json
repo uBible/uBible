@@ -1,5 +1,5 @@
 {
-    "name": "com.ubuntu.developers.ubible.ubible",
+    "name": "com.ubuntu.developer.ubible.ubible",
     "description": "A Bible app for Ubuntu Touch",
     "framework": "ubuntu-sdk-14.10-qml-dev3",
     "architecture": "armhf",
