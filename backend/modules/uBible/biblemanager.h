@@ -72,6 +72,8 @@ public slots:
 
     void refresh(bool force = false);
 
+    void addRemoteBible(QString sourceName, QString moduleName);
+
     void setConfirmedPermission(bool arg)
     {
         if (m_confirmedPermission != arg) {

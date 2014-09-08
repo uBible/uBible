@@ -137,6 +137,11 @@ MainView {
         return "<font color=\"%1\">%2</font>".arg(color).arg(text)
     }
 
+    function goToHome() {
+        pageStack.clear()
+        pageStack.push(tabs)
+    }
+
     //////////// CHILD OBJECTS ////////////
 
     property bool fullscreen: false

@@ -117,9 +117,36 @@ void BibleManager::installModule(QString sourceName, QString moduleName) {
         qDebug() << "Installed module: [" << module->getName() << "]" << m_manager->prefixPath;
     }
 
-    loadInstalledBibles();
-
     setBusy(false);
+}
+
+void BibleManager::addRemoteBible(QString sourceName, QString moduleName) {
+    InstallSourceMap::iterator source = m_installManager->sources.find(qPrintable(sourceName));
+    if (source == m_installManager->sources.end()) {
+        qWarning() << "Couldn't find remote source" << sourceName;
+        return;
+    }
+    InstallSource *is = source->second;
+    SWMgr *rmgr = is->getMgr();
+    SWModule *module;
+    ModMap::iterator it = rmgr->Modules.find(qPrintable(moduleName));
+    if (it == rmgr->Modules.end()) {
+        qWarning() << "Couldn't find module in remote source" << moduleName;
+        return;
+    }
+    module = it->second;
+
+    QVariantList list = installedBibles();
+
+    Bible *bible = new Bible(module, this);
+    bible->setInstalled(true);
+    bible->setName(module->getName());
+    bible->setDescription(module->getDescription());
+    bible->setLanguage(module->getLanguage());
+
+    list.append(QVariant::fromValue(bible));
+
+    setInstalledBibles(list);
 }
 
 void BibleManager::loadRemoteSources() {

@@ -36,6 +36,9 @@ BibleChapter::BibleChapter(Bible *bible, const QString &book, int chapter, QObje
 
 QString BibleChapter::nextChapter() const
 {
+    if (m_bible == nullptr || m_bible->name() == "")
+        return "";
+
     int chapter = m_chapter;
     QString book = m_book;
     if (chapter < bible()->chapterCount(book)) {
@@ -56,6 +59,9 @@ QString BibleChapter::nextChapter() const
 
 QString BibleChapter::previousChapter() const
 {
+    if (m_bible == nullptr || m_bible->name() == "")
+        return "";
+
     int chapter = m_chapter;
     QString book = m_book;
     if (chapter > 1) {

@@ -8,7 +8,8 @@ import "../components"
 
 Walkthough {
     title: currentIndex == 0 ? i18n.tr("Welcome!")
-                             : i18n.tr("Install Bibles")
+                             : currentIndex == 1 ? i18n.tr("Install Bibles")
+                                                 : i18n.tr("Select a Default Bible")
     showSkipButton: false
     showFooter: false
     swipingEnabled: false
@@ -19,7 +20,23 @@ Walkthough {
             text: i18n.tr("Refresh")
             visible: currentIndex == 1
             onTriggered: settings.bibleManager.refresh(true)
+        },
+
+        Action {
+            iconName: currentIndex == pageCount - 1 ? "ok" : "next"
+            text: i18n.tr("Next")
+            visible: currentIndex > 0
+            enabled: currentIndex == 1 ? settings.availableBibles.length > 0
+                                       : currentIndex == 2 ? settings.bibleVersion !== "" : true
+            onTriggered: {
+                if (currentIndex == pageCount - 1) {
+                    goToHome()
+                } else {
+                    currentIndex++
+                }
+            }
         }
+
     ]
 
     Component.onCompleted: {
@@ -118,8 +135,42 @@ Walkthough {
                     flickableItem: listView
                 }
             }
-        }
+        },
 
+        Component {
+            Item {
+                anchors.fill: parent
+
+                ListView {
+                    id: selectListView
+                    anchors.margins: units.gu(-2)
+                    anchors.fill: parent
+
+                    model: settings.availableBibles
+                    delegate: ListItem.Standard {
+                        text: modelData.name
+                        selected: modelData.name == settings.bibleVersion
+                        onClicked: settings.bibleVersion = modelData.name
+
+                        Icon {
+                            name: "tick"
+                            width: units.gu(2.5)
+                            height: width
+                            visible: selected
+                            anchors {
+                                rightMargin: units.gu(2)
+                                right: parent.right
+                                verticalCenter: parent.verticalCenter
+                            }
+                        }
+                    }
+                }
+
+                Scrollbar {
+                    flickableItem: selectListView
+                }
+            }
+        }
     ]
 
     Component {
@@ -129,10 +180,15 @@ Walkthough {
             id: dialog
 
             title: i18n.tr("Installing Bible")
-            text: i18n.tr("Installing module: %1").arg(module)
+            text: i18n.tr("Installing module: <b>%1</b>").arg(module)
 
-            ActivityIndicator {
-                running: dialog.visible
+            ProgressBar {
+                indeterminate: true
+            }
+
+            Connections {
+                target: settings.bibleManager
+                onBusyChanged: if (!settings.bibleManager.busy && dialog.visible) PopupUtils.close(dialog)
             }
         }
     }
@@ -140,11 +196,6 @@ Walkthough {
     function showInstallDialog(moduleName) {
         module = moduleName
         PopupUtils.open(installDialog)
-    }
-
-    Connections {
-        target: settings.bibleManager
-        onBusyChanged: if (!settings.bibleManager.busy && installDialog.visible) installDialog.hide()
     }
 
     property string module

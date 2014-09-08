@@ -52,4 +52,6 @@ void Module::install_background() {
 
 void Module::finished() {
     setInstalled(true);
+
+    m_manager->addRemoteBible(this->source(), this->name());
 }
