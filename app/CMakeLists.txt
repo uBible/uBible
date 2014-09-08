@@ -3,10 +3,11 @@ if(NOT "${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR}")
   add_custom_target(ubible_QMlFiles ALL SOURCES ${QML_JS_FILES})
 endif(NOT "${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR}")
 
-
 if(CLICK_MODE)
-  set(ICON "${ICON}@30.png")
+  set(ICON "${ICON}.png")
   install(FILES ${ICON} DESTINATION ${CMAKE_INSTALL_PREFIX})
+else(CLICK_MODE)
+  install(FILES "${ICON}.png" DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps/)
 endif(CLICK_MODE)
 
 # substitute variables in the desktop file

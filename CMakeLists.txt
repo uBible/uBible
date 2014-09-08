@@ -16,7 +16,7 @@ find_package(Qt5Concurrent)
 set(CMAKE_AUTOMOC ON)
 
 option(INSTALL_TESTS "Install the tests on make install" on)
-option(CLICK_MODE "Build as a click package" on)
+option(CLICK_MODE "Build as a click package" off)
 
 set(APP_NAME                uBible)
 set(APP_HARDCODE            ubible-app)
@@ -64,9 +64,9 @@ list(SORT I18N_SRC_FILES)
 add_subdirectory(app)
 add_subdirectory(backend)
 add_subdirectory(po)
-if(NOT CLICK_MODE)
-  add_subdirectory(tests)
-endif(NOT CLICK_MODE)
+#if(NOT CLICK_MODE)
+#  add_subdirectory(tests)
+#endif(NOT CLICK_MODE)
 
 add_custom_target("autopilot" chmod +x ${CMAKE_SOURCE_DIR}/tests/autopilot/run
                     COMMAND ${CMAKE_SOURCE_DIR}/tests/autopilot/run
