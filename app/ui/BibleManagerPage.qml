@@ -5,6 +5,12 @@ import Ubuntu.Components.ListItems 1.0 as ListItem
 Page {
     title: "Bible Manager"
 
+    head.actions: Action {
+        iconName: "save-to"
+        text: i18n.tr("Install/Remove")
+        onTriggered: pageStack.push(Qt.resolvedUrl("BibleInstallerPage.qml"))
+    }
+
     ListView {
         id: listView
         anchors.fill: parent
