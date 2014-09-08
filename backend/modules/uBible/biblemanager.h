@@ -72,7 +72,7 @@ public slots:
 
     void refresh(bool force = false);
 
-    void addRemoteBible(QString sourceName, QString moduleName);
+    void loadInstalledBibles();
 
     void setConfirmedPermission(bool arg)
     {
@@ -115,7 +115,6 @@ protected slots:
     void loadRemoteSources();
 
 private:
-    void loadInstalledBibles();
     QVariantList loadRemoteBibles(sword::SWMgr *library);
     void run();
 

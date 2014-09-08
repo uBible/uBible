@@ -181,14 +181,21 @@ QString Bible::verse(int book, int chapter, int verse) {
 
     qDebug() << "In verse()";
 
-    if (module() == nullptr)
-        return "";
+    if (module() == nullptr) {
+        qWarning() << "Module is null!";
+        return "No Bibles installed";
+    }
     qDebug() << "Not null";
 
 
     module()->setKey(key);
     module()->addRenderFilter(new GBFPlain());
-    return QString(module()->renderText());
+    QString contents(module()->renderText());
+
+    if (contents == "")
+        return "Module not supported: " + name();
+    else
+        return contents;
 }
 
 QStringList Bible::search(const QString &phrase) {
@@ -231,7 +238,12 @@ QString Bible::verse(const QString &verse) {
     module()->setKey(key);
     module()->addRenderFilter(new GBFPlain());
     qDebug() << "Returning result";
+    QString contents(module()->renderText());
 
-    return QString(module()->renderText());
+    if (contents == "")
+        return "Module not supported: " + name();
+    else
+        return contents;
+
 }
 

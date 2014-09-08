@@ -14,7 +14,6 @@ Page {
         Action {
             iconName: "reload"
             text: i18n.tr("Refresh")
-            visible: currentIndex == 1
             onTriggered: settings.bibleManager.refresh(true)
         }
     ]
@@ -92,7 +91,10 @@ Page {
         }
     }
 
+    property string module
+
     function showInstallDialog(moduleName) {
+        print("Showing install dialog")
         module = moduleName
         PopupUtils.open(installDialog)
     }
